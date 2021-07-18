@@ -1,0 +1,156 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\bounds.png" />
+    <None Remove="Resources\bounds_bridge.png" />
+    <None Remove="Resources\bounds_bridge_0.png" />
+    <None Remove="Resources\bounds_bridge_1.png" />
+    <None Remove="Resources\bounds_bridge_2.png" />
+    <None Remove="Resources\bounds_grass.png" />
+    <None Remove="Resources\button_arrow.png" />
+    <None Remove="Resources\button_close.png" />
+    <None Remove="Resources\button_menu.png" />
+    <None Remove="Resources\button_zoom_in.png" />
+    <None Remove="Resources\button_zoom_out.png" />
+    <None Remove="Resources\door_0.png" />
+    <None Remove="Resources\door_1.png" />
+    <None Remove="Resources\door_grass.png" />
+    <None Remove="Resources\floor_grass.png" />
+    <None Remove="Resources\grass_corn_bottom.png" />
+    <None Remove="Resources\grass_corn_left.png" />
+    <None Remove="Resources\grass_corn_right.png" />
+    <None Remove="Resources\grass_corn_top.png" />
+    <None Remove="Resources\grass_fill_bottom.png" />
+    <None Remove="Resources\grass_fill_left.png" />
+    <None Remove="Resources\grass_fill_right.png" />
+    <None Remove="Resources\grass_fill_top.png" />
+    <None Remove="Resources\player_0.png" />
+    <None Remove="Resources\player_bottom.png" />
+    <None Remove="Resources\player_bottom_run_1.png" />
+    <None Remove="Resources\player_bottom_run_2.png" />
+    <None Remove="Resources\player_bottom_run_3.png" />
+    <None Remove="Resources\player_left.png" />
+    <None Remove="Resources\player_left_run_1.png" />
+    <None Remove="Resources\player_left_run_2.png" />
+    <None Remove="Resources\player_left_run_3.png" />
+    <None Remove="Resources\player_right.png" />
+    <None Remove="Resources\player_right_run_1.png" />
+    <None Remove="Resources\player_right_run_2.png" />
+    <None Remove="Resources\player_right_run_3.png" />
+    <None Remove="Resources\player_top.png" />
+    <None Remove="Resources\player_top_run_1.png" />
+    <None Remove="Resources\player_top_run_2.png" />
+    <None Remove="Resources\player_top_run_3.png" />
+    <None Remove="Resources\road_bottom.png" />
+    <None Remove="Resources\road_left.png" />
+    <None Remove="Resources\road_right.png" />
+    <None Remove="Resources\road_top.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\bounds_bridge.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\bounds_bridge_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\bounds_bridge_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\bounds_bridge_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\bounds_grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\door_0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\door_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\door_grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\floor_grass.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_corn_bottom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_corn_left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_corn_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_corn_top.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_fill_bottom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_fill_left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_fill_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\grass_fill_top.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\road_bottom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\road_left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\road_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\road_top.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="3.4.0.1008975" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\foxer.Core\foxer.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Pages\Game\PageGame.xaml.cs">
+      <DependentUpon>PageGame.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Pages\Game\PageGame.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Pages\PageRoller.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

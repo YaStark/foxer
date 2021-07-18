@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="foxer.Pages.PageRoller">
+    <ContentPage.Content>
+        <StackLayout Margin="15">
+            <Grid HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+                <Label Text="Value"               
+                       Grid.Row="0" 
+                       HorizontalOptions="Center" />
+                <Label Text="{Binding Value}"
+                       Grid.Row="1" 
+                       HorizontalOptions="Center" />
+                <ProgressBar Grid.Row="2" Progress="{Binding Value}" />
+                <ProgressBar Grid.Row="3" Progress="{Binding PreviousValue}" />
+            </Grid>
+
+            <Grid HorizontalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Text="Less than value"
+                        Grid.Column="0"
+                        TextColor="Red"
+                        Command="{Binding CommandLess}" />
+                <Button Text="More than value"
+                        Grid.Column="1"
+                        TextColor="Green"
+                        Command="{Binding CommandMore}" />
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
