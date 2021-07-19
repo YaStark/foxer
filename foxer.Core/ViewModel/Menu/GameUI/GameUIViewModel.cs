@@ -15,8 +15,6 @@ namespace foxer.Core.ViewModel.Menu
 
         public PlayerEntity ActiveEntity => ViewModel.ActiveEntity;
 
-        public Stage Stage => ViewModel.Stage;
-
         public GameUIViewModel(PageGameViewModel viewModel)
             : base(viewModel)
         {

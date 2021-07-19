@@ -45,7 +45,7 @@ namespace foxer.Core.Utils
 
         public static void CreateDroppedLootItem(this Stage stage, EntityBase entity)
         {
-            var loot = stage.LootManager.GetLoot(entity);
+            var loot = stage.LootManager.GetLoot(stage, entity);
             if(loot != null)
             {
                 stage.AddEntity(new DroppedItemEntity(entity.Cell, loot));

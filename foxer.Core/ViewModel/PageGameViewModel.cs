@@ -1,5 +1,6 @@
 ﻿using foxer.Core.Game;
 using foxer.Core.Game.Cells;
+using foxer.Core.Game.Craft;
 using foxer.Core.Game.Entities;
 using foxer.Core.Game.Items;
 using foxer.Core.Interfaces;
@@ -34,7 +35,9 @@ namespace foxer.Core.ViewModel
         public Size InventorySize => _game.InventorySize;
 
         public int FastPanelSize => _game.FastPanelSize;
-        
+
+        public PlayerHandsCrafter PlayerHandsCrafter => _game.PlayerHandsCrafter;
+
         public int FastPanelSelectedIndex { get; set; }
 
         public float Scale { get; set; } = 1;
@@ -48,6 +51,8 @@ namespace foxer.Core.ViewModel
         public MenuCraftViewModel MenuCraft { get; }
 
         public IMenuHost GameMenu => _menuHostFactory.Item;
+
+        public ItemManager ItemManager => _game.ItemManager;
 
         public PageGameViewModel(INavigator navigator, ISingletoneFactory<IMenuHost> menuHostFactory)
         {

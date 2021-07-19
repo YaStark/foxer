@@ -63,6 +63,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] background_normal {
+            get {
+                object obj = ResourceManager.GetObject("background_normal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] bee0 {
             get {
                 object obj = ResourceManager.GetObject("bee0", resourceCulture);
@@ -593,6 +603,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_down {
+            get {
+                object obj = ResourceManager.GetObject("icon_down", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_exit {
             get {
                 object obj = ResourceManager.GetObject("icon_exit", resourceCulture);
@@ -663,6 +683,36 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_sup_fail {
+            get {
+                object obj = ResourceManager.GetObject("icon_sup_fail", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] icon_sup_ok {
+            get {
+                object obj = ResourceManager.GetObject("icon_sup_ok", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] icon_up {
+            get {
+                object obj = ResourceManager.GetObject("icon_up", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_wood {
             get {
                 object obj = ResourceManager.GetObject("icon_wood", resourceCulture);
@@ -686,6 +736,36 @@ namespace foxer.Properties {
         internal static byte[] icon_zoom_out {
             get {
                 object obj = ResourceManager.GetObject("icon_zoom_out", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] list_item_disabled {
+            get {
+                object obj = ResourceManager.GetObject("list_item_disabled", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] list_item_normal {
+            get {
+                object obj = ResourceManager.GetObject("list_item_normal", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] list_item_selected {
+            get {
+                object obj = ResourceManager.GetObject("list_item_selected", resourceCulture);
                 return ((byte[])(obj));
             }
         }

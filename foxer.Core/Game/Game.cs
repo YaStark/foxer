@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Cells;
+using foxer.Core.Game.Craft;
 using foxer.Core.Game.Generator;
 using foxer.Core.Game.Generator.StageGenerator;
 using foxer.Core.Game.Items;
@@ -24,16 +25,25 @@ namespace foxer.Core.Game
 
         public int FastPanelSize { get; private set; } = 2;
 
-        public ItemBase[] Inventory1 { get; }
+        public ItemBase[] Inventory { get; }
+
+        public InventoryManager InventoryManager { get; }
+
+        public ItemManager ItemManager { get; } = new ItemManager();
+
+        public PlayerHandsCrafter PlayerHandsCrafter { get; }
 
         public static int Seed { get; private set; }
 
         public Game()
         {
-            Inventory1 = new ItemBase[InventorySize.Width * InventorySize.Height + MAX_FAST_PANEL_SIZE];
-            Inventory1[10] = new ItemWood(16);
-            Inventory1[11] = new ItemStoneOven();
-            Inventory1[12] = new ItemStoneAxe();
+            Inventory = new ItemBase[InventorySize.Width * InventorySize.Height + MAX_FAST_PANEL_SIZE];
+            Inventory[10] = ItemManager.Create<ItemWood>(null, 16);
+            Inventory[11] = ItemManager.Create<ItemStoneOven>(null);
+            Inventory[12] = ItemManager.Create<ItemStoneAxe>(null);
+
+            InventoryManager = new InventoryManager(this);
+            PlayerHandsCrafter = new PlayerHandsCrafter(this);
         }
 
         public void GenerateMap(int seed = 0)

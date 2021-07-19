@@ -70,6 +70,25 @@ namespace foxer.Droid.Render
                 null);
         }
 
+        public void DrawImage(byte[] bitmap, RectangleF sourceRelative, RectangleF bounds)
+        {
+            Bitmap bmp = _bitmapCache.ContainsKey(bitmap)
+                ? _bitmapCache[bitmap]
+                : _bitmapCache[bitmap] = BitmapFactory.DecodeByteArray(bitmap, 0, bitmap.Length, null);
+
+            var source = new Rect(
+                (int)(sourceRelative.Left * bmp.Width),
+                (int)(sourceRelative.Top * bmp.Height),
+                (int)(sourceRelative.Right * bmp.Width),
+                (int)(sourceRelative.Bottom * bmp.Height));
+
+            _canvas.DrawBitmap(
+                bmp,
+                source,
+                new RectF(bounds.Left, bounds.Top, bounds.Right, bounds.Bottom),
+                null);
+        }
+
         public void DrawText(string text, RectangleF bounds, System.Drawing.Color color)
         {
             var paint = new TextPaint

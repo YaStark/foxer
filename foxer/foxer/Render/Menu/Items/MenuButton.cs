@@ -1,4 +1,5 @@
-﻿using foxer.Render.Menu.Animation;
+﻿using foxer.Core.Utils;
+using foxer.Render.Menu.Animation;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -8,6 +9,7 @@ namespace foxer.Render.Menu
 {
     public class MenuButton : MenuItemBase
     {
+        private static readonly RectangleF[,] _spriteMask = GeomUtils.CreateSpriteMask3x3(0.45f, 0.1f, 0.45f, 0.1f);
         private static readonly byte[] _imageNormal;
         private static readonly byte[] _imageHovered;
         private static readonly byte[] _imageDisabled;
@@ -17,7 +19,7 @@ namespace foxer.Render.Menu
 
         public UIAnimation WaitAfterClick { get; }
 
-        public bool Enabled { get; private set; }
+        public bool Enabled { get; protected set; }
         
         static MenuButton()
         {
@@ -40,7 +42,7 @@ namespace foxer.Render.Menu
             WaitAfterClick = new UIWaitingAnimation(50);
         }
 
-        protected override bool OnTouch(PointF pt, RectangleF bounds)
+        protected override bool OnTouch(PointF pt, MenuItemInfoArgs args)
         {
             if (_cmd?.CanExecute(null) == true)
             {
@@ -60,25 +62,42 @@ namespace foxer.Render.Menu
             yield return null;
         }
 
-        protected override void OnRender(INativeCanvas canvas, RectangleF bounds)
+        protected override void OnRender(INativeCanvas canvas, MenuItemInfoArgs args)
         {
-            base.OnRender(canvas, bounds);
-            if(Enabled)
+            base.OnRender(canvas, args);
+
+            var bounds = args.Bounds;
+            if(args.Bounds.Size != args.CellSize)
             {
-                canvas.DrawImage(ActiveAnimation == WaitAfterClick ? _imageHovered : _imageNormal, bounds);
+                RenderSprite3x3(canvas, GetImage(), _spriteMask, args.Bounds, args.CellSize);
+                if(_image != null)
+                {
+                    canvas.DrawImage(_image, GeomUtils.DeflateTo(bounds, args.CellSize));
+                }
             }
             else
             {
-                canvas.DrawImage(_imageDisabled, bounds);
+                canvas.DrawImage(GetImage(), bounds);
+                if(_image != null)
+                {
+                    bounds.Inflate(-bounds.Width * 0.2f, -bounds.Height * 0.2f);
+                    canvas.DrawImage(_image, bounds);
+                }
             }
-
-            bounds.Inflate(-bounds.Width * 0.2f, -bounds.Height * 0.2f);
-            canvas.DrawImage(_image, bounds);
         }
 
         private void OnCanExecuteChanged(object sender, EventArgs e)
         {
             Enabled = _cmd?.CanExecute(null) == true;
+        }
+
+        private byte[] GetImage()
+        {
+            return Enabled 
+                ? ActiveAnimation == WaitAfterClick 
+                    ? _imageHovered 
+                    : _imageNormal
+                : _imageDisabled;
         }
     }
 }

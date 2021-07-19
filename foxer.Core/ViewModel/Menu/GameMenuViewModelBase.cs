@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using foxer.Core.Game;
+using foxer.Core.Game.Items;
+using System.Windows.Input;
 
 namespace foxer.Core.ViewModel.Menu
 {
@@ -6,6 +8,8 @@ namespace foxer.Core.ViewModel.Menu
     {
         protected PageGameViewModel ViewModel { get; }
 
+        public Stage Stage => ViewModel.Stage;
+        
         public ICommand CommandCancel => ViewModel.CommandCloseMenu;
 
         public ICommand CommandOptions => ViewModel.CommandOptions;
@@ -13,6 +17,8 @@ namespace foxer.Core.ViewModel.Menu
         public ICommand CommandCraft => ViewModel.CommandCraft;
 
         public ICommand CommandInventory => ViewModel.CommandInventory;
+
+        public ItemManager ItemManager => ViewModel.ItemManager;
 
         protected GameMenuViewModelBase(PageGameViewModel viewModel)
         {

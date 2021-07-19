@@ -658,4 +658,28 @@
   <data name="icon_inventory" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\menu\icon_inventory.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="background_normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\background_normal.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="list_item_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\list_item_disabled.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="list_item_normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\list_item_normal.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="list_item_selected" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\list_item_selected.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_down" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\icon_down.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_up" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\icon_up.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_sup_fail" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\icon_sup_fail.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_sup_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\icon_sup_ok.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

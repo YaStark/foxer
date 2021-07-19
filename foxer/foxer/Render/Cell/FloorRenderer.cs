@@ -8,7 +8,6 @@ namespace foxer.Render
     {
         private static readonly byte[,][] _imageGrass;
         private static readonly byte[][] _imageGrassMisc;
-        private readonly bool _drawMisc;
 
         static FloorRenderer()
         {

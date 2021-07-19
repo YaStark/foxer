@@ -4,14 +4,9 @@ using foxer.Core.Utils;
 
 namespace foxer.Core.Game.Items
 {
-    public class ItemStoneOven : UnstackableItemBase, IBuildableItem
+    public class ItemStoneOven : ItemBase, IBuildableItem
     {
         private StoneOvenEntity _oven = new StoneOvenEntity(0, 0);
-
-        public ItemStoneOven()
-            : base(ItemKind.Oven)
-        {
-        }
 
         public bool CheckCanBuild(Stage stage, int x, int y)
         {

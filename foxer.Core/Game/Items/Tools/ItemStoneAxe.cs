@@ -2,14 +2,9 @@
 
 namespace foxer.Core.Game.Items
 {
-    public class ItemStoneAxe : UnstackableItemBase, IToolItem
+    public class ItemStoneAxe : ItemBase, IToolItem
     {
         public int SwipeMs => 800;
-
-        public ItemStoneAxe()
-            : base(ItemKind.Axe)
-        {
-        }
 
         public bool CanInteract(EntityBase entity)
         {

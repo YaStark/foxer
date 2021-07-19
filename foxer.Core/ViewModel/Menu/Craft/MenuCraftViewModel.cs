@@ -1,12 +1,19 @@
-﻿using foxer.Core.Game.Items;
+﻿using foxer.Core.Game.Craft;
+using foxer.Core.Game.Items;
 
 namespace foxer.Core.ViewModel.Menu.Craft
 {
-    public class MenuCraftViewModel : GameMenuViewModelBase, IInventoryManager
+    public class MenuCraftViewModel : GameMenuViewModelBase, ICraftMenuManager
     {
+        public IItemHolder[] FastPanel { get; }
         public IItemHolder[,] Inventory { get; }
 
-        public IInventoryManager InventoryManager => this;
+        public IInventoryManager InventoryManager { get; }
+        public ICraftMenuManager CraftMenuManager => this;
+
+        ItemCraftBase ICraftMenuManager.Selected { get;set; }
+
+        public CrafterBase Crafter => ViewModel.PlayerHandsCrafter;
 
         public MenuCraftViewModel(PageGameViewModel viewModel) 
             : base(viewModel)
@@ -19,21 +26,14 @@ namespace foxer.Core.ViewModel.Menu.Craft
                     Inventory[i, j] = new InventoryItemHolder(viewModel, i, j);
                 }
             }
-        }
 
-        public bool GetActive(IItemHolder itemHolder)
-        {
-            return false; // todo
-        }
+            FastPanel = new IItemHolder[ViewModel.FastPanelSize];
+            for (int i = 0; i < FastPanel.Length; i++)
+            {
+                FastPanel[i] = new FastPanelItemHolder(viewModel, i);
+            }
 
-        public bool GetSelected(IItemHolder itemHolder)
-        {
-            return false; // todo
-        }
-
-        public void SetSelected(IItemHolder itemHolder)
-        {
-            // todo
+            InventoryManager = new CraftInventoryManager(viewModel, FastPanel);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace foxer.Render.Items
         protected override void Render(INativeCanvas canvas, TItem item, RectangleF bounds, bool showCount)
         {
             canvas.DrawImage(_image, bounds);
-            if (item.CanStack && showCount)
+            if (showCount)
             {
                 RenderCount(canvas, item?.Count ?? 0, bounds);
             }

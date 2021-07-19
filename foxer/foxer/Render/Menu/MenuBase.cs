@@ -1,4 +1,6 @@
-﻿using System;
+﻿using foxer.Core.Game;
+using foxer.Core.ViewModel.Menu;
+using System;
 using System.Drawing;
 
 namespace foxer.Render.Menu
@@ -41,12 +43,13 @@ namespace foxer.Render.Menu
 
         private readonly GridCellInfo[,] _grid1;
         private readonly GridCellInfo[,] _grid2;
-
+        private readonly GameMenuViewModelBase _viewModel;
         private readonly Size _size;
         private readonly Size _transponedSize;
 
-        protected MenuBase(int gridWidth, int gridHeight)
+        protected MenuBase(GameMenuViewModelBase viewModel, int gridWidth, int gridHeight)
         {
+            _viewModel = viewModel;
             _size = new Size(gridWidth, gridHeight);
             _transponedSize = new Size(gridHeight, gridWidth);
             _grid1 = new GridCellInfo[gridWidth, gridHeight];
@@ -84,7 +87,7 @@ namespace foxer.Render.Menu
             int cellSize = (int)Math.Min(cellSizeW, cellSizeH);
             float gapX = (size.Width - cellSize * gridSize.Width) / (gridSize.Width - 1);
             float gapY = (size.Height - cellSize * gridSize.Height) / (gridSize.Height - 1);
-
+            Size cellSizeX = new Size(cellSize, cellSize);
             for (int i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
@@ -100,7 +103,9 @@ namespace foxer.Render.Menu
                         (cellSize + gapX) * grid[i, j].ColumnSpan - gapX,
                         (cellSize + gapY) * grid[i, j].RowSpan - gapY);
 
-                    grid[i, j].Item.Render(canvas, bounds);
+                    grid[i, j].Item.Render(
+                        canvas, 
+                        new MenuItemInfoArgs(_viewModel.Stage, bounds, cellSizeX));
                 }
             }
 
@@ -117,7 +122,6 @@ namespace foxer.Render.Menu
             int cellSize = (int)Math.Min(cellSizeW, cellSizeH);
             float gapX = (size.Width - cellSize * gridSize.Width) / (gridSize.Width - 1);
             float gapY = (size.Height - cellSize * gridSize.Height) / (gridSize.Height - 1);
-
             for (int i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
@@ -135,7 +139,9 @@ namespace foxer.Render.Menu
 
                     if (bounds.Contains(pt))
                     {
-                        return grid[i, j].Item.Touch(pt, bounds);
+                        return grid[i, j].Item.Touch(
+                            pt, 
+                            new MenuItemInfoArgs(_viewModel.Stage, bounds, new Size(cellSize, cellSize)));
                     }
                 }
             }

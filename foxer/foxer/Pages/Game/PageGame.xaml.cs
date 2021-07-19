@@ -12,7 +12,7 @@ using Xamarin.Forms.Xaml;
 namespace foxer.Pages
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class PageGame : ContentPage, ISingletoneFactory<IRenderer>, ISingletoneFactory<IMenuHost>
+	public partial class PageGame : ContentPage, ISingletoneFactory<IMenuHost>
     {
         public static bool EnableDebugGraphics = false;
         private readonly PageGameViewModel _vm;
@@ -23,15 +23,13 @@ namespace foxer.Pages
 
         private readonly MenuHost _menuHost;
 
-        IRenderer ISingletoneFactory<IRenderer>.Item => _renderer;
-
         IMenuHost ISingletoneFactory<IMenuHost>.Item => _menuHost;
 
         public PageGame(INavigator navigator, INativeViewFactory nativeCanvasFactory)
 		{
 			InitializeComponent();
             _vm = new PageGameViewModel(navigator, this);
-            _menuHost = new MenuHost(_vm, this);
+            _menuHost = new MenuHost(_vm);
             _renderer = new GameRenderer(_vm, _menuHost);
 
             _view = nativeCanvasFactory.CreateView(_renderer);

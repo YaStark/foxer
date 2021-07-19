@@ -16,6 +16,7 @@ namespace foxer.Render.Menu
         private static readonly byte[] _imageActive = Properties.Resources.cell_active;
 
         private static readonly ItemRendererFactory _itemRendererFactory = new ItemRendererFactory();
+        private readonly ItemManager _itemManager;
         private readonly IInventoryManager _inventoryManager;
         private readonly IItemHolder _itemHolder;
 
@@ -23,14 +24,15 @@ namespace foxer.Render.Menu
 
         public ItemBase Item => _itemHolder.Get();
 
-        public MenuCell(IInventoryManager inventoryManager, IItemHolder itemHolder)
+        public MenuCell(IInventoryManager inventoryManager, ItemManager itemManager, IItemHolder itemHolder)
         {
+            _itemManager = itemManager;
             _inventoryManager = inventoryManager;
             _itemHolder = itemHolder;
             WaitAfterClick = new UIWaitingAnimation(50);
         }
         
-        protected override bool OnTouch(PointF pt, RectangleF bounds)
+        protected override bool OnTouch(PointF pt, MenuItemInfoArgs args)
         {
             StartAnimation(WaitAfterClick.Coroutine, Select);
             return true;
@@ -42,9 +44,11 @@ namespace foxer.Render.Menu
             yield return null;
         }
 
-        protected override void OnRender(INativeCanvas canvas, RectangleF bounds)
+        protected override void OnRender(INativeCanvas canvas, MenuItemInfoArgs args)
         {
-            base.OnRender(canvas, bounds);
+            base.OnRender(canvas, args);
+
+            var bounds = args.Bounds;
             canvas.DrawImage(GetImage(), bounds);
             if (_inventoryManager.GetSelected(_itemHolder))
             {
@@ -55,7 +59,8 @@ namespace foxer.Render.Menu
             if (item != null)
             {
                 bounds.Inflate(-bounds.Width * 0.1f, -bounds.Height * 0.1f);
-                _itemRendererFactory.GetRenderer(Item)?.Render(canvas, item, bounds, true);
+                bool showCount = _itemManager.CanStack(item);
+                _itemRendererFactory.GetRenderer(Item)?.Render(canvas, item, bounds, showCount);
             }
         }
 

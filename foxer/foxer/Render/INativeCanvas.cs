@@ -10,6 +10,7 @@ namespace foxer.Render
         void Translate(float x, float y);
         void RotateDegrees(float angle);
         void DrawImage(byte[] bitmap, RectangleF bounds);
+        void DrawImage(byte[] bitmap, RectangleF sourceRelative, RectangleF bounds);
         void DrawRectangle(RectangleF rect, Color color);
         void DrawText(string text, RectangleF rect, Color color);
         void Save();

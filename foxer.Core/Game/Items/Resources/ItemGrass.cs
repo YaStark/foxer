@@ -1,9 +1,8 @@
 ﻿namespace foxer.Core.Game.Items
 {
-    public class ItemGrass : StackableItemBase
+    public class ItemGrass : ItemBase
     {
         public ItemGrass(int count)
-            : base(ItemKind.Resource, 37)
         {
             Count = count;
         }

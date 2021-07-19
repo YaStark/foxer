@@ -15,12 +15,12 @@ namespace foxer.Pages.Game.Menu
 
         public IMenu Menu { get; private set; }
 
-        public MenuHost(PageGameViewModel viewModel, ISingletoneFactory<IRenderer> rendererFactory)
+        public MenuHost(PageGameViewModel viewModel)
         {
             _inventoryMenu = new InventoryMenu(viewModel.MenuInventory);
             _optionsMenu = new OptionsMenu(viewModel.MenuOptions);
             _craftMenu = new CraftMenu(viewModel.MenuCraft);
-            _gameUI = new GameUI(viewModel.GameUI, rendererFactory);
+            _gameUI = new GameUI(viewModel.GameUI);
             CloseMenu();
         }
 

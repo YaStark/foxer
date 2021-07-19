@@ -7,7 +7,7 @@ namespace foxer.Render.Items
         where TItem : ItemBase
     {
         private static readonly byte[] _counterBackground = Properties.Resources.cell_item_counter_bg;
-
+        
         public bool CanRender<T>(T item)
         {
             return item.GetType() == typeof(TItem);
@@ -17,10 +17,24 @@ namespace foxer.Render.Items
         {
             Render(canvas, item as TItem, bounds, showCount);
         }
+
+        public void RenderForCraft(INativeCanvas canvas, string count, RectangleF bounds, bool showCount)
+        {
+            Render(canvas, null, bounds, false);
+            if(!string.IsNullOrEmpty(count))
+            {
+                RenderCount(canvas, count, bounds);
+            }
+        }
         
         protected abstract void Render(INativeCanvas canvas, TItem item, RectangleF bounds, bool showCount);
 
         protected void RenderCount(INativeCanvas canvas, int count, RectangleF initialBounds)
+        {
+            RenderCount(canvas, count.ToString(), initialBounds);
+        }
+
+        protected void RenderCount(INativeCanvas canvas, string count, RectangleF initialBounds)
         {
             var newBounds = RectangleF.FromLTRB(
                 initialBounds.Left + initialBounds.Width * 0.3f,

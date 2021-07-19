@@ -6,34 +6,36 @@ namespace foxer.Pages.Game.Menu
 {
     public class OptionsMenu : MenuBase
     {
-        public OptionsMenu(MenuOptionsViewModel vm)
-            : base(10, 6)
+        public OptionsMenu(MenuOptionsViewModel viewModel)
+            : base(viewModel, 12, 8)
         {
-            // C E + [ MNU ] + + +   C E + + + +
-            // + + + + + + + + + +   + [ MNU ] +
-            // + + + + + + + + Z +   + + + + + +
-            // + + + + + + + + z +   + + + + Z +
-            // + + + + + + + + + +   + + + + z +
-            // + + + + + + + + + +   + + + + + +
-            //                       + + + + + +
-            //                       + + + + + +
-            //                       + + + + + +
-            //                       + + + + + +
+            // C E + + [ MNU ] + + + +  C E [ MNU ] + +
+            // + + + + + + + + + + + +  + + + + + + + +
+            // + + + + + + + + + + Z +  + + + + + + + +
+            // + + + + + + + + + + z +  + + + + + + Z +
+            // + + + + + + + + + + + +  + + + + + + z +
+            // + + + + + + + + + + + +  + + + + + + + +
+            // + + + + + + + + + + + +  + + + + + + + +
+            // + + + + + + + + + + + +  + + + + + + + +
+            //                          + + + + + + + +
+            //                          + + + + + + + +
+            //                          + + + + + + + +
+            //                          + + + + + + + +
 
-            BeginCreateCell(new MenuButton(vm.CommandCancel, Properties.Resources.icon_cancel)) // C
+            BeginCreateCell(new MenuButton(viewModel.CommandCancel, Properties.Resources.icon_cancel)) // C
                 .SetDefaultLayout(0, 0).End();
 
-            BeginCreateCell(new MenuButton(vm.CommandExit, Properties.Resources.icon_exit)) // E
+            BeginCreateCell(new MenuButton(viewModel.CommandExit, Properties.Resources.icon_exit)) // E
                 .SetDefaultLayout(1, 0).End();
 
-            BeginCreateCell(new MenuButton(vm.CommandZoomIn, Properties.Resources.icon_zoom_in)) // Z
-                .SetDefaultLayout(8, 2).SetTransponedLayout(4, 3).End();
+            BeginCreateCell(new MenuButton(viewModel.CommandZoomIn, Properties.Resources.icon_zoom_in)) // Z
+                .SetDefaultLayout(10, 2).SetTransponedLayout(6, 3).End();
 
-            BeginCreateCell(new MenuButton(vm.CommandZoomOut, Properties.Resources.icon_zoom_out)) // z
-                .SetDefaultLayout(8, 3).SetTransponedLayout(4, 4).End();
+            BeginCreateCell(new MenuButton(viewModel.CommandZoomOut, Properties.Resources.icon_zoom_out)) // z
+                .SetDefaultLayout(10, 3).SetTransponedLayout(6, 4).End();
 
-            BeginCreateCell(new MenuText("Menu", Color.Black))   // [ MNU ] 
-                .SetDefaultLayout(3, 0, 4, 1).SetTransponedLayout(1, 1, 4, 1).End();
+            BeginCreateCell(new MenuText("Menu", Color.Black, true))   // [ MNU ] 
+                .SetDefaultLayout(4, 0, 4, 1).SetTransponedLayout(2, 0, 4, 1).End();
         }
 
         public override bool Touch(PointF pt, SizeF size)

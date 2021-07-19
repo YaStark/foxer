@@ -2,7 +2,7 @@
 
 namespace foxer.Core.ViewModel.Menu
 {
-    public class MenuInventoryViewModel : GameMenuViewModelBase, IInventoryManager
+    public class MenuInventoryViewModel : GameMenuViewModelBase
     {
         public IItemHolder[,] Inventory { get; }
 
@@ -10,7 +10,7 @@ namespace foxer.Core.ViewModel.Menu
 
         public IItemHolder[] FastPanel { get; private set; }
 
-        public IInventoryManager InventoryManager => this;
+        public IInventoryManager InventoryManager { get; }
 
         public MenuInventoryViewModel(PageGameViewModel viewModel)
             : base(viewModel)
@@ -29,48 +29,8 @@ namespace foxer.Core.ViewModel.Menu
             {
                 FastPanel[i] = new FastPanelItemHolder(viewModel, i);
             }
-        }
 
-        public void SetSelected(IItemHolder itemHolder)
-        {
-            if (Selected == null)
-            {
-                Selected = itemHolder;
-                return;
-            }
-
-            if (Selected == itemHolder)
-            {
-                Selected = null;
-                return;
-            }
-
-            var item = Selected.Get();
-            Selected.Set(itemHolder.Get());
-            itemHolder.Set(item);
-
-            if(FastPanel[ViewModel.FastPanelSelectedIndex] == itemHolder)
-            {
-                ViewModel.SetActiveItem(itemHolder.Get());
-            }
-            else if(FastPanel[ViewModel.FastPanelSelectedIndex] == Selected)
-            {
-                ViewModel.SetActiveItem(Selected.Get());
-            }
-
-            Selected = null;
-        }
-
-        public bool GetSelected(IItemHolder itemHolder)
-        {
-            return itemHolder == Selected && itemHolder != null;
-        }
-
-        public bool GetActive(IItemHolder itemHolder)
-        {
-            return ViewModel.FastPanelSelectedIndex >= 0
-                && ViewModel.FastPanelSelectedIndex < FastPanel.Length
-                && FastPanel[ViewModel.FastPanelSelectedIndex] == itemHolder;
+            InventoryManager = new MovingItemsInventoryManager(viewModel, FastPanel);
         }
     }
 }

@@ -14,12 +14,20 @@ namespace foxer.Render.Items
             Add(new SimpleItemRenderer<ItemStoneAxe>(Properties.Resources.icon_stone_axe));
             Add(new SimpleItemRenderer<ItemWood>(Properties.Resources.icon_wood));
             Add(new SimpleItemRenderer<ItemStick>(Properties.Resources.icon_sticks));
+            Add(new SimpleItemRenderer<ItemDigStick>(Properties.Resources.icon_dig_stick));
             Add(new SimpleItemRenderer<ItemStoneOven>(Properties.Resources.icon_stone_oven));
         }
 
         public IItemRenderer GetRenderer(ItemBase item)
         {
             return _renderers.TryGetValue(item.GetType(), out var renderer)
+                ? renderer
+                : null;
+        }
+
+        public IItemRenderer GetRenderer(Type itemType)
+        {
+            return _renderers.TryGetValue(itemType, out var renderer)
                 ? renderer
                 : null;
         }

@@ -1,6 +1,7 @@
 ﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Entities;
 using foxer.Core.Game.Generator.StageGenerator;
+using foxer.Core.Game.Items;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -27,6 +28,8 @@ namespace foxer.Core.Game
 
         public StressManager StressManager { get; }
 
+        public ItemManager ItemManager => _game.ItemManager;
+
         public CellBase[,] Cells { get; private set; }
 
         public int Width { get; }
@@ -37,13 +40,12 @@ namespace foxer.Core.Game
 
         public string StageName { get; }
 
-        public InventoryManager InventoryManager { get; }
+        public InventoryManager InventoryManager => _game.InventoryManager;
 
         public Stage(Game game, string name, int width, int height)
         {
             _game = game;
             Entities = new List<EntityBase>();
-            InventoryManager = new InventoryManager(_game);
             PathManager = new EntityPathManager(this);
             StressManager = new StressManager();
             StageName = name;
