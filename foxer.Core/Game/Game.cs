@@ -1,5 +1,6 @@
 ﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Craft;
+using foxer.Core.Game.Entities;
 using foxer.Core.Game.Generator;
 using foxer.Core.Game.Generator.StageGenerator;
 using foxer.Core.Game.Items;
@@ -35,12 +36,13 @@ namespace foxer.Core.Game
 
         public static int Seed { get; private set; }
 
+        public PlayerEntity ActiveEntity { get; internal set; }
+
         public Game()
         {
             Inventory = new ItemBase[InventorySize.Width * InventorySize.Height + MAX_FAST_PANEL_SIZE];
-            Inventory[10] = ItemManager.Create<ItemWood>(null, 16);
+            Inventory[10] = ItemManager.Create<ItemStone>(null, 16);
             Inventory[11] = ItemManager.Create<ItemStoneOven>(null);
-            Inventory[12] = ItemManager.Create<ItemStoneAxe>(null);
 
             InventoryManager = new InventoryManager(this);
             PlayerHandsCrafter = new PlayerHandsCrafter(this);
@@ -51,6 +53,10 @@ namespace foxer.Core.Game
             if (seed == 0) seed = DateTime.Now.Millisecond;
             Seed = seed;
             Debug.WriteLine($"### Game generation is started. Seed: {Seed} ###");
+
+            ActiveEntity = new PlayerEntity(0, 0);
+            ActiveEntity.WalkMode = true;
+
             const int grid = 50;
             var rnd = new Random(seed == 0 ? DateTime.Now.Millisecond : seed);
             var stage0 = new Stage(this, "0;0;0", grid, grid);
@@ -179,7 +185,6 @@ namespace foxer.Core.Game
             var player = Stage.ActiveEntity;
             Stage.Entities.Remove(player);
             Stage = _loadLevelArgs.Stage;
-            Stage.ActiveEntity = player;
             player.ClearAnimation();
             player.X = _loadLevelArgs.X;
             player.Y = _loadLevelArgs.Y;

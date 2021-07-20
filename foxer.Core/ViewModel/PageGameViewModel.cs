@@ -25,8 +25,9 @@ namespace foxer.Core.ViewModel
         public ICommand CommandCraft => _commandCraft;
 
         private readonly Game.Game _game = new Game.Game();
+        private int _fastPanelSelectedIndex = 0;
 
-        public PlayerEntity ActiveEntity => _game.Stage.ActiveEntity;
+        public PlayerEntity ActiveEntity => _game.ActiveEntity;
 
         private readonly ISingletoneFactory<IMenuHost> _menuHostFactory;
 
@@ -38,7 +39,17 @@ namespace foxer.Core.ViewModel
 
         public PlayerHandsCrafter PlayerHandsCrafter => _game.PlayerHandsCrafter;
 
-        public int FastPanelSelectedIndex { get; set; }
+        public int FastPanelSelectedIndex
+        {
+            get
+            {
+                return ActiveEntity.WalkMode ? -1 : _fastPanelSelectedIndex;
+            }
+            set
+            {
+                _fastPanelSelectedIndex = value;
+            }
+        }
 
         public float Scale { get; set; } = 1;
 

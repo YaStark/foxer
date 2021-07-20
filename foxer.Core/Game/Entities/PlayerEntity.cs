@@ -42,24 +42,31 @@ namespace foxer.Core.Game.Entities
 
         public SimpleAnimation Chop { get; }
 
+        public SimpleAnimation Idle { get; }
+
         public SimpleAnimation ShakeHands { get; }
 
         public int AggressionLevel { get; private set; }
+
+        public bool WalkMode { get; set; }
 
         static PlayerEntity()
         {
             _interactors.Add(new PlayerTreeAxeInteractor());
             _interactors.Add(SimpleToolResourceInteractors.TreeHand);
             _interactors.Add(SimpleToolResourceInteractors.StoneHand);
+            _interactors.Add(SimpleToolResourceInteractors.StoneHand);
             _interactors.Add(new PlayerDroppedItemInteractor());
+            _interactors.Add(new PlayerGrassInteractor());
         }
 
         public PlayerEntity(int x, int y)
             : base(x, y)
         {
-            Walk = new MovingAnimation(this, _walkSpeedScalarCellPerMs);
+            Walk = new MovingAnimation(this, _walkSpeedScalarCellPerMs, _walkSpeedScalarCellPerMs / 1.3f);
             Chop = new SimpleAnimation(2400);
             ShakeHands = new SimpleAnimation(3000);
+            Idle = new SimpleAnimation(2000);
         }
         
         protected override void OnUpdate(Stage stage, uint timeMs)
@@ -68,20 +75,28 @@ namespace foxer.Core.Game.Entities
 
             if (!_newWalkTarget.HasValue)
             {
+                if(ActiveAnimation == null)
+                {
+                    StartAnimation(Idle.Coroutine);
+                }
+
                 return;
             }
 
             var pt = _newWalkTarget.Value;
             _newWalkTarget = null;
 
-            var arg = new InteractorArgs(stage);
-            foreach (var entity in stage.GetEntitesInCell(pt.X, pt.Y))
+            if(!WalkMode)
             {
-                var interactor = _interactors.FirstOrDefault(i => i.CanInteractWith(this, entity, arg));
-                if (interactor != null)
+                var arg = new InteractorArgs(stage);
+                foreach (var entity in stage.GetEntitesInCell(pt.X, pt.Y))
                 {
-                    interactor.InteractWith(this, entity, arg);
-                    return;
+                    var interactor = _interactors.FirstOrDefault(i => i.CanInteractWith(this, entity, arg));
+                    if (interactor != null)
+                    {
+                        interactor.InteractWith(this, entity, arg);
+                        return;
+                    }
                 }
             }
 

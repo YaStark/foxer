@@ -1,7 +1,5 @@
 ﻿using foxer.Core.Game.Items;
-using foxer.Core.Utils;
 using foxer.Core.ViewModel.Menu;
-using foxer.Render;
 using foxer.Render.Menu;
 
 namespace foxer.Pages.Game.Menu
@@ -11,18 +9,18 @@ namespace foxer.Pages.Game.Menu
         public GameUI(GameUIViewModel viewModel) 
             : base(viewModel, 12, 8)
         {
-            // M I K + + + + + + + + F   M I K + + + + +
+            // M I K + + + + + + + + W   M I K + + + + +
             // + + + + + + + + + + + F   + + + + + + + +
             // + + + + + + + + + + + F   + + + + + + + +
             // + + + + + + + + + + + F   + + + + + + + +
-            // + + + + + + + + + + + +   + + + + + + + +
+            // + + + + + + + + + + + F   + + + + + + + +
             // + + + + + + + + + + + +   + + + + + + + +
             // + + + + + + + + + + + +   + + + + + + + +
             // + + + + + + + + + + + +   + + + + + + + +
             //                           + + + + + + + +
             //                           + + + + + + + +
             //                           + + + + + + + +
-            //                           F F F F + + + +
+            //                           W F F F F + + +
 
             BeginCreateCell(new MenuButton(viewModel.CommandOptions, Properties.Resources.icon_menu)) // M
                 .SetDefaultLayout(0, 0).End();
@@ -33,10 +31,13 @@ namespace foxer.Pages.Game.Menu
             BeginCreateCell(new MenuButton(viewModel.CommandCraft, Properties.Resources.icon_craft)) // K
                 .SetDefaultLayout(2, 0).End();
 
+            BeginCreateCell(new WalkMenuItem(viewModel))
+                .SetDefaultLayout(11, 0).SetTransponedLayout(0, 11).End();
+
             for (int i = 0; i < viewModel.FastPanel.Length; i++)
             {
                 BeginCreateCell(MenuCell(viewModel, viewModel.FastPanel[i])) // F
-                    .SetDefaultLayout(11, i).SetTransponedLayout(i, 11).End();
+                    .SetDefaultLayout(11, 1 + i).SetTransponedLayout(1 + i, 11).End();
             }
         }
 

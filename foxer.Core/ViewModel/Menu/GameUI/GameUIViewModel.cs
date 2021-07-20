@@ -15,6 +15,8 @@ namespace foxer.Core.ViewModel.Menu
 
         public PlayerEntity ActiveEntity => ViewModel.ActiveEntity;
 
+        public bool WalkMode => ViewModel.ActiveEntity.WalkMode;
+
         public GameUIViewModel(PageGameViewModel viewModel)
             : base(viewModel)
         {
@@ -36,10 +38,14 @@ namespace foxer.Core.ViewModel.Menu
                 }
             }
 
-            if(ViewModel.ActiveEntity != null)
-            {
-                ViewModel.SetActiveItem(itemHolder.Get());
-            }
+            ViewModel.SetActiveItem(itemHolder.Get());
+            ViewModel.ActiveEntity.WalkMode = false;
+        }
+
+        public void SetWalkMode()
+        {
+            ViewModel.ActiveEntity.WalkMode = true;
+            ViewModel.SetActiveItem(null);
         }
 
         public bool GetSelected(IItemHolder itemHolder)

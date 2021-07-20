@@ -1,6 +1,4 @@
-﻿using foxer.Core.Game.Entities;
-
-namespace foxer.Core.Game.Generator.StageGenerator
+﻿namespace foxer.Core.Game.Generator.StageGenerator
 {
     public class StagePlayerGenerator : StageGeneratorBase
     {
@@ -8,11 +6,11 @@ namespace foxer.Core.Game.Generator.StageGenerator
         {
             if (args.PlayerSpawnLocation != null)
             {
-                var player = new PlayerEntity(
-                    args.PlayerSpawnLocation.Value.X,
-                    args.PlayerSpawnLocation.Value.Y);
-                stage.TryCreateNow(player);
-                stage.ActiveEntity = player;
+                stage.ActiveEntity.X = args.PlayerSpawnLocation.Value.X;
+                stage.ActiveEntity.Y = args.PlayerSpawnLocation.Value.Y;
+                stage.ActiveEntity.CellX = args.PlayerSpawnLocation.Value.X;
+                stage.ActiveEntity.CellY = args.PlayerSpawnLocation.Value.Y;
+                stage.TryCreateNow(stage.ActiveEntity);
             }
         }
     }

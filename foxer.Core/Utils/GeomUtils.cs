@@ -85,5 +85,23 @@ namespace foxer.Core.Utils
 
             return result;
         }
+
+        public static RectangleF[,] CreateUniformSpriteMask(int width, int height)
+        {
+            var result = new RectangleF[width, height];
+
+            float x = 1f / width;
+            float y = 1f / height;
+            for (int i = 0; i < width; i++)
+            {
+                for (int j = 0; j < height; j++)
+                {
+                    result[i, j] = new RectangleF(i * x, j * y, x, y);
+                }
+            }
+
+            return result;
+
+        }
     }
 }

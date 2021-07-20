@@ -71,10 +71,18 @@ namespace foxer.Core.Game
 
             AddCreationRule<StoneSmallEntity>(true)
                 .AddExcept<StoneBigEntity>()
+                .AddExcept<GrassEntity>()
                 .AddExcept<FlowerEntity>()
                 .AddExcept<TreeEntity>();
 
             AddCreationRule<FlowerEntity>(true)
+                .AddExcept<GrassEntity>()
+                .AddExcept<StoneBigEntity>()
+                .AddExcept<StoneSmallEntity>()
+                .AddExcept<TreeEntity>();
+
+            AddCreationRule<GrassEntity>(true)
+                .AddExcept<FlowerEntity>()
                 .AddExcept<StoneBigEntity>()
                 .AddExcept<StoneSmallEntity>()
                 .AddExcept<TreeEntity>();

@@ -45,13 +45,17 @@ namespace foxer.Core.ViewModel.Menu
             Selected.Set(itemHolder.Get());
             itemHolder.Set(item);
 
-            if (_fastPanel[_viewModel.FastPanelSelectedIndex] == itemHolder)
+
+            if(_viewModel.FastPanelSelectedIndex >= 0)
             {
-                _viewModel.SetActiveItem(itemHolder.Get());
-            }
-            else if (_fastPanel[_viewModel.FastPanelSelectedIndex] == Selected)
-            {
-                _viewModel.SetActiveItem(Selected.Get());
+                if (_fastPanel[_viewModel.FastPanelSelectedIndex] == itemHolder)
+                {
+                    _viewModel.SetActiveItem(itemHolder.Get());
+                }
+                else if (_fastPanel[_viewModel.FastPanelSelectedIndex] == Selected)
+                {
+                    _viewModel.SetActiveItem(Selected.Get());
+                }
             }
 
             Selected = null;

@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Items;
+using foxer.Core.Utils;
 using foxer.Core.ViewModel.Menu;
 using foxer.Render.Items;
 using foxer.Render.Menu.Animation;
@@ -9,18 +10,12 @@ namespace foxer.Render.Menu
 {
     public class MenuCell : MenuItemBase
     {
-        private static readonly byte[] _imageNormal = Properties.Resources.cell_normal;
-        private static readonly byte[] _imageHovered = Properties.Resources.cell_hovered;
-        private static readonly byte[] _imageDisabled = Properties.Resources.cell_disabled;
-        private static readonly byte[] _imageSelected = Properties.Resources.cell_selected;
-        private static readonly byte[] _imageActive = Properties.Resources.cell_active;
+        private static readonly MenuCellRenderer _renderer = new MenuCellRenderer();
 
         private static readonly ItemRendererFactory _itemRendererFactory = new ItemRendererFactory();
         private readonly ItemManager _itemManager;
         private readonly IInventoryManager _inventoryManager;
         private readonly IItemHolder _itemHolder;
-
-        public UIAnimation WaitAfterClick { get; }
 
         public ItemBase Item => _itemHolder.Get();
 
@@ -29,12 +24,11 @@ namespace foxer.Render.Menu
             _itemManager = itemManager;
             _inventoryManager = inventoryManager;
             _itemHolder = itemHolder;
-            WaitAfterClick = new UIWaitingAnimation(50);
         }
         
         protected override bool OnTouch(PointF pt, MenuItemInfoArgs args)
         {
-            StartAnimation(WaitAfterClick.Coroutine, Select);
+            StartAnimation(_renderer.WaitAfterClick.Coroutine, Select);
             return true;
         }
 
@@ -48,35 +42,21 @@ namespace foxer.Render.Menu
         {
             base.OnRender(canvas, args);
 
-            var bounds = args.Bounds;
-            canvas.DrawImage(GetImage(), bounds);
-            if (_inventoryManager.GetSelected(_itemHolder))
-            {
-                canvas.DrawImage(_imageSelected, bounds);
-            }
+            _renderer.Render(
+                canvas,
+                args,
+                ActiveAnimation == _renderer.WaitAfterClick,
+                _inventoryManager.GetActive(_itemHolder),
+                _inventoryManager.GetSelected(_itemHolder));
 
             var item = Item;
             if (item != null)
             {
-                bounds.Inflate(-bounds.Width * 0.1f, -bounds.Height * 0.1f);
+                var bounds = GeomUtils.Deflate(args.Bounds, args.Bounds.Width * 0.1f, args.Bounds.Height * 0.1f);
                 bool showCount = _itemManager.CanStack(item);
-                _itemRendererFactory.GetRenderer(Item)?.Render(canvas, item, bounds, showCount);
+                _itemRendererFactory.GetRenderer(Item)
+                    ?.Render(canvas, item, bounds, showCount);
             }
-        }
-
-        private byte[] GetImage()
-        {
-            if(ActiveAnimation == WaitAfterClick)
-            {
-                return _imageHovered;
-            }
-
-            if(_inventoryManager.GetActive(_itemHolder))
-            {
-                return _imageActive;
-            }
-
-            return _imageNormal;
         }
     }
 }

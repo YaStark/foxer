@@ -298,54 +298,6 @@
   <data name="icon_zoom_out" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\menu\icon_zoom_out.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="player0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player0.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player0_walk_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player0_walk_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player0_walk_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player0_walk_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player0_walk_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player0_walk_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player180" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player180.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player180_walk_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player180_walk_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player180_walk_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player180_walk_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player180_walk_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player180_walk_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player270" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player270.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player270_walk_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player270_walk_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player270_walk_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player270_walk_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player270_walk_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player270_walk_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player90" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player90.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player90_walk_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player90_walk_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player90_walk_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player90_walk_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="player90_walk_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\player\player90_walk_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="road_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\road_bottom.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -681,5 +633,20 @@
   </data>
   <data name="icon_sup_ok" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\menu\icon_sup_ok.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_player_walk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player\sprite_player_walk.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_player_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\player\sprite_player_idle.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_walk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\menu\icon_walk.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_grass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plants\sprite_grass.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_grass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_grass.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

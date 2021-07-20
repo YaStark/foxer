@@ -36,7 +36,7 @@ namespace foxer.Core.Game
 
         public int Height { get; }
 
-        public PlayerEntity ActiveEntity { get; set; }
+        public PlayerEntity ActiveEntity => _game.ActiveEntity;
 
         public string StageName { get; }
 
@@ -58,6 +58,7 @@ namespace foxer.Core.Game
             _generators.Add(new StageBoundsGenerator());
             _generators.Add(new StageFloorGenerator());
             _generators.Add(new StageTreeGenerator());
+            _generators.Add(new StageGrassGenerator());
             _generators.Add(new StageRoadGenerator());
             // _generators.Add(new LandfallGenerator());
             _generators.Add(new StageWaterGenerator(width));

@@ -28,6 +28,7 @@ namespace foxer.Pages
             _entityRenderers.Add(new StoneSmallRenderer());
             _entityRenderers.Add(new StoneBigRenderer());
             _entityRenderers.Add(new StoneOvenRenderer());
+            _entityRenderers.Add(new GrassRenderer());
         }
 
         public GameLayerEntityRenderer(PageGameViewModel viewModel)

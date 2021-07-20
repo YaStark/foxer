@@ -15,6 +15,7 @@ namespace foxer.Core.Game
                 case TreeEntity tree: return GetTreeLoot(stage, tree);
                 case StoneSmallEntity stoneSmall: return GetRndLoot<ItemStone>(stage, 1, 4);
                 case StoneBigEntity stoneBig: return GetRndLoot<ItemStone>(stage, 5, 8);
+                case GrassEntity grass: return GetRndLoot<ItemGrass>(stage, 5, 8); 
                 default: return null;
             }
         }

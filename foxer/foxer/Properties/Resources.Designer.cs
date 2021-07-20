@@ -623,6 +623,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_grass {
+            get {
+                object obj = ResourceManager.GetObject("icon_grass", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_inventory {
             get {
                 object obj = ResourceManager.GetObject("icon_inventory", resourceCulture);
@@ -713,6 +723,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_walk {
+            get {
+                object obj = ResourceManager.GetObject("icon_walk", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_wood {
             get {
                 object obj = ResourceManager.GetObject("icon_wood", resourceCulture);
@@ -773,166 +793,6 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] player0 {
-            get {
-                object obj = ResourceManager.GetObject("player0", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player0_walk_1 {
-            get {
-                object obj = ResourceManager.GetObject("player0_walk_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player0_walk_2 {
-            get {
-                object obj = ResourceManager.GetObject("player0_walk_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player0_walk_3 {
-            get {
-                object obj = ResourceManager.GetObject("player0_walk_3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player180 {
-            get {
-                object obj = ResourceManager.GetObject("player180", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player180_walk_1 {
-            get {
-                object obj = ResourceManager.GetObject("player180_walk_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player180_walk_2 {
-            get {
-                object obj = ResourceManager.GetObject("player180_walk_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player180_walk_3 {
-            get {
-                object obj = ResourceManager.GetObject("player180_walk_3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player270 {
-            get {
-                object obj = ResourceManager.GetObject("player270", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player270_walk_1 {
-            get {
-                object obj = ResourceManager.GetObject("player270_walk_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player270_walk_2 {
-            get {
-                object obj = ResourceManager.GetObject("player270_walk_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player270_walk_3 {
-            get {
-                object obj = ResourceManager.GetObject("player270_walk_3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player90 {
-            get {
-                object obj = ResourceManager.GetObject("player90", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player90_walk_1 {
-            get {
-                object obj = ResourceManager.GetObject("player90_walk_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player90_walk_2 {
-            get {
-                object obj = ResourceManager.GetObject("player90_walk_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] player90_walk_3 {
-            get {
-                object obj = ResourceManager.GetObject("player90_walk_3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
         internal static byte[] road_bottom {
             get {
                 object obj = ResourceManager.GetObject("road_bottom", resourceCulture);
@@ -966,6 +826,36 @@ namespace foxer.Properties {
         internal static byte[] road_top {
             get {
                 object obj = ResourceManager.GetObject("road_top", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_grass {
+            get {
+                object obj = ResourceManager.GetObject("sprite_grass", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_player_idle {
+            get {
+                object obj = ResourceManager.GetObject("sprite_player_idle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_player_walk {
+            get {
+                object obj = ResourceManager.GetObject("sprite_player_walk", resourceCulture);
                 return ((byte[])(obj));
             }
         }

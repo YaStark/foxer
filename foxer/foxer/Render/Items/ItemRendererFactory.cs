@@ -16,6 +16,7 @@ namespace foxer.Render.Items
             Add(new SimpleItemRenderer<ItemStick>(Properties.Resources.icon_sticks));
             Add(new SimpleItemRenderer<ItemDigStick>(Properties.Resources.icon_dig_stick));
             Add(new SimpleItemRenderer<ItemStoneOven>(Properties.Resources.icon_stone_oven));
+            Add(new SimpleItemRenderer<ItemGrass>(Properties.Resources.icon_grass));
         }
 
         public IItemRenderer GetRenderer(ItemBase item)

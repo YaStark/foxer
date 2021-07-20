@@ -10,6 +10,9 @@ namespace foxer.Core.Game.Entities
         {
             switch(entity)
             {
+                case GrassEntity grass:
+                    return grass.CanGather;
+
                 case TreeEntity tree:
                     return tree.Age < TreeEntity.AGE_MEDIUM;
 
