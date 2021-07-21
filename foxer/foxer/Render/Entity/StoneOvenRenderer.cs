@@ -1,15 +1,17 @@
 ﻿using System.Drawing;
 using foxer.Core.Game.Entities;
+using foxer.Render.Helpers;
 
 namespace foxer.Render
 {
     public class StoneOvenRenderer : EntityRendererBase<StoneOvenEntity>
     {
-        private static readonly byte[] _image = Properties.Resources.stone_oven;
+        private static readonly RotatingSpriteRendererHelper _rotate = new RotatingSpriteRendererHelper(
+            Properties.Resources.sprite_stone_oven, 4);
 
         protected override void Render(INativeCanvas canvas, StoneOvenEntity entity, RectangleF bounds)
         {
-            canvas.DrawImage(_image, ScaleBounds(bounds, 1.3f));
+            _rotate.Render(canvas, bounds, entity.Rotation);
         }
     }
 }

@@ -4,33 +4,19 @@ namespace foxer.Core.ViewModel.Menu
 {
     public class MenuInventoryViewModel : GameMenuViewModelBase
     {
-        public IItemHolder[,] Inventory { get; }
+        private readonly MovingItemsInventoryManager _inventoryManager;
 
-        public IItemHolder Selected { get; private set; }
-
-        public IItemHolder[] FastPanel { get; private set; }
-
-        public IInventoryManager InventoryManager { get; }
+        public IInventoryManager InventoryManager => _inventoryManager;
 
         public MenuInventoryViewModel(PageGameViewModel viewModel)
             : base(viewModel)
         {
-            Inventory = new IItemHolder[ViewModel.InventorySize.Width, ViewModel.InventorySize.Height];
-            for (int i = 0; i < ViewModel.InventorySize.Width; i++)
-            {
-                for (int j = 0; j < ViewModel.InventorySize.Height; j++)
-                {
-                    Inventory[i, j] = new InventoryItemHolder(viewModel, i, j);
-                }
-            }
+            _inventoryManager = new MovingItemsInventoryManager(viewModel, FastPanel);
+        }
 
-            FastPanel = new IItemHolder[viewModel.FastPanelSize];
-            for (int i = 0; i < viewModel.FastPanelSize; i++)
-            {
-                FastPanel[i] = new FastPanelItemHolder(viewModel, i);
-            }
-
-            InventoryManager = new MovingItemsInventoryManager(viewModel, FastPanel);
+        public override object GetItem()
+        {
+            return _inventoryManager.Selected?.Get();
         }
     }
 }

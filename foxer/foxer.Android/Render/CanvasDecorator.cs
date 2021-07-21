@@ -89,7 +89,7 @@ namespace foxer.Droid.Render
                 null);
         }
 
-        public void DrawText(string text, RectangleF bounds, System.Drawing.Color color)
+        public void DrawText(string text, RectangleF bounds, System.Drawing.Color color, HorAlign align)
         {
             var paint = new TextPaint
             {
@@ -97,18 +97,124 @@ namespace foxer.Droid.Render
                 TextSize = 1,
                 TextAlign = Paint.Align.Center,
             };
-            paint.SetTypeface(_typeface);
+         //   paint.SetTypeface(_typeface);
 
             var rect = new Rect();
             paint.GetTextBounds(text, 0, text.Length, rect);
-            var scale = Math.Min(bounds.Width / rect.Width(), bounds.Height / rect.Height());
-            paint.TextSize = scale;
+            paint.TextSize = Math.Min(bounds.Width / rect.Width(), bounds.Height / rect.Height());
+            paint.GetTextBounds(text, 0, text.Length, rect);
+            var pt = GetTextLocation(bounds, rect, align);
+            _canvas.DrawText(text, pt.X, pt.Y, paint);
+        }
 
-            _canvas.DrawText(
-                text,
-                (bounds.Left + bounds.Right) / 2,
-                (bounds.Top + bounds.Bottom + scale) / 2,
-                paint);
+        public void DrawText(string text, RectangleF bounds, System.Drawing.Color color, float textSize, HorAlign align)
+        {
+            var paint = new TextPaint
+            {
+                Color = Android.Graphics.Color.Argb(color.A, color.R, color.G, color.B),
+                TextSize = textSize,
+                TextAlign = Paint.Align.Center,
+            };
+         //   paint.SetTypeface(_typeface);
+            var rect = new Rect();
+            paint.GetTextBounds(text, 0, text.Length, rect);
+            if(rect.Width() <= bounds.Width)
+            {
+                var pt = GetTextLocation(bounds, rect, align);
+                _canvas.DrawText(text, pt.X, pt.Y, paint);
+                return;
+            }
+
+            var widths = new float[text.Length];
+            paint.GetTextWidths(text, widths);
+            string[] lines = SplitTextByBounds(text, bounds.Width, widths);
+            int linesCount = Math.Min((int)(bounds.Height / rect.Height()), lines.Length);
+            float gap = Math.Min(textSize / 2, bounds.Height - linesCount * rect.Height());
+
+            float dy = 0;
+            for (int i = 0; i < linesCount; i++)
+            {
+                var lineBounds = new RectangleF(bounds.Left, bounds.Top + dy, bounds.Width, rect.Height());
+                paint.GetTextBounds(lines[i], 0, lines[i].Length, rect);
+                var linePlace = GetTextLocation(lineBounds, rect, align);
+                _canvas.DrawText(lines[i], linePlace.X, linePlace.Y, paint);
+                dy += rect.Height() + gap;
+            }
+        }
+
+        private static System.Drawing.PointF GetTextLocation(RectangleF bounds, Rect textBounds, HorAlign align)
+        {
+            switch(align)
+            {
+                case HorAlign.Center:
+                default:
+                    return new System.Drawing.PointF(
+                        bounds.Left + bounds.Width / 2,
+                        bounds.Top + bounds.Height / 2 + textBounds.Height() / 2 - textBounds.Bottom);
+
+                case HorAlign.Far:
+                    return new System.Drawing.PointF(
+                        bounds.Left + textBounds.Right - textBounds.Width() / 2,
+                        bounds.Top + bounds.Height / 2 + textBounds.Height() / 2 - textBounds.Bottom);
+
+                case HorAlign.Near:
+                    return new System.Drawing.PointF(
+                        bounds.Left + textBounds.Left + textBounds.Width() / 2,
+                        bounds.Top + bounds.Height / 2 + textBounds.Height() / 2 - textBounds.Bottom);
+            }
+        }
+
+        private string[] SplitTextByBounds(string text, float proposedWidth, float[] charWidths)
+        {
+            var breakIndexes = new List<int>();
+            breakIndexes.Add(-1);
+            int lastSpaceIndex = -1;
+            float width = 0;
+            float wordWidth = 0;
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (!char.IsLetterOrDigit(text[i]))
+                {
+                    lastSpaceIndex = i;
+                }
+
+                if (width + wordWidth > proposedWidth)
+                {
+                    if (breakIndexes.Contains(lastSpaceIndex))
+                    {
+                        // пробелов нет, рубим строчку по текущему символу
+                        lastSpaceIndex = i;
+                        breakIndexes.Add(i);
+                        width = wordWidth;
+                        wordWidth = 0;
+                    }
+                    else
+                    {
+                        // рубим строчку по последнему разрывному символу
+                        breakIndexes.Add(lastSpaceIndex);
+                        width = wordWidth;
+                    }
+                }
+                else if (lastSpaceIndex == i)
+                {
+                    width += wordWidth;
+                    wordWidth = charWidths[i];
+                }
+                else
+                {
+                    wordWidth += charWidths[i];
+                }
+            }
+
+            string[] result = new string[breakIndexes.Count];
+            for (int i = 0; i < breakIndexes.Count - 1; i++)
+            {
+                result[i] = text.Substring(breakIndexes[i] + 1, breakIndexes[i + 1] - breakIndexes[i]);
+            }
+
+            result[result.Length - 1] = text.Substring(breakIndexes[breakIndexes.Count - 1] + 1);
+            return result;
         }
     }
 }

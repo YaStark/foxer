@@ -11,13 +11,20 @@ namespace foxer.Render
 
         private static readonly RotatingAnimationSpriteRendererHelper _idle = new RotatingAnimationSpriteRendererHelper(
             Properties.Resources.sprite_player_idle, 4, 4);
-        
+
+        private static readonly RotatingAnimationSpriteRendererHelper _shakeHands = new RotatingAnimationSpriteRendererHelper(
+            Properties.Resources.sprite_player_shake_hands, 4, 4);
+
         protected override void Render(INativeCanvas canvas, PlayerEntity entity, RectangleF bounds)
         {
             bounds = ScaleBounds(bounds, 1.5f);
             if (entity.ActiveAnimation == entity.Walk)
             {
                 _walking.RenderImageByRotation(canvas, bounds, entity.Rotation, entity.Walk);
+            }
+            else if(entity.ActiveAnimation == entity.ShakeHands)
+            {
+                _shakeHands.RenderImageByRotation(canvas, bounds, entity.Rotation, entity.ShakeHands);
             }
             else
             {

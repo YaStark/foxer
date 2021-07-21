@@ -61,6 +61,24 @@ namespace foxer.Core.Game.Inventory
             return false;
         }
 
+        public int Count(Type itemType)
+        {
+            int count = 0;
+            foreach (var inventory in Inventories)
+            {
+                for (int i = 0; i < inventory.Count; i++)
+                {
+                    if (CheckInventorySlotActive(inventory, i)
+                        && inventory[i]?.GetType() == itemType)
+                    {
+                        count += inventory[i].Count;
+                    }
+                }
+            }
+
+            return count;
+        }
+
         public bool TrySpend(Type itemType, int count)
         {
             foreach (var inventory in Inventories)

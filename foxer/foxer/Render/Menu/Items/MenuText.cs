@@ -24,7 +24,7 @@ namespace foxer.Render.Menu
                 RenderBackground(canvas, args.Bounds, args.CellSize);
             }
 
-            canvas.DrawText(_text, args.Bounds, _textColor);
+            canvas.DrawText(_text, args.Bounds, _textColor, HorAlign.Center);
         }
     }
 }

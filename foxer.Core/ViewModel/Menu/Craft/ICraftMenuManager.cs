@@ -4,7 +4,9 @@ namespace foxer.Core.ViewModel.Menu.Craft
 {
     public interface ICraftMenuManager
     {
-        ItemCraftBase Selected { get; set; }
+        ItemCraftBase SelectedCraft { get; set; }
         CrafterBase Crafter { get; }
+
+        void SetSelectedRequirement(CraftRequirementsBase requirement);
     }
 }

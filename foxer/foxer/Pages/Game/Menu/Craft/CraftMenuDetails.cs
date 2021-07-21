@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Linq;
 using foxer.Core.Game.Craft;
 using foxer.Core.Utils;
 using foxer.Core.ViewModel.Menu.Craft;
@@ -26,7 +27,7 @@ namespace foxer.Pages.Game.Menu.Craft
 
             RenderBackground(canvas, args.Bounds, args.CellSize);
 
-            if (_craftMenuManager.Selected == null)
+            if (_craftMenuManager.SelectedCraft == null)
             {
                 return;
             }
@@ -37,7 +38,7 @@ namespace foxer.Pages.Game.Menu.Craft
             int height = (int)(args.Bounds.Height / cs.Height);
             var cells = GeomUtils.SplitOnCells(bounds, width, height);
             int k = 0;
-            foreach (var req in _craftMenuManager.Selected.GetRequirements())
+            foreach (var req in _craftMenuManager.SelectedCraft.GetRequirements())
             {
                 var cell = cells[k % width, k / width];
                 if(req is CraftResourceRequirementsBase resReq)
@@ -66,8 +67,31 @@ namespace foxer.Pages.Game.Menu.Craft
 
         protected override bool OnTouch(PointF pt, MenuItemInfoArgs args)
         {
-            // todo scroll listbox?
-            return base.OnTouch(pt, args);
+            if (_craftMenuManager.SelectedCraft == null)
+            {
+                return true;
+            }
+
+            var cs = args.CellSize;
+            var bounds = GeomUtils.Deflate(args.Bounds, cs.Width * 0.2f, cs.Height * 0.2f);
+            int width = (int)(args.Bounds.Width / cs.Width);
+            int height = (int)(args.Bounds.Height / cs.Height);
+
+            float x = pt.X - args.Bounds.Left;
+            float y = pt.Y - args.Bounds.Top;
+            int k = (int)(x * width / args.Bounds.Width) + (int)(y * height / args.Bounds.Height) * width;
+
+            var requirements = _craftMenuManager.SelectedCraft.GetRequirements().ToArray();
+            if (k >= 0 && k < requirements.Length)
+            {
+                _craftMenuManager.SetSelectedRequirement(requirements[k]);
+            }
+             else
+            {
+                _craftMenuManager.SetSelectedRequirement(null);
+            }
+
+            return true;
         }
     }
 }

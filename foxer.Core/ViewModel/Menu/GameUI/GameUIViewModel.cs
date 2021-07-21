@@ -7,8 +7,6 @@ namespace foxer.Core.ViewModel.Menu
 {
     public class GameUIViewModel : GameMenuViewModelBase, IInventoryManager
     {
-        public IItemHolder[] FastPanel { get; private set; }
-
         public IInventoryManager InventoryManager => this;
 
         public ItemBase Hand => ViewModel.ActiveEntity?.Hand;
@@ -20,11 +18,6 @@ namespace foxer.Core.ViewModel.Menu
         public GameUIViewModel(PageGameViewModel viewModel)
             : base(viewModel)
         {
-            FastPanel = new IItemHolder[ViewModel.FastPanelSize];
-            for (int i = 0; i < FastPanel.Length; i++)
-            {
-                FastPanel[i] = new FastPanelItemHolder(viewModel, i);
-            }
         }
 
         public void SetSelected(IItemHolder itemHolder)

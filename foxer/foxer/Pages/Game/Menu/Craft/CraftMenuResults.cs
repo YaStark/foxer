@@ -21,17 +21,17 @@ namespace foxer.Pages.Game.Menu.Craft
 
         protected override void OnRender(INativeCanvas canvas, MenuItemInfoArgs args)
         {
-            Enabled = _craftMenuManager.Selected?.CanCraft(args.Stage) == true;
+            Enabled = _craftMenuManager.SelectedCraft?.CanCraft(args.Stage) == true;
             base.OnRender(canvas, args);
 
-            if (_craftMenuManager.Selected == null)
+            if (_craftMenuManager.SelectedCraft == null)
             {
                 return;
             }
 
             var cs = args.CellSize;
             var bounds = GeomUtils.Deflate(args.Bounds, cs.Width * 0.2f, cs.Height * 0.2f);
-            var result = _craftMenuManager.Selected.GetResult();
+            var result = _craftMenuManager.SelectedCraft.GetResult();
             if (result.Count == 1)
             {
                 // draw in a middle
@@ -45,7 +45,7 @@ namespace foxer.Pages.Game.Menu.Craft
             int height = (int)(args.Bounds.Height / cs.Height);
             var cells = GeomUtils.SplitOnCells(bounds, width, height);
             int k = 0;
-            foreach (var kv in _craftMenuManager.Selected.GetResult())
+            foreach (var kv in _craftMenuManager.SelectedCraft.GetResult())
             {
                 var cell = cells[k % width, k / width];
                 _itemRendererFactory.GetRenderer(kv.Key)
@@ -62,10 +62,10 @@ namespace foxer.Pages.Game.Menu.Craft
 
         protected override bool OnTouch(PointF pt, MenuItemInfoArgs args)
         {
-            if(_craftMenuManager.Selected != null)
+            if(_craftMenuManager.SelectedCraft != null)
             {
                 // todo craft errors?
-                _craftMenuManager.Crafter.Craft(args.Stage, _craftMenuManager.Selected);
+                _craftMenuManager.Crafter.Craft(args.Stage, _craftMenuManager.SelectedCraft);
             }
 
             return base.OnTouch(pt, args);

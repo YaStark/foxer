@@ -2,6 +2,7 @@
 using foxer.Core.Game.Cells;
 using foxer.Core.Game.Interactors;
 using foxer.Core.Game.Items;
+using foxer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -147,7 +148,7 @@ namespace foxer.Core.Game.Entities
 
         internal void RotateTo(Point cell)
         {
-            Rotation = (int)(Math.Atan2(CellY - cell.Y, cell.X - CellX) * 180 / Math.PI);
+            Rotation = GeomUtils.GetAngle(cell, Cell);
         }
 
         public void MoveThenDo(Point[] path, params Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>[] coroutines)

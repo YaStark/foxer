@@ -45,7 +45,7 @@ namespace foxer.Pages.Game.Menu.Craft
         {
             if(GetVisible(args.Stage))
             {
-                _craftMenuManager.Selected = _itemCraft;
+                _craftMenuManager.SelectedCraft = _itemCraft;
                 return true;
             }
 
@@ -65,7 +65,7 @@ namespace foxer.Pages.Game.Menu.Craft
         public override bool GetSelected(Stage stage)
         {
             return GetEnabled(stage) 
-                && _craftMenuManager.Selected == _itemCraft;
+                && _craftMenuManager.SelectedCraft == _itemCraft;
         }
     }
 }

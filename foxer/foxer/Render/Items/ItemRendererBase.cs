@@ -7,7 +7,7 @@ namespace foxer.Render.Items
         where TItem : ItemBase
     {
         private static readonly byte[] _counterBackground = Properties.Resources.cell_item_counter_bg;
-        
+
         public bool CanRender<T>(T item)
         {
             return item.GetType() == typeof(TItem);
@@ -43,7 +43,7 @@ namespace foxer.Render.Items
                 initialBounds.Bottom);
             canvas.DrawImage(_counterBackground, newBounds);
             newBounds.Inflate(-newBounds.Width / 4, -newBounds.Height / 4);
-            canvas.DrawText(count.ToString(), newBounds, Color.Black);
+            canvas.DrawText(count.ToString(), newBounds, Color.Black, newBounds.Height * 0.7f, HorAlign.Center);
         }
     }
 }

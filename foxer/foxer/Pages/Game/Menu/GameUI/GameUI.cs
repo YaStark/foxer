@@ -7,11 +7,11 @@ namespace foxer.Pages.Game.Menu
     public class GameUI : MenuBase
     {
         public GameUI(GameUIViewModel viewModel) 
-            : base(viewModel, 12, 8)
+            : base(viewModel, 13, 8)
         {
-            // M I K + + + + + + + + W   M I K + + + + +
-            // + + + + + + + + + + + F   + + + + + + + +
-            // + + + + + + + + + + + F   + + + + + + + +
+            // M I K + + + + + + + + W   M + + + + + + +
+            // + + + + + + + + + + + F   I + + + + + + +
+            // + + + + + + + + + + + F   K + + + + + + +
             // + + + + + + + + + + + F   + + + + + + + +
             // + + + + + + + + + + + F   + + + + + + + +
             // + + + + + + + + + + + +   + + + + + + + +
@@ -26,18 +26,18 @@ namespace foxer.Pages.Game.Menu
                 .SetDefaultLayout(0, 0).End();
 
             BeginCreateCell(new MenuButton(viewModel.CommandInventory, Properties.Resources.icon_inventory)) // I
-                .SetDefaultLayout(1, 0).End();
+                .SetDefaultLayout(1, 0).SetTransponedLayout(0, 1).End();
 
             BeginCreateCell(new MenuButton(viewModel.CommandCraft, Properties.Resources.icon_craft)) // K
-                .SetDefaultLayout(2, 0).End();
+                .SetDefaultLayout(2, 0).SetTransponedLayout(0, 2).End();
 
             BeginCreateCell(new WalkMenuItem(viewModel))
-                .SetDefaultLayout(11, 0).SetTransponedLayout(0, 11).End();
+                .SetDefaultLayout(12, 0).SetTransponedLayout(0, 12).End(); // W
 
             for (int i = 0; i < viewModel.FastPanel.Length; i++)
             {
                 BeginCreateCell(MenuCell(viewModel, viewModel.FastPanel[i])) // F
-                    .SetDefaultLayout(11, 1 + i).SetTransponedLayout(1 + i, 11).End();
+                    .SetDefaultLayout(12, 1 + i).SetTransponedLayout(1 + i, 12).End();
             }
         }
 

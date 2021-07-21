@@ -22,7 +22,7 @@ namespace foxer.Core.Game
 
         public Stage Stage { get; set; }
 
-        public Size InventorySize { get; } = new Size(3, 4);
+        public Size InventorySize { get; } = new Size(5, 4);
 
         public int FastPanelSize { get; private set; } = 2;
 

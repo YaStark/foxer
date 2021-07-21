@@ -1,39 +1,54 @@
-﻿using foxer.Core.Game.Craft;
-using foxer.Core.Game.Items;
+﻿using System;
+using foxer.Core.Game.Craft;
+using foxer.Core.Game.Info;
 
 namespace foxer.Core.ViewModel.Menu.Craft
 {
     public class MenuCraftViewModel : GameMenuViewModelBase, ICraftMenuManager
     {
-        public IItemHolder[] FastPanel { get; }
-        public IItemHolder[,] Inventory { get; }
+        private readonly CraftInventoryManager _craftInventoryManager;
 
-        public IInventoryManager InventoryManager { get; }
+        private ItemCraftBase _selectedCraft;
+        private object _lastSelectedItem;
+
+        public IInventoryManager InventoryManager => _craftInventoryManager;
+
         public ICraftMenuManager CraftMenuManager => this;
 
-        ItemCraftBase ICraftMenuManager.Selected { get;set; }
+        public ItemCraftBase SelectedCraft
+        {
+            get { return _selectedCraft; }
+            set {
+                _selectedCraft = value;
+                _lastSelectedItem = _selectedCraft;
+            }
+        }
 
         public CrafterBase Crafter => ViewModel.PlayerHandsCrafter;
 
         public MenuCraftViewModel(PageGameViewModel viewModel) 
             : base(viewModel)
         {
-            Inventory = new IItemHolder[ViewModel.InventorySize.Width, ViewModel.InventorySize.Height];
-            for (int i = 0; i < ViewModel.InventorySize.Width; i++)
-            {
-                for (int j = 0; j < ViewModel.InventorySize.Height; j++)
-                {
-                    Inventory[i, j] = new InventoryItemHolder(viewModel, i, j);
-                }
-            }
+            _craftInventoryManager = new CraftInventoryManager(viewModel, FastPanel);
+            _craftInventoryManager.SelectedChanged += OnInventoryItemSelectedChanged;
+        }
 
-            FastPanel = new IItemHolder[ViewModel.FastPanelSize];
-            for (int i = 0; i < FastPanel.Length; i++)
-            {
-                FastPanel[i] = new FastPanelItemHolder(viewModel, i);
-            }
+        public override object GetItem()
+        {
+            return _lastSelectedItem;
+        }
+        
+        public void SetSelectedRequirement(CraftRequirementsBase requirement)
+        {
+            _lastSelectedItem = requirement;
+        }
 
-            InventoryManager = new CraftInventoryManager(viewModel, FastPanel);
+        private void OnInventoryItemSelectedChanged(object sender, EventArgs e)
+        {
+            if(_craftInventoryManager.Selected != null)
+            {
+                _lastSelectedItem = _craftInventoryManager.Selected.Get();
+            }
         }
     }
 }

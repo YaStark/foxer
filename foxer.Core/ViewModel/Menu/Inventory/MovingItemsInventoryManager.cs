@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Items;
+using System;
 
 namespace foxer.Core.ViewModel.Menu
 {
@@ -6,6 +7,8 @@ namespace foxer.Core.ViewModel.Menu
     {
         private readonly PageGameViewModel _viewModel;
         private readonly IItemHolder[] _fastPanel;
+
+        public event EventHandler SelectedChanged;
 
         public IItemHolder Selected { get; private set; }
 
@@ -32,12 +35,14 @@ namespace foxer.Core.ViewModel.Menu
             if (Selected == null)
             {
                 Selected = itemHolder;
+                SelectedChanged?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
             if (Selected == itemHolder)
             {
                 Selected = null;
+                SelectedChanged?.Invoke(this, EventArgs.Empty);
                 return;
             }
 
@@ -59,6 +64,7 @@ namespace foxer.Core.ViewModel.Menu
             }
 
             Selected = null;
+            SelectedChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -853,9 +853,49 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] sprite_player_shake_hands {
+            get {
+                object obj = ResourceManager.GetObject("sprite_player_shake_hands", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] sprite_player_walk {
             get {
                 object obj = ResourceManager.GetObject("sprite_player_walk", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_stone_oven {
+            get {
+                object obj = ResourceManager.GetObject("sprite_stone_oven", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_stones_big {
+            get {
+                object obj = ResourceManager.GetObject("sprite_stones_big", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_stones_small {
+            get {
+                object obj = ResourceManager.GetObject("sprite_stones_small", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -1056,76 +1096,6 @@ namespace foxer.Properties {
         internal static byte[] squirrel90_run_4 {
             get {
                 object obj = ResourceManager.GetObject("squirrel90_run_4", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_big_1 {
-            get {
-                object obj = ResourceManager.GetObject("stone_big_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_big_2 {
-            get {
-                object obj = ResourceManager.GetObject("stone_big_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_big_3 {
-            get {
-                object obj = ResourceManager.GetObject("stone_big_3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_oven {
-            get {
-                object obj = ResourceManager.GetObject("stone_oven", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_small_1 {
-            get {
-                object obj = ResourceManager.GetObject("stone_small_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_small_2 {
-            get {
-                object obj = ResourceManager.GetObject("stone_small_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] stone_small_3 {
-            get {
-                object obj = ResourceManager.GetObject("stone_small_3", resourceCulture);
                 return ((byte[])(obj));
             }
         }

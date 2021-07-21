@@ -2,6 +2,7 @@
 using foxer.Core.Game.Cells;
 using foxer.Core.Game.Craft;
 using foxer.Core.Game.Entities;
+using foxer.Core.Game.Info;
 using foxer.Core.Game.Items;
 using foxer.Core.Interfaces;
 using foxer.Core.Utils;
@@ -14,16 +15,6 @@ namespace foxer.Core.ViewModel
 {
     public class PageGameViewModel : ViewModelBase
     {
-        private readonly DelegateCommand _commandCloseMenu;
-        private readonly DelegateCommand _commandOptions;
-        private readonly DelegateCommand _commandInventory;
-        private readonly DelegateCommand _commandCraft;
-
-        public ICommand CommandCloseMenu => _commandCloseMenu;
-        public ICommand CommandOptions => _commandOptions;
-        public ICommand CommandInventory => _commandInventory;
-        public ICommand CommandCraft => _commandCraft;
-
         private readonly Game.Game _game = new Game.Game();
         private int _fastPanelSelectedIndex = 0;
 
@@ -65,6 +56,8 @@ namespace foxer.Core.ViewModel
 
         public ItemManager ItemManager => _game.ItemManager;
 
+        public ItemInfoManager ItemInfoManager { get; } = new ItemInfoManager();
+
         public PageGameViewModel(INavigator navigator, ISingletoneFactory<IMenuHost> menuHostFactory)
         {
             _menuHostFactory = menuHostFactory;
@@ -73,11 +66,6 @@ namespace foxer.Core.ViewModel
             MenuInventory = new MenuInventoryViewModel(this);
             GameUI = new GameUIViewModel(this);
             MenuCraft = new MenuCraftViewModel(this);
-
-            _commandCloseMenu = new DelegateCommand(() => GameMenu.CloseMenu(), true);
-            _commandOptions = new DelegateCommand(() => GameMenu.OpenOptionsMenu(), true);
-            _commandInventory = new DelegateCommand(() => GameMenu.OpenInventoryMenu(), true);
-            _commandCraft = new DelegateCommand(() => GameMenu.OpenCraftMenu(), true);
         }
 
         internal void SetActiveItem(ItemBase itemBase)

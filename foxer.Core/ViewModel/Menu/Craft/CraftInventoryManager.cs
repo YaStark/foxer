@@ -1,10 +1,19 @@
 ﻿using foxer.Core.Game.Items;
+using System;
 
 namespace foxer.Core.ViewModel.Menu.Craft
 {
     public class CraftInventoryManager : IInventoryManager
     {
         private readonly MovingItemsInventoryManager _movingItemsInventoryManager;
+
+        public event EventHandler SelectedChanged
+        {
+            add { _movingItemsInventoryManager.SelectedChanged += value; }
+            remove { _movingItemsInventoryManager.SelectedChanged -= value; }
+        }
+
+        public IItemHolder Selected => _movingItemsInventoryManager.Selected;
 
         public CraftInventoryManager(PageGameViewModel viewModel, IItemHolder[] fastPanel)
         {
