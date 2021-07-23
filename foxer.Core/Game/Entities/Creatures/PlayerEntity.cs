@@ -101,7 +101,7 @@ namespace foxer.Core.Game.Entities
                 }
             }
 
-            if (stage.CheckCanWalkOnCell(this, pt.X, pt.Y))
+            if (stage.CheckCanStandOnCell(this, pt.X, pt.Y))
             {
                 var walker = new WalkBuilder(stage, this, new PlayerWalkWeightProvider(), null, pt);
                 if (walker.Path != null && walker.Path.Length < MAX_WALK_DISTANSE)
@@ -175,7 +175,8 @@ namespace foxer.Core.Game.Entities
 
             foreach (var pt in _path)
             {
-                if (!arg.Stage.CheckCanWalkOnCell(this, pt.X, pt.Y))
+                if (!arg.Stage.CheckCanStandOnCell(this, pt.X, pt.Y)
+                    || arg.Stage.IsWallBetweeen(pt, Cell))
                 {
                     break;
                 }

@@ -27,6 +27,11 @@ namespace foxer.Core.Utils
             return ((int)(Math.Atan2(b.Y - a.Y, a.X - b.X) * 180 / Math.PI) + 360) % 360;
         }
 
+        public static int GetAngle90(Point a, Point b)
+        {
+            return (((int)Math.Round(Math.Atan2(b.Y - a.Y, a.X - b.X) * 2 / Math.PI) + 4) % 4) * 90;
+        }
+
         public static RectangleF Deflate(RectangleF rect, float delta)
         {
             return Deflate(rect, delta, delta);

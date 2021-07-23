@@ -640,4 +640,19 @@
   <data name="sprite_stone_oven" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\workstations\sprite_stone_oven.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="grass_floor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\grass_floor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="grass_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\grass_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_grass_floor" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_grass_floor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\sprite_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_grass_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_grass_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

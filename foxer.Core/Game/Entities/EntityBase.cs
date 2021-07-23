@@ -25,7 +25,7 @@ namespace foxer.Core.Game.Entities
 
         public double Y { get; set; }
 
-        public float Z { get; protected set; }
+        public float Z { get; set; }
 
         public PointF Location => new PointF((float)X, (float)Y);
 

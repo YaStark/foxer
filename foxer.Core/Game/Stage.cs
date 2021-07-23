@@ -25,6 +25,7 @@ namespace foxer.Core.Game
         private readonly List<EntityBase> _entitesToRemove = new List<EntityBase>();
         private readonly List<EntityBase> _entitesToAdd = new List<EntityBase>();
         private readonly List<EntityBase> _entites = new List<EntityBase>();
+        private readonly List<IWall> _walls = new List<IWall>();
 
         public Random Rnd { get; } = new Random();
 
@@ -85,6 +86,11 @@ namespace foxer.Core.Game
                 _entites.Remove(entity);
                 _entitesToCells[entity.CellX, entity.CellY].Remove(entity);
                 _entitesByType[entity.GetType()].Remove(entity);
+
+                if (entity is IWall wall)
+                {
+                    _walls.Remove(wall);
+                }
             }
 
             _entitesToRemove.Clear();
@@ -125,7 +131,7 @@ namespace foxer.Core.Game
             return i >= 0 && i < Width && j >= 0 && j < Height;
         }
 
-        public bool CheckCanWalkOnCell(EntityBase walker, int x, int y)
+        public bool CheckCanStandOnCell(EntityBase walker, int x, int y)
         {
             if (!CheckArrayBounds(x, y))
             {
@@ -133,6 +139,12 @@ namespace foxer.Core.Game
             }
 
             return CanBePlaced(walker, x, y);
+        }
+
+        public bool IsWallBetweeen(Point a, Point b)
+        {
+            return _walls.Any(w => w.Active(this) && (w.Cell == a) && w.GetTransitPreventionTarget() == b)
+                || _walls.Any(w => w.Active(this) && (w.Cell == b) && w.GetTransitPreventionTarget() == a);
         }
 
         internal void LoadLevel(CellDoor door)
@@ -152,10 +164,9 @@ namespace foxer.Core.Game
             var entites = GetEntitesByType(typeof(TEntity));
             if(entites.Any())
             {
-                var pt = new Point(x, y);
-                entites = entites.OrderBy(e => MathUtils.L1(pt, e.Cell));
-                if (entites.Count() <= count) return entites.Cast<TEntity>();
-                return entites.Take(count).Cast<TEntity>();
+                var pt = new PointF(x + 0.5f, y + 0.5f);
+                if (entites.Count() <= count) return entites.OrderBy(e => MathUtils.L2(pt, e.Cell)).Cast<TEntity>();
+                return entites.OrderBy(e => MathUtils.L2(pt, e.Cell)).Take(count).Cast<TEntity>();
             }
 
             return Enumerable.Empty<TEntity>();
@@ -186,20 +197,27 @@ namespace foxer.Core.Game
 
         internal bool TryCreateNow(EntityBase entity)
         {
-            if(entity.CanBeCreated(this, entity.CellX, entity.CellY))
+            if (!entity.CanBeCreated(this, entity.CellX, entity.CellY))
             {
-                _entites.Add(entity);
-                _entitesToCells[entity.CellX, entity.CellY].Add(entity);
-                var type = entity.GetType();
-                if (!_entitesByType.ContainsKey(type))
-                {
-                    _entitesByType[type] = new List<EntityBase>();
-                }
-                _entitesByType[type].Add(entity);
-                return true;
+                return false;
             }
 
-            return false;
+            _entites.Add(entity);
+            _entitesToCells[entity.CellX, entity.CellY].Add(entity);
+
+            var type = entity.GetType();
+            if (!_entitesByType.ContainsKey(type))
+            {
+                _entitesByType[type] = new List<EntityBase>();
+            }
+            _entitesByType[type].Add(entity);
+
+            if (entity is IWall wall)
+            {
+                _walls.Add(wall);
+            }
+
+            return true;
         }
 
         public IEnumerable<EntityBase> GetEntitesByType(Type entityType)

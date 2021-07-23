@@ -35,6 +35,8 @@ namespace foxer.Core.Game.Items
 
             // buldings
             AddItemInfo<ItemStoneOven>(false, (s, i) => new ItemStoneOven());
+            AddItemInfo<ItemGrassWall>(true, (s, i) => new ItemGrassWall(i));
+            AddItemInfo<ItemGrassFloor>(true, (s, i) => new ItemGrassFloor(i));
 
             // tools
             AddItemInfo<ItemDigStick>(false, (s, i) => new ItemDigStick());

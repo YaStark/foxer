@@ -7,15 +7,14 @@ namespace foxer.Core.Game.Animation
 {
     public class MovingAnimation : EntityAnimation
     {
-        private readonly EntityBase _parent;
-
+        public EntityBase Host { get; }
         public double Speed { get; }
         public double AnimationSpeed { get; }
         public PointF Target { get; set; }
 
         public MovingAnimation(EntityBase parent, double speed, double animationSpeed = 0)
         {
-            _parent = parent;
+            Host = parent;
             Speed = speed;
             AnimationSpeed = animationSpeed == 0 ? Speed : animationSpeed;
         }
@@ -24,8 +23,8 @@ namespace foxer.Core.Game.Animation
         {
             Progress = 0;
             var walkTarget = Target;
-            int signX = Math.Sign(walkTarget.X - _parent.X);
-            int signY = Math.Sign(walkTarget.Y - _parent.Y);
+            int signX = Math.Sign(walkTarget.X - Host.X);
+            int signY = Math.Sign(walkTarget.Y - Host.Y);
             bool readyX = false, readyY = false;
             while (!readyX || !readyY)
             {
@@ -44,41 +43,41 @@ namespace foxer.Core.Game.Animation
                 var lastOffset = new PointF();
                 if (!readyX)
                 {
-                    if (delta > Math.Abs(_parent.X - walkTarget.X))
+                    if (delta > Math.Abs(Host.X - walkTarget.X))
                     {
-                        lastOffset.X = (float)(_parent.X - walkTarget.X);
-                        _parent.X = walkTarget.X;
+                        lastOffset.X = (float)(Host.X - walkTarget.X);
+                        Host.X = walkTarget.X;
                         readyX = true;
                     }
                     else
                     {
                         lastOffset.X = (float)(signX * delta);
-                        _parent.X += signX * delta;
+                        Host.X += signX * delta;
                     }
 
-                    _parent.CellX = (int)_parent.X;
+                    Host.CellX = (int)Host.X;
                 }
 
                 if (!readyY)
                 {
-                    if (delta > Math.Abs(_parent.Y - walkTarget.Y))
+                    if (delta > Math.Abs(Host.Y - walkTarget.Y))
                     {
-                        lastOffset.Y = (float)(_parent.Y - walkTarget.Y);
-                        _parent.Y = walkTarget.Y;
+                        lastOffset.Y = (float)(Host.Y - walkTarget.Y);
+                        Host.Y = walkTarget.Y;
                         readyY = true;
                     }
                     else
                     {
                         lastOffset.Y = (float)(signY * delta);
-                        _parent.Y += signY * delta;
+                        Host.Y += signY * delta;
                     }
 
-                    _parent.CellY = (int)_parent.Y;
+                    Host.CellY = (int)Host.Y;
                 }
 
                 if(!readyX || !readyY)
                 {
-                    UpdateRotation(_parent, walkTarget);
+                    UpdateRotation(Host, walkTarget);
                 }
 
                 yield return this;

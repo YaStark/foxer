@@ -1,4 +1,6 @@
-﻿using foxer.Core.Game.Entities.Descriptors;
+﻿using System.Collections.Generic;
+using foxer.Core.Game.Cells;
+using foxer.Core.Game.Entities.Descriptors;
 using foxer.Core.Game.Entities.Stress;
 
 namespace foxer.Core.Game.Entities
@@ -14,6 +16,17 @@ namespace foxer.Core.Game.Entities
         public SquirrelEntityDescriptor() 
             : base(EntityKind.SmallCreature)
         {
+        }
+
+        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, float z)
+        {
+            if (!base.OnCanBePlaced(stage, cell, entites, z))
+            {
+                return false;
+            }
+
+            return cell.Kind == CellKind.Floor
+                || cell.Kind == CellKind.Road;
         }
 
         protected override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)

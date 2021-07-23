@@ -13,7 +13,7 @@ namespace foxer.Core.Game.Entities
         {
             public bool CanWalk(Stage stage, EntityBase entity, int x, int y)
             {
-                return stage.CheckCanWalkOnCell(entity, x, y)
+                return stage.CheckCanStandOnCell(entity, x, y)
                     && stage.StressManager.GetStressLevelInCell(entity, x, y) <= 0;
             }
         }

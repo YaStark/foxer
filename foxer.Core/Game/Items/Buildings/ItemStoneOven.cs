@@ -15,13 +15,20 @@ namespace foxer.Core.Game.Items
         public EntityBase Create(Stage stage, int x, int y)
         {
             var oven = new StoneOvenEntity(x, y);
-            oven.Rotation = GeomUtils.GetAngle(stage.ActiveEntity.Cell, oven.Cell);
+            oven.Rotation = GeomUtils.GetAngle90(stage.ActiveEntity.Cell, oven.Cell);
             return oven;
         }
         
         public bool CheckBuildDistance(Point player, Point target)
         {
-            return MathUtils.L2(player, target) < 3;
+            return MathUtils.L2(player, target) < 1.5;
+        }
+
+        public EntityBase CreatePreviewItem(int x0, int y0, int x, int y)
+        {
+            var oven = new StoneOvenEntity(x, y);
+            oven.Rotation = GeomUtils.GetAngle90(new Point(x0, y0), oven.Cell);
+            return oven;
         }
     }
 }

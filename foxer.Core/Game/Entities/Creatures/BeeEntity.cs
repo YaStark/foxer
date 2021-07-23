@@ -30,19 +30,19 @@ namespace foxer.Core.Game.Entities
 
             if(ActiveAnimation == null)
             {
-                var flowers = stage.GetNearestEntitesByType<FlowerEntity>(CellX, CellY, 10).ToArray();
-                if (!flowers.Any())
+                var flowers = stage.GetNearestEntitesByType<FlowerEntity>(CellX, CellY, 7).ToArray();
+                if (flowers.Any())
+                {
+                    Fly.Target = flowers[_rnd.Next(flowers.Length)].Location;
+                    StartAnimation(FlyAndWaitCoroutine);
+                }
+                else
                 {
                     var target = new Point(
                         Math.Min(stage.Width - 1, Math.Max(_rnd.Next(-5, 6) + CellX, 0)),
                         Math.Min(stage.Height - 1, Math.Max(_rnd.Next(-5, 6) + CellY, 0)));
                     Fly.Target = target;
                     StartAnimation(Fly.Coroutine);
-                }
-                else
-                {
-                    Fly.Target = flowers[_rnd.Next(flowers.Length)].Location;
-                    StartAnimation(FlyAndWaitCoroutine);
                 }
             }
         }

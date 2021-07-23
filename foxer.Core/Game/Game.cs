@@ -47,6 +47,8 @@ namespace foxer.Core.Game
         public Game()
         {
             AddDescriptor(new StoneOvenEntityDescriptor());
+            AddDescriptor(new GrassWallEntityDescriptor());
+            AddDescriptor(new GrassFloorEntityDescriptor());
 
             AddDescriptor(new BeeEntityDescriptor());
             AddDescriptor(new SquirrelEntityDescriptor());
@@ -66,6 +68,8 @@ namespace foxer.Core.Game
             Inventory = new ItemBase[InventorySize.Width * InventorySize.Height + MAX_FAST_PANEL_SIZE];
             Inventory[10] = ItemManager.Create<ItemStone>(null, 16);
             Inventory[11] = ItemManager.Create<ItemStoneOven>(null);
+            Inventory[12] = ItemManager.Create<ItemGrassWall>(null, 16);
+            Inventory[13] = ItemManager.Create<ItemGrassFloor>(null, 16);
 
             InventoryManager = new InventoryManager(this);
             PlayerHandsCrafter = new PlayerHandsCrafter(this);
@@ -152,7 +156,7 @@ namespace foxer.Core.Game
                 return result;
             }
 
-            return Fatal<EntityDescriptorBase>($"No descriptor found for entity type {entityType}");
+            throw new ArgumentException($"No descriptor found for entity type {entityType}");
         }
 
         internal void LoadLevel(Stage stage, int x, int y)
@@ -261,13 +265,6 @@ namespace foxer.Core.Game
         private bool CheckBounds(int x, int y, int size)
         {
             return x >= 0 && y >= 0 && x < size && y < size;
-        }
-
-        private T Fatal<T>(string message)
-        {
-            Debug.WriteLine("################### FATAL ERROR #######################");
-            Debug.WriteLine(message);
-            throw new Exception(message);
         }
     }
 }

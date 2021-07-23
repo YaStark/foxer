@@ -20,10 +20,10 @@ namespace foxer.Pages
         {
             _vm = vm;
             _menuHost = menuHost;
-
+            var entityRenderer = new GameLayerEntityRenderer(vm);
             _layers.Add(new GameLayerCellsRenderer(vm));
-            _layers.Add(new GameLayerEntityRenderer(vm));
-            _layers.Add(new GameLayerBuilderRenderer(vm.GameUI, menuHost));
+            _layers.Add(entityRenderer);
+            _layers.Add(new GameLayerBuilderRenderer(vm.GameUI, entityRenderer, menuHost));
         }
 
         public void Draw(INativeCanvas canvas)

@@ -28,6 +28,12 @@ namespace foxer.Core.Game.Animation
                     yield break;
                 }
 
+                if(args.Stage.IsWallBetweeen(_movingAnimation.Host.Cell, Targets[i]))
+                {
+                    args.CancellationToken.Cancel();
+                    break;
+                }
+
                 _movingAnimation.Target = Targets[i];
                 foreach (var item in _movingAnimation.Coroutine(args))
                 {

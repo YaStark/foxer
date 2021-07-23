@@ -36,7 +36,7 @@ namespace foxer.Core.Game
         private bool RunToNearbyCellWithLessStressLevel(EntityBase entity, Stage stage)
         {
             var cells = entity.Cell.Nearest4()
-                .Where(cell => stage.CheckCanWalkOnCell(entity, cell.X, cell.Y))
+                .Where(cell => stage.CheckCanStandOnCell(entity, cell.X, cell.Y) && !stage.IsWallBetweeen(cell, entity.Cell))
                 .ToArray();
             if (!cells.Any())
             {

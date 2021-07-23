@@ -26,7 +26,7 @@ namespace foxer.Core.Game.Interactors
         {
             // todo set distance
             var pts = target.Cell.Nearest4()
-                .Where(pt => stage.CheckCanWalkOnCell(walker, pt.X, pt.Y))
+                .Where(pt => stage.CheckCanStandOnCell(walker, pt.X, pt.Y))
                 .ToArray();
 
             if (!pts.Any())

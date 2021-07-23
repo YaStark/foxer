@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Entities;
+using foxer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -45,10 +46,10 @@ namespace foxer.Core.Game
                 }
 
                 var value = field[pt.X, pt.Y];
-                TryFillArray(pt.X + 1, pt.Y, field, queue, value);
-                TryFillArray(pt.X - 1, pt.Y, field, queue, value);
-                TryFillArray(pt.X, pt.Y - 1, field, queue, value);
-                TryFillArray(pt.X, pt.Y + 1, field, queue, value);
+                TryFillArray(pt, pt.X - 1, pt.Y, field, queue, value);
+                TryFillArray(pt, pt.X + 1, pt.Y, field, queue, value);
+                TryFillArray(pt, pt.X, pt.Y - 1, field, queue, value);
+                TryFillArray(pt, pt.X, pt.Y + 1, field, queue, value);
             }
 
             return field;
@@ -61,7 +62,7 @@ namespace foxer.Core.Game
             steps.Add(pt0.Value);
             while (field[pt0.Value.X, pt0.Value.Y] != 1)
             {
-                pt0 = GetNextStep(pt0.Value.X, pt0.Value.Y, field);
+                pt0 = GetNextStep(pt0.Value, field);
                 if (pt0 == null)
                 {
                     return null;
@@ -88,27 +89,32 @@ namespace foxer.Core.Game
         {
             return AccessibleProvider != null
                 ? AccessibleProvider.CanWalk(Stage, Host, x, y)
-                : Stage.CheckCanWalkOnCell(Host, x, y);
+                : Stage.CheckCanStandOnCell(Host, x, y);
         }
 
-        private void TryFillArray(int x, int y, int[,] field, Queue<Point> queue, int suffixValue)
+        private void TryFillArray(Point origin, int x, int y, int[,] field, Queue<Point> queue, int suffixValue)
         {
             if (!Stage.CheckArrayBounds(x, y)) return;
             var value = suffixValue + GetCellWeight(x, y);
+            var point = new Point(x, y);
 
             if ((field[x, y] == 0 || field[x, y] > value)
-                && CanWalkOnCell(x, y))
+                && CanWalkOnCell(x, y)
+                && !Stage.IsWallBetweeen(origin, point))
             {
-                var point = new Point(x, y);
                 field[x, y] = value;
                 queue.Enqueue(point);
             }
         }
 
-        private Point? GetNextStep(int x, int y, int[,] field)
+        private Point? GetNextStep(Point origin, int[,] field)
         {
-            var pts = new[] { new Point(x + 1, y), new Point(x - 1, y), new Point(x, y + 1), new Point(x, y - 1) }
-                .Where(pt => Stage.CheckArrayBounds(pt.X, pt.Y) && field[pt.X, pt.Y] != 0);
+            var pts = origin
+                .Nearest4()
+                .Where(pt => Stage.CheckArrayBounds(pt.X, pt.Y) 
+                    && field[pt.X, pt.Y] != 0
+                    && !Stage.IsWallBetweeen(pt, origin));
+
             return pts.Any() 
                 ? pts.OrderBy(pt => field[pt.X, pt.Y]).First()
                 : (Point?)null;

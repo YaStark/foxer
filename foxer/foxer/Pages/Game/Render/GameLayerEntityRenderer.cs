@@ -29,6 +29,8 @@ namespace foxer.Pages
             _entityRenderers.Add(new StoneBigRenderer());
             _entityRenderers.Add(new StoneOvenRenderer());
             _entityRenderers.Add(new GrassRenderer());
+            _entityRenderers.Add(new GrassWallRenderer());
+            _entityRenderers.Add(new GrassFloorRenderer());
         }
 
         public GameLayerEntityRenderer(PageGameViewModel viewModel)
@@ -41,19 +43,21 @@ namespace foxer.Pages
             var entites = cells.SelectMany(cell => _viewModel.Stage.GetEntitesInCell(cell.X, cell.Y));
             foreach (var entity in entites.OrderBy(GetDistanceToCamera))
             {
-                var renderer = _entityRenderers.FirstOrDefault(r => r.CanRender(entity));
-                if (renderer != null)
-                {
-                    var bounds = new RectangleF(
-                        (float)(entity.X - 0.7 * entity.Z),
-                        (float)(entity.Y - 0.7 * entity.Z),
-                        1, 1);
+                var bounds = new RectangleF(
+                    (float)(entity.X - 0.7 * entity.Z),
+                    (float)(entity.Y - 0.7 * entity.Z),
+                    1, 1);
 
-                    renderer.Render(
-                        canvas,
-                        entity,
-                        bounds);
-                }
+                RenderEntity(canvas, bounds, entity);
+            }
+        }
+
+        public void RenderEntity(INativeCanvas canvas, RectangleF bounds, EntityBase entity)
+        {
+            var renderer = _entityRenderers.FirstOrDefault(r => r.CanRender(entity));
+            if (renderer != null)
+            {
+                renderer.Render(canvas, entity, bounds);
             }
         }
 
