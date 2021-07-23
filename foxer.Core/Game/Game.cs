@@ -122,31 +122,6 @@ namespace foxer.Core.Game
             prevStage.Generate(new StageGeneratorArgs(rnd, doorsPrev.ToArray()));
         }
 
-        internal bool InteractWithCell(Point touchedCell)
-        {
-            if (Stage.ActiveEntity == null)
-            {
-                return true;
-            }
-
-            if(Stage.ActiveEntity?.Hand is IBuildableItem buildable
-                && buildable.CheckBuildDistance(Stage.ActiveEntity.Cell, touchedCell))
-            {
-                if(buildable.CheckBuildDistance(Stage.ActiveEntity.Cell, touchedCell)
-                    && buildable.CheckCanBuild(Stage, touchedCell.X, touchedCell.Y))
-                {
-                    Stage.AddEntity(buildable.Create(Stage, touchedCell.X, touchedCell.Y));
-                    Stage.InventoryManager.Remove(Stage.ActiveEntity.Hand);
-                    Stage.ActiveEntity.Hand = null;
-                }
-
-                return true;
-            }
-
-            Stage.ActiveEntity.SetWalkTarget(touchedCell);
-            return true;
-        }
-
         internal void LoadLevel(Stage stage, int x, int y)
         {
             _loadLevelArgs = new LoadLevelArgs(stage, x, y);

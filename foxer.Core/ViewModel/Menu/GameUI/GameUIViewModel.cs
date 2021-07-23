@@ -61,8 +61,21 @@ namespace foxer.Core.ViewModel.Menu
                     && buildable.CheckCanBuild(Stage, touchedCell.X, touchedCell.Y))
                 {
                     Stage.AddEntity(buildable.Create(Stage, touchedCell.X, touchedCell.Y));
-                    Stage.InventoryManager.Remove(Stage.ActiveEntity.Hand);
-                    Stage.ActiveEntity.Hand = null;
+
+                    if(Stage.ItemManager.CanStack(Stage.ActiveEntity.Hand))
+                    {
+                        Stage.ActiveEntity.Hand.Count--;
+                        if(Stage.ActiveEntity.Hand.Count == 0)
+                        {
+                            Stage.InventoryManager.Remove(Stage.ActiveEntity.Hand);
+                            Stage.ActiveEntity.Hand = null;
+                        }
+                    }
+                    else
+                    {
+                        Stage.InventoryManager.Remove(Stage.ActiveEntity.Hand);
+                        Stage.ActiveEntity.Hand = null;
+                    }
                 }
 
                 return true;

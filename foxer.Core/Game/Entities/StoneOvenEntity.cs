@@ -9,15 +9,4 @@ namespace foxer.Core.Game.Entities
         {
         }
     }
-
-    public class BuilderEntity : EntityBase
-    {
-        public IBuildableItem Item { get; }
-
-        public BuilderEntity(int x, int y, IBuildableItem item) 
-            : base(x, y)
-        {
-            Item = item;
-        }
-    }
 }
