@@ -33,7 +33,7 @@ namespace foxer.Core.Game.Items
             AddItemInfo<ItemStone>(true, (s, i) => new ItemStone(i));
             AddItemInfo<ItemWood>(true, (s, i) => new ItemWood(i));
 
-            // stations
+            // buldings
             AddItemInfo<ItemStoneOven>(false, (s, i) => new ItemStoneOven());
 
             // tools

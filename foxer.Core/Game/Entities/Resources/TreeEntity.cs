@@ -22,7 +22,7 @@ namespace foxer.Core.Game.Entities
         public SquirrelEntity Guest { get; set; }
 
         public TreeEntity(CellBase cell, int kind, uint age = 0)
-            : base(cell.X, cell.Y)
+            : base(cell.X, cell.Y, 0)
         {
             _ageMs = age * MS_TO_INCREASE_AGE;
             Kind = kind;

@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Animation;
+using foxer.Core.Game.Entities.Descriptors;
 using foxer.Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace foxer.Core.Game.Entities
 
         public double Y { get; set; }
 
-        public double Z { get; protected set; }
+        public float Z { get; protected set; }
 
         public PointF Location => new PointF((float)X, (float)Y);
 
@@ -40,7 +41,7 @@ namespace foxer.Core.Game.Entities
             ? _destroyAnimation = GetDestroyAnimation() 
             : _destroyAnimation;
 
-        protected EntityBase(int x, int y, int z = 1)
+        protected EntityBase(int x, int y, float z)
         {
             X = x;
             Y = y;
@@ -72,7 +73,7 @@ namespace foxer.Core.Game.Entities
 
         public virtual bool CanBeCreated(Stage stage, int x, int y)
         {
-            return stage.PathManager.CanBeCreated(this, x, y);
+            return stage.CanBePlaced(this, x, y);
         }
         
         public void ClearAnimation()

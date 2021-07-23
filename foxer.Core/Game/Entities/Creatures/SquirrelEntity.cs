@@ -35,7 +35,7 @@ namespace foxer.Core.Game.Entities
         public WaitingAnimation Idle { get; }
 
         public SquirrelEntity(int x, int y)
-             : base(x, y)
+             : base(x, y, 0)
         {
             Run = new MovingByPathAnimation(this, _runSpeedScalarCellPerMs);
             Hide = new WaitingAnimation(500, 2500);

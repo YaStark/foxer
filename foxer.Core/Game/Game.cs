@@ -1,6 +1,7 @@
 ﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Craft;
 using foxer.Core.Game.Entities;
+using foxer.Core.Game.Entities.Descriptors;
 using foxer.Core.Game.Generator;
 using foxer.Core.Game.Generator.StageGenerator;
 using foxer.Core.Game.Items;
@@ -18,7 +19,12 @@ namespace foxer.Core.Game
         public const int MAX_FAST_PANEL_SIZE = 4;
 
         private readonly DoorGenerator _doorGenerator = new DoorGenerator();
+        private readonly List<EntityDescriptorBase> _descriptors = new List<EntityDescriptorBase>();
+        private readonly Dictionary<Type, EntityDescriptorBase> _descriptorsByEntityType = new Dictionary<Type, EntityDescriptorBase>();
+
         private LoadLevelArgs _loadLevelArgs;
+
+        public IReadOnlyList<EntityDescriptorBase> Descriptors => _descriptors;
 
         public Stage Stage { get; set; }
 
@@ -40,6 +46,23 @@ namespace foxer.Core.Game
 
         public Game()
         {
+            AddDescriptor(new StoneOvenEntityDescriptor());
+
+            AddDescriptor(new BeeEntityDescriptor());
+            AddDescriptor(new SquirrelEntityDescriptor());
+            AddDescriptor(new PlayerEntityDescriptor());
+            AddDescriptor(new WolfEntityDescriptor());
+
+            AddDescriptor(new BubblesEntityDescriptor());
+            AddDescriptor(new FlowerEntityDescriptor());
+
+            AddDescriptor(new DroppedItemEntityDescriptor());
+
+            AddDescriptor(new GrassEntityDescriptor());
+            AddDescriptor(new StoneBigEntityDescriptor());
+            AddDescriptor(new StoneSmallEntityDescriptor());
+            AddDescriptor(new TreeEntityDescriptor());
+
             Inventory = new ItemBase[InventorySize.Width * InventorySize.Height + MAX_FAST_PANEL_SIZE];
             Inventory[10] = ItemManager.Create<ItemStone>(null, 16);
             Inventory[11] = ItemManager.Create<ItemStoneOven>(null);
@@ -122,6 +145,16 @@ namespace foxer.Core.Game
             prevStage.Generate(new StageGeneratorArgs(rnd, doorsPrev.ToArray()));
         }
 
+        public EntityDescriptorBase GetDescriptor(Type entityType)
+        {
+            if(_descriptorsByEntityType.TryGetValue(entityType, out var result))
+            {
+                return result;
+            }
+
+            return Fatal<EntityDescriptorBase>($"No descriptor found for entity type {entityType}");
+        }
+
         internal void LoadLevel(Stage stage, int x, int y)
         {
             _loadLevelArgs = new LoadLevelArgs(stage, x, y);
@@ -155,10 +188,17 @@ namespace foxer.Core.Game
             return (int)(Math.Min(0.75, Math.Max(random, 0.25)) * size);
         }
 
+        private void AddDescriptor<TEntity>(EntityDescriptor<TEntity> descriptor)
+            where TEntity : EntityBase
+        {
+            _descriptors.Add(descriptor);
+            _descriptorsByEntityType[typeof(TEntity)] = descriptor;
+        }
+
         private void Transit()
         {
             var player = Stage.ActiveEntity;
-            Stage.Entities.Remove(player);
+            Stage.RemoveEntity(player);
             Stage = _loadLevelArgs.Stage;
             player.ClearAnimation();
             player.X = _loadLevelArgs.X;
@@ -221,6 +261,13 @@ namespace foxer.Core.Game
         private bool CheckBounds(int x, int y, int size)
         {
             return x >= 0 && y >= 0 && x < size && y < size;
+        }
+
+        private T Fatal<T>(string message)
+        {
+            Debug.WriteLine("################### FATAL ERROR #######################");
+            Debug.WriteLine(message);
+            throw new Exception(message);
         }
     }
 }

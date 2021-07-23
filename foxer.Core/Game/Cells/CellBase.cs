@@ -33,8 +33,7 @@
         Floor,
         Water,
         Door,
-        Stair,
         Road,
-        Tree
+        Misc_Tree
     }
 }

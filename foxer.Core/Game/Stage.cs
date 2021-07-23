@@ -1,7 +1,10 @@
 ﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Entities;
+using foxer.Core.Game.Entities.Descriptors;
+using foxer.Core.Game.Entities.Stress;
 using foxer.Core.Game.Generator.StageGenerator;
 using foxer.Core.Game.Items;
+using foxer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -15,16 +18,17 @@ namespace foxer.Core.Game
 
         private static readonly Random _rnd = new Random();
         private readonly List<StageGeneratorBase> _generators = new List<StageGeneratorBase>();
-        private readonly List<EntityBase>[,] _entitesToCells;
-        private readonly List<EntityBase> _entitesToRemove = new List<EntityBase>();
-        private readonly List<EntityBase> _entitesToAdd = new List<EntityBase>();
         private readonly Game _game;
 
-        public IList<EntityBase> Entities { get; private set; }
+        private readonly List<EntityBase>[,] _entitesToCells;
+        private readonly Dictionary<Type, List<EntityBase>> _entitesByType = new Dictionary<Type, List<EntityBase>>();
+        private readonly List<EntityBase> _entitesToRemove = new List<EntityBase>();
+        private readonly List<EntityBase> _entitesToAdd = new List<EntityBase>();
+        private readonly List<EntityBase> _entites = new List<EntityBase>();
 
-        public LootManager LootManager { get; } = new LootManager();
+        public Random Rnd { get; } = new Random();
 
-        public EntityPathManager PathManager { get; }
+        public IReadOnlyList<EntityBase> Entities => _entites;
 
         public StressManager StressManager { get; }
 
@@ -45,9 +49,7 @@ namespace foxer.Core.Game
         public Stage(Game game, string name, int width, int height)
         {
             _game = game;
-            Entities = new List<EntityBase>();
-            PathManager = new EntityPathManager(this);
-            StressManager = new StressManager();
+            StressManager = new StressManager(_game.Descriptors);
             StageName = name;
             Width = width;
             Height = height;
@@ -70,7 +72,7 @@ namespace foxer.Core.Game
         public void Generate(StageGeneratorArgs args)
         {
             Cells = new CellBase[Width, Height];
-            foreach(var generator in _generators)
+            foreach (var generator in _generators)
             {
                 generator.Generate(this, args);
             }
@@ -80,8 +82,9 @@ namespace foxer.Core.Game
         {
             foreach(var entity in _entitesToRemove)
             {
-                Entities.Remove(entity);
+                _entites.Remove(entity);
                 _entitesToCells[entity.CellX, entity.CellY].Remove(entity);
+                _entitesByType[entity.GetType()].Remove(entity);
             }
 
             _entitesToRemove.Clear();
@@ -100,6 +103,11 @@ namespace foxer.Core.Game
             _entitesToAdd.Clear();
 
             StressManager.Update(this);
+        }
+
+        public EntityDescriptorBase GetDescriptor(Type entityType)
+        {
+            return _game.GetDescriptor(entityType);
         }
 
         public CellBase GetCell(int x, int y)
@@ -124,7 +132,7 @@ namespace foxer.Core.Game
                 return false;
             }
 
-            return PathManager.CanWalkBy(walker, x, y);
+            return CanBePlaced(walker, x, y);
         }
 
         internal void LoadLevel(CellDoor door)
@@ -141,43 +149,16 @@ namespace foxer.Core.Game
 
         public IEnumerable<TEntity> GetNearestEntitesByType<TEntity>(int x, int y, int count)
         {
-            int x0 = x;
-            int x1 = x;
-            int y0 = y;
-            int y1 = y;
-            List<TEntity> items = new List<TEntity>();
-            while (items.Count < count)
+            var entites = GetEntitesByType(typeof(TEntity));
+            if(entites.Any())
             {
-                for (int xi = x0; xi <= x1; xi++)
-                {
-                    items.AddRange(_entitesToCells[xi, y0].OfType<TEntity>());
-                    if (y1 != y0)
-                    {
-                        items.AddRange(_entitesToCells[xi, y1].OfType<TEntity>());
-                    }
-                }
-
-                for (int yj = y0 + 1; yj <= y1 - 1; yj++)
-                {
-                    items.AddRange(_entitesToCells[x0, yj].OfType<TEntity>());
-                    if (x1 != x0)
-                    {
-                        items.AddRange(_entitesToCells[x1, yj].OfType<TEntity>());
-                    }
-                }
-
-                x0 = Math.Max(0, x0 - 1);
-                y0 = Math.Max(0, y0 - 1);
-                x1 = Math.Min(Width - 1, x1 + 1);
-                y1 = Math.Min(Height - 1, y1 + 1);
-
-                if (x0 == 0 && y0 == 0 && x1 == Width - 1 && y1 == Height - 1)
-                {
-                    break;
-                }
+                var pt = new Point(x, y);
+                entites = entites.OrderBy(e => MathUtils.L1(pt, e.Cell));
+                if (entites.Count() <= count) return entites.Cast<TEntity>();
+                return entites.Take(count).Cast<TEntity>();
             }
 
-            return items;
+            return Enumerable.Empty<TEntity>();
         }
 
         public void RemoveEntity(EntityBase entity)
@@ -207,12 +188,45 @@ namespace foxer.Core.Game
         {
             if(entity.CanBeCreated(this, entity.CellX, entity.CellY))
             {
-                Entities.Add(entity);
+                _entites.Add(entity);
                 _entitesToCells[entity.CellX, entity.CellY].Add(entity);
+                var type = entity.GetType();
+                if (!_entitesByType.ContainsKey(type))
+                {
+                    _entitesByType[type] = new List<EntityBase>();
+                }
+                _entitesByType[type].Add(entity);
                 return true;
             }
 
             return false;
+        }
+
+        public IEnumerable<EntityBase> GetEntitesByType(Type entityType)
+        {
+            return _entitesByType.TryGetValue(entityType, out var result) 
+                ? result 
+                : Enumerable.Empty<EntityBase>();
+        }
+
+        public bool CanBePlaced(EntityBase entity, int x, int y)
+        {
+            return _game.GetDescriptor(entity.GetType()).CanBePlaced(this, entity, x, y, entity.Z);
+        }
+
+        public bool CanBeCreated(EntityBase entity, int x, int y)
+        {
+            return CanBePlaced(entity, x, y);
+        }
+
+        public bool CanBeCreated<T>(int x, int y, float z = 0)
+        {
+            return _game.GetDescriptor(typeof(T)).CanBePlaced(this, null, x, y, z);
+        }
+        
+        public ItemBase GetLoot(EntityBase entity)
+        {
+            return _game.GetDescriptor(entity.GetType()).GetLoot(this, entity);
         }
     }
 }

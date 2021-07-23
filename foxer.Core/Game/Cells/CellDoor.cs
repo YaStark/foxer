@@ -16,14 +16,7 @@
         
         private static CellKind GetCellKind(DoorKind doorKind)
         {
-            switch(doorKind)
-            {
-                case DoorKind.UpDown:
-                case DoorKind.DownUp:
-                    return CellKind.Stair;
-                default:
-                    return CellKind.Door;
-            }
+            return CellKind.Door;
         }
     }
 

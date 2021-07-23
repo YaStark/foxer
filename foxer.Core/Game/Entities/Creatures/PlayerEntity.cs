@@ -62,7 +62,7 @@ namespace foxer.Core.Game.Entities
         }
 
         public PlayerEntity(int x, int y)
-            : base(x, y)
+            : base(x, y, 0)
         {
             Walk = new MovingAnimation(this, _walkSpeedScalarCellPerMs, _walkSpeedScalarCellPerMs / 1.3f);
             Chop = new SimpleAnimation(2400);

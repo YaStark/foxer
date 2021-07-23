@@ -1,6 +1,4 @@
-﻿using foxer.Core.Game.Entities;
-using foxer.Core.Utils;
-using foxer.Core.ViewModel;
+﻿using foxer.Core.ViewModel;
 using foxer.Pages.Game.Menu;
 using foxer.Render;
 using System;

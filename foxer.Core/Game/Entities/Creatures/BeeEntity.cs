@@ -15,7 +15,7 @@ namespace foxer.Core.Game.Entities
         public MovingAnimation Fly { get; }
 
         public BeeEntity(int x, int y)
-             : base(x, y, 2)
+             : base(x, y, 0.5f)
         {
             Fly = new MovingAnimation(this, _flySpeedScalarCellPerMs);
             _escapeStressCellsBehavior = new EscapeStressCellsBehavior(this);

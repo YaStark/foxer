@@ -10,7 +10,7 @@ namespace foxer.Core.Game.Entities
         public WaitingAnimation Pause { get; }
 
         public BubblesEntity(CellBase cell)
-            : base(cell.X, cell.Y)
+            : base(cell.X, cell.Y, 0)
         {
             Bubble = new SimpleAnimation(1000);
             Pause = new WaitingAnimation(500, 5000);

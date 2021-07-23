@@ -13,7 +13,7 @@ namespace foxer.Core.Game.Entities
         public FollowingAnimation Gather { get; }
 
         public DroppedItemEntity(Point cell, ItemBase item) 
-            : base(cell.X, cell.Y)
+            : base(cell.X, cell.Y, 0)
         {
             Item = item;
             Gather = new FollowingAnimation(this, 0.01);

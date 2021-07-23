@@ -1,5 +1,4 @@
 ﻿using foxer.Core.Game.Cells;
-using System.Collections.Generic;
 
 namespace foxer.Core.Game.Entities
 {

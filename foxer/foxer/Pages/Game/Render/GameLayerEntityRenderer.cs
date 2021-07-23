@@ -44,17 +44,23 @@ namespace foxer.Pages
                 var renderer = _entityRenderers.FirstOrDefault(r => r.CanRender(entity));
                 if (renderer != null)
                 {
+                    var bounds = new RectangleF(
+                        (float)(entity.X - 0.7 * entity.Z),
+                        (float)(entity.Y - 0.7 * entity.Z),
+                        1, 1);
+
                     renderer.Render(
                         canvas,
                         entity,
-                        new RectangleF((float)entity.X, (float)entity.Y, 1, 1));
+                        bounds);
                 }
             }
         }
 
         private double GetDistanceToCamera(EntityBase entity)
         {
-            return entity.X + entity.Y + entity.Z;
+            double z = entity.Z * 4;
+            return entity.X + entity.Y + z;
         }
 
         public bool Touch(float x, float y)

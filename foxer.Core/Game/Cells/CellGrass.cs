@@ -5,7 +5,7 @@
         public CellBase SourceCell { get; }
 
         public CellGrass(CellBase sourceCell)
-            : base(CellKind.Tree, sourceCell.X, sourceCell.Y, false)
+            : base(CellKind.Misc_Tree, sourceCell.X, sourceCell.Y, false)
         {
             SourceCell = sourceCell;
             CanBuildRoad = true;

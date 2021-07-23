@@ -22,7 +22,7 @@ namespace foxer.Core.Game.Entities
         public EntityBodyState State { get; private set; } = EntityBodyState.Stand;
 
         public WolfEntity(int x, int y)
-            : base(x, y)
+            : base(x, y, 0)
         {
             Walk = new MovingByPathAnimation(this, SPEED_WALK, SPEED_ANIMATION_WALK);
             Idle = new WaitingAnimation(500, 5000);

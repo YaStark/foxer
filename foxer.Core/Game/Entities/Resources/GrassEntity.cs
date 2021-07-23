@@ -15,7 +15,7 @@ namespace foxer.Core.Game.Entities
         public bool CanGather => _ageMs >= MATURE_AGEMS;
 
         public GrassEntity(CellBase cell, int kind) 
-            : base(cell.X, cell.Y, 1)
+            : base(cell.X, cell.Y, 0)
         {
             Kind = kind;
             _ageMs = MATURE_AGEMS;
