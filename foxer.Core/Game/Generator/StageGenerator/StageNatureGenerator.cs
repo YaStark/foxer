@@ -76,7 +76,7 @@ namespace foxer.Core.Game.Generator.StageGenerator
         {
             var host = new WolfEntity(firstCell.X, firstCell.Y);
             var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2);
-            var cells = walker.Points.OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
+            var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
             foreach(var cell in cells)
             {
                 stage.TryCreateNow(new WolfEntity(cell.X, cell.Y));
@@ -87,7 +87,7 @@ namespace foxer.Core.Game.Generator.StageGenerator
         {
             var host = new SquirrelEntity(firstCell.X, firstCell.Y);
             var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2);
-            var cells = walker.Points.OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
+            var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
             foreach (var cell in cells)
             {
                 stage.TryCreateNow(new SquirrelEntity(cell.X, cell.Y));

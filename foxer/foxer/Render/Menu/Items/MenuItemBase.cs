@@ -50,7 +50,7 @@ namespace foxer.Render.Menu
             RenderSprite3x3(canvas, _background, _bgSpriteMask, bounds, cellSize);
         }
 
-        protected static void RenderSprite3x3(INativeCanvas canvas, byte[] image, RectangleF[,] spriteMask, RectangleF bounds, SizeF cellSize)
+        public static void RenderSprite3x3(INativeCanvas canvas, byte[] image, RectangleF[,] spriteMask, RectangleF bounds, SizeF cellSize)
         {
             var size2 = new SizeF(cellSize.Width * 0.5f, cellSize.Height * 0.5f);
 

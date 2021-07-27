@@ -49,6 +49,7 @@ namespace foxer.Core.Game
             AddDescriptor(new StoneOvenEntityDescriptor());
             AddDescriptor(new GrassWallEntityDescriptor());
             AddDescriptor(new GrassFloorEntityDescriptor());
+            AddDescriptor(new GrassRoofEntityDescriptor());
 
             AddDescriptor(new BeeEntityDescriptor());
             AddDescriptor(new SquirrelEntityDescriptor());
@@ -70,6 +71,7 @@ namespace foxer.Core.Game
             Inventory[11] = ItemManager.Create<ItemStoneOven>(null);
             Inventory[12] = ItemManager.Create<ItemGrassWall>(null, 16);
             Inventory[13] = ItemManager.Create<ItemGrassFloor>(null, 16);
+            Inventory[14] = ItemManager.Create<ItemGrassRoof>(null, 16);
 
             InventoryManager = new InventoryManager(this);
             PlayerHandsCrafter = new PlayerHandsCrafter(this);
@@ -205,11 +207,8 @@ namespace foxer.Core.Game
             Stage.RemoveEntity(player);
             Stage = _loadLevelArgs.Stage;
             player.ClearAnimation();
-            player.X = _loadLevelArgs.X;
-            player.Y = _loadLevelArgs.Y;
-            player.CellX = _loadLevelArgs.X;
-            player.CellY = _loadLevelArgs.Y;
-            _loadLevelArgs.Stage.TryCreateNow(player);
+            player.Teleport(Stage, _loadLevelArgs.X, _loadLevelArgs.Y, Stage.DefaultPlatform);
+            Stage.TryCreateNow(player);
         }
 
         private List<(int X, int Y)> CreatePath(int startX, int startY, int requiredDistance, Random rnd)

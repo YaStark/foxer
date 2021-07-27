@@ -8,11 +8,11 @@ namespace foxer.Core.Game.Animation
     public class MovingAnimation : EntityAnimation
     {
         public EntityBase Host { get; }
-        public double Speed { get; }
-        public double AnimationSpeed { get; }
+        public float Speed { get; }
+        public float AnimationSpeed { get; }
         public PointF Target { get; set; }
 
-        public MovingAnimation(EntityBase parent, double speed, double animationSpeed = 0)
+        public MovingAnimation(EntityBase parent, float speed, float animationSpeed = 0)
         {
             Host = parent;
             Speed = speed;
@@ -33,6 +33,8 @@ namespace foxer.Core.Game.Animation
                     yield break;
                 }
 
+                float x = Host.X;
+                float y = Host.Y;
                 var delta = Speed * args.DelayMs;
                 Progress += AnimationSpeed * args.DelayMs;
                 if (Progress > 1)
@@ -45,43 +47,46 @@ namespace foxer.Core.Game.Animation
                 {
                     if (delta > Math.Abs(Host.X - walkTarget.X))
                     {
-                        lastOffset.X = (float)(Host.X - walkTarget.X);
-                        Host.X = walkTarget.X;
+                        lastOffset.X = Host.X - walkTarget.X;
+                        x = walkTarget.X;
                         readyX = true;
                     }
                     else
                     {
-                        lastOffset.X = (float)(signX * delta);
-                        Host.X += signX * delta;
+                        lastOffset.X = signX * delta;
+                        x += signX * delta;
                     }
-
-                    Host.CellX = (int)Host.X;
                 }
 
                 if (!readyY)
                 {
                     if (delta > Math.Abs(Host.Y - walkTarget.Y))
                     {
-                        lastOffset.Y = (float)(Host.Y - walkTarget.Y);
-                        Host.Y = walkTarget.Y;
+                        lastOffset.Y = Host.Y - walkTarget.Y;
+                        y = walkTarget.Y;
                         readyY = true;
                     }
                     else
                     {
-                        lastOffset.Y = (float)(signY * delta);
-                        Host.Y += signY * delta;
+                        lastOffset.Y = signY * delta;
+                        y += signY * delta;
                     }
-
-                    Host.CellY = (int)Host.Y;
                 }
 
                 if(!readyX || !readyY)
                 {
+                    if(!Host.TryMoveXY(args.Stage, x, y))
+                    {
+                        break;
+                    }
+
                     UpdateRotation(Host, walkTarget);
                 }
 
                 yield return this;
             }
+
+            Progress = 0;
         }
 
         private void UpdateRotation(EntityBase entity, PointF target)

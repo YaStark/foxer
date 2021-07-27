@@ -111,7 +111,6 @@ namespace foxer.Core.Utils
             }
 
             return result;
-
         }
     }
 }

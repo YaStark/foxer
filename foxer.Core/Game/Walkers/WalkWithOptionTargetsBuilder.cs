@@ -12,12 +12,12 @@ namespace foxer.Core.Game
             EntityBase host, 
             ICellWeightProvider weightProvider, 
             ICellAccessibleProvider accessibleProvider,
-            params Point[] targets)
+            params IWalkBuilderCell[] targets)
         {
             Point[] path = null;
-            foreach(var pt in targets)
+            foreach(var target in targets)
             {
-                var path0 = new WalkBuilder(stage, host, weightProvider, accessibleProvider, pt).Path;
+                var path0 = new WalkBuilder(stage, host, weightProvider, accessibleProvider, target).GetPath();
                 if (path0 == null) continue;
                 else if (path == null) path = path0;
                 else if (path.Length > path0.Length) path = path0;
@@ -44,7 +44,12 @@ namespace foxer.Core.Game
             EntityBase entity = null;
             foreach (var target in targets)
             {
-                var path0 = new WalkBuilder(stage, host, weightProvider, accessibleProvider, target.Cell).Path;
+                var path0 = new WalkBuilder(
+                    stage, 
+                    host, 
+                    weightProvider, 
+                    accessibleProvider,
+                    new WalkCell(target.Cell, stage.GetPlatform(target))).GetPath();
                 if (path0 == null) continue;
                 else if (path == null || path.Length > path0.Length)
                 {

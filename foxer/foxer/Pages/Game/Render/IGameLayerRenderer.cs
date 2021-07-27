@@ -7,7 +7,7 @@ namespace foxer.Pages
     public interface IGameLayerRenderer
     {
         void Render(INativeCanvas canvas, IEnumerable<Point> cells);
-        bool Touch(float x, float y);
+        bool Touch(float x, float y, Rectangle viewportBounds);
         bool Enabled { get; }
     }
 }

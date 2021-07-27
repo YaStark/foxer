@@ -6,10 +6,11 @@
         {
             if (args.PlayerSpawnLocation != null)
             {
-                stage.ActiveEntity.X = args.PlayerSpawnLocation.Value.X;
-                stage.ActiveEntity.Y = args.PlayerSpawnLocation.Value.Y;
-                stage.ActiveEntity.CellX = args.PlayerSpawnLocation.Value.X;
-                stage.ActiveEntity.CellY = args.PlayerSpawnLocation.Value.Y;
+                stage.ActiveEntity.Teleport(
+                    stage, 
+                    args.PlayerSpawnLocation.Value.X, 
+                    args.PlayerSpawnLocation.Value.Y, 
+                    stage.DefaultPlatform);
                 stage.TryCreateNow(stage.ActiveEntity);
             }
         }

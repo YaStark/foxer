@@ -1,4 +1,6 @@
-﻿using foxer.Core.Game.Entities;
+﻿using foxer.Core.Game;
+using foxer.Core.Game.Entities;
+using foxer.Core.Utils;
 using foxer.Core.ViewModel;
 using foxer.Render;
 using System.Collections.Generic;
@@ -31,6 +33,7 @@ namespace foxer.Pages
             _entityRenderers.Add(new GrassRenderer());
             _entityRenderers.Add(new GrassWallRenderer());
             _entityRenderers.Add(new GrassFloorRenderer());
+            _entityRenderers.Add(new GrassRoofRenderer());
         }
 
         public GameLayerEntityRenderer(PageGameViewModel viewModel)
@@ -67,9 +70,34 @@ namespace foxer.Pages
             return entity.X + entity.Y + z;
         }
 
-        public bool Touch(float x, float y)
+        public bool Touch(float x, float y, Rectangle viewportBounds)
         {
-            return _viewModel.ProcessClickOnEntityLayer(x, y);
+            return new Raycast(TestHit).Touch(x, y, viewportBounds)
+                || _viewModel.ProcessClickOnEntityLayer((int)x, (int)y, null);
+        }
+
+        private bool TestHit(Point cell, float z0, float z1)
+        {
+            foreach(var entity in _viewModel.Stage.GetEntitesInCell(cell.X, cell.Y).OrderByDescending(e => e.Z))
+            {
+                // z0---z1---e0---e1 -
+                // z0---e0---z1---e1 +
+                // z0---e0---e1---z1 +
+                // e0---z0---e1---z1 +
+                // e0---e1---z0---z1 -
+
+                if (entity.UseHitbox() 
+                    && z1 >= entity.Z 
+                    && entity.Z + entity.GetHeight() >= z0)
+                {
+                    if (_viewModel.ProcessClickOnEntityLayer(entity.CellX, entity.CellY, entity))
+                    {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
         }
     }
 }

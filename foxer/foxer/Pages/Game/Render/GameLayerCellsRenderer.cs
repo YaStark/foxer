@@ -55,7 +55,7 @@ namespace foxer.Pages
             }
         }
 
-        public bool Touch(float x, float y)
+        public bool Touch(float x, float y, Rectangle viewportBounds)
         {
             return false;
         }

@@ -42,5 +42,15 @@ namespace foxer.Core.Game.Entities
             Guest?.RunAway();
             StartAnimation(Shake.Coroutine);
         }
+
+        public override bool UseHitbox()
+        {
+            return true;
+        }
+
+        public override float GetHeight()
+        {
+            return Age >= AGE_LARGE ? 2 : 1;
+        }
     }
 }

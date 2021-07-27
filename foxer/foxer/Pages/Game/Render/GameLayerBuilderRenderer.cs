@@ -42,8 +42,15 @@ namespace foxer.Pages
                 }
 
                 var cellBounds = new RectangleF(point.X, point.Y, 1, 1);
-                if (hand.CheckCanBuild(_viewModel.Stage, point.X, point.Y))
+                var topPlatform = hand.GetTopPlatform(_viewModel.Stage, point.X, point.Y);
+                if (hand.CheckCanBuild(_viewModel.Stage, point.X, point.Y, topPlatform.Level))
                 {
+                    cellBounds = new RectangleF(
+                        cellBounds.Left - topPlatform.Level * 0.7f,
+                        cellBounds.Top - topPlatform.Level * 0.7f,
+                        cellBounds.Width, 
+                        cellBounds.Height);
+
                     canvas.DrawImage(_imageCellOk, cellBounds);
                     var previewItem = hand.CreatePreviewItem(origin.X, origin.Y, point.X, point.Y);
                     if(previewItem != null)
@@ -59,9 +66,33 @@ namespace foxer.Pages
             }
         }
 
-        public bool Touch(float x, float y)
+        public bool Touch(float x, float y, Rectangle viewportBounds)
         {
-            return _viewModel.ProcessClickOnBuildableLayer(x, y);
+            return new Raycast(TestHit).Touch(x, y, viewportBounds)
+                || _viewModel.ProcessClickOnBuildableLayer((int)x, (int)y, null);
+        }
+
+        private bool TestHit(Point cell, float z0, float z1)
+        {
+            var hand = _viewModel.Hand as IBuildableItem;
+            if (hand == null)
+            {
+                return false;
+            }
+
+            if (!hand.CheckBuildDistance(_viewModel.ActiveEntity.Cell, cell))
+            {
+                return false;
+            }
+
+            var platform = hand.GetTopPlatform(_viewModel.Stage, cell.X, cell.Y);
+            if(platform != null && platform.Level <= z1 && platform.Level >= z0)
+            {
+                _viewModel.ProcessClickOnBuildableLayer(cell.X, cell.Y, platform);
+                return true;
+            }
+
+            return false;
         }
     }
 }

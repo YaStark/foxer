@@ -3,6 +3,7 @@ using foxer.Core.Game.Entities.Stress;
 using foxer.Core.Game.Items;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 namespace foxer.Core.Game.Entities.Descriptors
@@ -20,19 +21,24 @@ namespace foxer.Core.Game.Entities.Descriptors
             Kind = kind;
         }
 
-        public bool CanBePlaced(Stage stage, EntityBase entity, int x, int y, float z)
+        public bool CanBePlaced(Stage stage, EntityBase entity, int x, int y, IPlatform platform)
         {
             var cell = stage.GetCell(x, y);
             if (cell == null || cell.Kind == CellKind.Bound)
             {
                 return false;
             }
+            
+            if(!stage.CheckRoomZOnPlatform(entity, x, y, platform))
+            {
+                return false;
+            }
 
-            var entites = stage.GetEntitesInCell(x, y).Where(e => e != entity);
-            return OnCanBePlaced(stage, cell, entites, z);
+            var entites = stage.GetEntitesOnPlatform(x, y, platform).Where(e => e != entity);
+            return OnCanBePlaced(stage, cell, entites, platform);
         }
 
-        protected virtual bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, float z)
+        protected virtual bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
         {
             return !entites.Any(e => !stage.GetDescriptor(e.GetType()).CheckCanOtherBePlacedHere(this));
         }

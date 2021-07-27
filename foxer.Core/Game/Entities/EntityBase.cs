@@ -13,19 +13,19 @@ namespace foxer.Core.Game.Entities
         private bool _destroying = false;
         private Coroutine<EntityAnimation, EntityCoroutineArgs> _coroutine = new Coroutine<EntityAnimation, EntityCoroutineArgs>();
 
-        public int CellX { get; set; }
+        public int CellX { get; private set; }
 
-        public int CellY { get; set; }
+        public int CellY { get; private set; }
 
         public Point Cell => new Point(CellX, CellY);
 
         public Point PreviousFrameCell { get; private set; }
 
-        public double X { get; set; }
+        public float X { get; private set; }
 
-        public double Y { get; set; }
+        public float Y { get; private set; }
 
-        public float Z { get; set; }
+        public float Z { get; private set; }
 
         public PointF Location => new PointF((float)X, (float)Y);
 
@@ -71,11 +71,26 @@ namespace foxer.Core.Game.Entities
         {
         }
 
-        public virtual bool CanBeCreated(Stage stage, int x, int y)
+        public virtual bool CanBeCreated(Stage stage, int x, int y, IPlatform platform)
         {
-            return stage.CanBePlaced(this, x, y);
+            return stage.CanBePlaced(this, x, y, platform);
         }
         
+        public virtual bool UseHitbox()
+        {
+            return true;
+        }
+
+        public virtual float GetHeight()
+        {
+            return 1f;
+        }
+
+        public virtual float GetMaxClimbHeight(Stage stage)
+        {
+            return 0.25f;
+        }
+
         public void ClearAnimation()
         {
             _coroutine.Stop();
@@ -86,7 +101,45 @@ namespace foxer.Core.Game.Entities
             _destroying = true;
             StartAnimation(Destroy.Coroutine);
         }
-        
+
+        public bool TryMoveXY(Stage stage, float x, float y)
+        {
+            int cellX = (int)Math.Round(x);
+            int cellY = (int)Math.Round(y);
+            if (CellX != cellX || CellY != cellY)
+            {
+                var prevPlatform = stage.GetLowerPlatform(this, CellX, CellY, Z + 0.01f);
+                var newPlatform = stage.GetPlatformOnTransit(this, Cell, new Point(cellX, cellY), prevPlatform);
+                if (newPlatform == null)
+                {
+                    return false;
+                }
+
+                Z = newPlatform.Level;
+            }
+
+            CellX = cellX;
+            CellY = cellY;
+            X = x;
+            Y = y;
+            return true;
+        }
+
+        public bool Teleport(Stage stage, float x, float y, IPlatform platform)
+        {
+            CellX = (int)Math.Round(x);
+            CellY = (int)Math.Round(y);
+            X = x;
+            Y = y;
+            Z = platform.Level;
+            return true;
+        }
+
+        public void MoveZ(float z)
+        {
+            Z = z;
+        }
+
         protected virtual EntityAnimation GetDestroyAnimation()
         {
             return new SimpleAnimation(1);

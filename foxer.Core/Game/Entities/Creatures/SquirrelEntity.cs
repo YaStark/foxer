@@ -11,10 +11,9 @@ namespace foxer.Core.Game.Entities
     {
         private class WalkCellAccessibleProvider : ICellAccessibleProvider
         {
-            public bool CanWalk(Stage stage, EntityBase entity, int x, int y)
+            public bool CanWalk(Stage stage, EntityBase entity, int x, int y, IPlatform platform)
             {
-                return stage.CheckCanStandOnCell(entity, x, y)
-                    && stage.StressManager.GetStressLevelInCell(entity, x, y) <= 0;
+                return stage.StressManager.GetStressLevelInCell(entity, x, y) <= 0;
             }
         }
 
@@ -41,6 +40,11 @@ namespace foxer.Core.Game.Entities
             Hide = new WaitingAnimation(500, 2500);
             Idle = new WaitingAnimation(500, 2500);
             _escapeStressCellsBehavior = new EscapeStressCellsBehavior(this);
+        }
+
+        public override float GetHeight()
+        {
+            return 0.4f;
         }
 
         protected override void OnUpdate(Stage stage, uint timeMs)
@@ -78,7 +82,8 @@ namespace foxer.Core.Game.Entities
 
         private bool CheckOtherSquirrelsInCell(Stage stage)
         {
-            return stage.GetEntitesInCell(CellX, CellY)
+            var platform = stage.GetPlatform(this);
+            return stage.GetEntitesOnPlatform(CellX, CellY, platform)
                         .Any(x => x is SquirrelEntity squirrel
                         && squirrel != this
                         && squirrel.ActiveAnimation == squirrel.Idle);
@@ -110,8 +115,8 @@ namespace foxer.Core.Game.Entities
         {
             // идет закапывать желудь или есть его на полянку
             var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 10);
-            var lawnCells = walkBuilder.Points
-                    .Where(pt => !stage.GetEntitesInCell(pt.X, pt.Y).Any(e => e is TreeEntity))
+            var lawnCells = walkBuilder.GetPoints()
+                    .Where(pt => !stage.GetEntitesOnPlatform(pt.X, pt.Y, pt.Platform).Any(e => e is TreeEntity))
                     .Where(pt => stage.StressManager.GetStressLevelInCell(this, pt.X, pt.Y) <= 0);
             if (!lawnCells.Any())
             {
@@ -119,7 +124,7 @@ namespace foxer.Core.Game.Entities
             }
 
             Run.Targets = walkBuilder.BuildWalkPath(lawnCells
-                .OrderBy(pt => MathUtils.L1(pt, Cell) + _rnd.Next(-5, 6))
+                .OrderBy(cell => MathUtils.L1(cell.Cell, Cell) + _rnd.Next(-5, 6))
                 .First());
 
             if(Run.Targets == null)
@@ -187,7 +192,9 @@ namespace foxer.Core.Game.Entities
 
         private IEnumerable<EntityAnimation> HideIfTreeIsThere(EntityCoroutineArgs arg) // todo сделать внешний метод
         {
-            if(arg.Stage.GetEntitesInCell(CellX, CellY).Any(e => e is TreeEntity tree && CanHideInTree(tree)))
+            if(arg.Stage
+                .GetEntitesOnPlatform(CellX, CellY, arg.Stage.GetPlatform(this))
+                .Any(e => e is TreeEntity tree && CanHideInTree(tree)))
             {
                 foreach (var item in Hide.Coroutine(arg))
                 {
@@ -207,19 +214,20 @@ namespace foxer.Core.Game.Entities
         {
             var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 5);
             var target = walkBuilder
-                .Points
-                ?.OrderByDescending(pt => MathUtils.L1(pt, awarePoint))
+                .GetPoints()
+                ?.OrderByDescending(cell => MathUtils.L1(cell.Cell, awarePoint))
                 .FirstOrDefault();
 
-            if (!target.HasValue)
+            if (target == null)
             {
                 StartAnimation(Idle.Coroutine);
                 return;
             }
 
-            Run.Targets = walkBuilder.BuildWalkPath(target.Value);
+            Run.Targets = walkBuilder.BuildWalkPath(target);
             if (Run.Targets != null)
             {
+
                 StartAnimation(Run.Coroutine, Idle.Coroutine);
             }
         }

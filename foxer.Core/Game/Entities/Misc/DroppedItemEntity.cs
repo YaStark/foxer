@@ -18,7 +18,7 @@ namespace foxer.Core.Game.Entities
             : base(cell.X, cell.Y, 0)
         {
             Item = item;
-            Gather = new FollowingAnimation(this, 0.01);
+            Gather = new FollowingAnimation(this, 0.01f);
             Idle = new ZMovingAnimation(this, 1600, 0.1f);
         }
 
@@ -43,6 +43,11 @@ namespace foxer.Core.Game.Entities
                         BeginDestroy();
                     }
                 }));
+        }
+
+        public override float GetHeight()
+        {
+            return 0.2f;
         }
     }
 }

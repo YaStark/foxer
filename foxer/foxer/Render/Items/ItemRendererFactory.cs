@@ -19,6 +19,7 @@ namespace foxer.Render.Items
             Add(new SimpleItemRenderer<ItemGrass>(Properties.Resources.icon_grass));
             Add(new SimpleItemRenderer<ItemGrassWall>(Properties.Resources.icon_grass_wall));
             Add(new SimpleItemRenderer<ItemGrassFloor>(Properties.Resources.icon_grass_floor));
+            Add(new SimpleItemRenderer<ItemGrassRoof>(Properties.Resources.icon_grass_roof));
         }
 
         public IItemRenderer GetRenderer(ItemBase item)

@@ -17,15 +17,22 @@ namespace foxer.Core.Game
         private const double MAX_TREES_ON_LVL_RATE = 0.3;
 
         private static readonly Random _rnd = new Random();
+
         private readonly List<StageGeneratorBase> _generators = new List<StageGeneratorBase>();
         private readonly Game _game;
 
         private readonly List<EntityBase>[,] _entitesToCells;
+        private readonly List<IPlatform>[,] _platforms;
         private readonly Dictionary<Type, List<EntityBase>> _entitesByType = new Dictionary<Type, List<EntityBase>>();
+
         private readonly List<EntityBase> _entitesToRemove = new List<EntityBase>();
         private readonly List<EntityBase> _entitesToAdd = new List<EntityBase>();
         private readonly List<EntityBase> _entites = new List<EntityBase>();
         private readonly List<IWall> _walls = new List<IWall>();
+
+        public WalkBuilderFieldFactory WalkBuilderFieldFactory { get; }
+
+        public IPlatform DefaultPlatform { get; } = new DefaultStagePlatform();
 
         public Random Rnd { get; } = new Random();
 
@@ -40,7 +47,7 @@ namespace foxer.Core.Game
         public int Width { get; }
 
         public int Height { get; }
-
+        
         public PlayerEntity ActiveEntity => _game.ActiveEntity;
 
         public string StageName { get; }
@@ -51,12 +58,22 @@ namespace foxer.Core.Game
         {
             _game = game;
             StressManager = new StressManager(_game.Descriptors);
+            WalkBuilderFieldFactory = new WalkBuilderFieldFactory(width, height);
             StageName = name;
             Width = width;
             Height = height;
 
             _entitesToCells = new List<EntityBase>[Width, Height];
-            for (int i = 0; i < Width; i++) for (int j = 0; j < Height; j++) _entitesToCells[i, j] = new List<EntityBase>();
+            _platforms = new List<IPlatform>[Width, Height];
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    _entitesToCells[i, j] = new List<EntityBase>();
+                    _platforms[i, j] = new List<IPlatform>();
+                    _platforms[i, j].Add(DefaultPlatform);
+                }
+            }
 
             _generators.Add(new StageBoundsGenerator());
             _generators.Add(new StageFloorGenerator());
@@ -68,6 +85,36 @@ namespace foxer.Core.Game
             _generators.Add(new StageRocksGenerator());
             _generators.Add(new StagePlayerGenerator());
             _generators.Add(new StageNatureGenerator());
+        }
+
+        public IPlatform GetLowerPlatform(EntityBase entity, int x, int y, float z)
+        {
+            var list = _platforms[x, y];
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                if(!list[i].Active(this) 
+                    || !list[i].CanSupport(entity))
+                {
+                    continue;
+                }
+
+                if (list[i].Level <= z)
+                {
+                    return list[i];
+                }
+            }
+
+            return DefaultPlatform;
+        }
+
+        public IPlatform GetTopPlatform(EntityBase entity, int x, int y)
+        {
+            return _platforms[x, y].Where(p => p.CanSupport(entity)).Last();
+        }
+
+        public IPlatform GetPlatform(EntityBase target)
+        {
+            return GetLowerPlatform(target, target.CellX, target.CellY, target.Z + 0.01f);
         }
 
         public void Generate(StageGeneratorArgs args)
@@ -91,6 +138,11 @@ namespace foxer.Core.Game
                 {
                     _walls.Remove(wall);
                 }
+
+                if(entity is IPlatform platform)
+                {
+                    _platforms[entity.CellX, entity.CellY].Remove(platform);
+                }
             }
 
             _entitesToRemove.Clear();
@@ -109,6 +161,7 @@ namespace foxer.Core.Game
             _entitesToAdd.Clear();
 
             StressManager.Update(this);
+            WalkBuilderFieldFactory.Update(this);
         }
 
         public EntityDescriptorBase GetDescriptor(Type entityType)
@@ -131,18 +184,58 @@ namespace foxer.Core.Game
             return i >= 0 && i < Width && j >= 0 && j < Height;
         }
 
-        public bool CheckCanStandOnCell(EntityBase walker, int x, int y)
+        public IPlatform GetPlatformOnTransit(EntityBase walker, Point from, Point to, IPlatform platformFrom)
         {
-            if (!CheckArrayBounds(x, y))
+            if (!CheckArrayBounds(from.X, from.Y)
+                || IsWallBetweeen(from, to))
             {
-                return false;
+                return null;
+            }
+            
+            // ensure can climb
+            var maxClimbHeight = walker.GetMaxClimbHeight(this);
+            for (int i = 0; i < _platforms[to.X, to.Y].Count; i++)
+            {
+                var platform = _platforms[to.X, to.Y][i];
+                if (platform.CanSupport(walker)
+                    && platform.Active(this)
+                    && Math.Abs(platform.Level - platformFrom.Level) <= maxClimbHeight
+                    && CanBePlaced(walker, to.X, to.Y, platform))
+                {
+                    return platform;
+                }
+            }
+            
+            return null;
+        }
+
+        public bool CheckRoomZOnPlatform(EntityBase entity, int x, int y, IPlatform platform)
+        {
+            for (int i = _platforms[x, y].IndexOf(platform) + 1; i < _platforms[x, y].Count; i++)
+            {
+                if(!_platforms[x,y][i].IsColliderFor(entity.GetType()))
+                {
+                    continue;
+                }
+
+                return _platforms[x, y][i].Z - platform.Level > entity.GetHeight();
             }
 
-            return CanBePlaced(walker, x, y);
+            return true;
+        }
+
+        public bool CheckCanWalkToCell(EntityBase walker, Point to)
+        {
+            return null != GetPlatformOnTransit(
+                walker, 
+                walker.Cell, 
+                to,
+                GetPlatform(walker));
         }
 
         public bool IsWallBetweeen(Point a, Point b)
         {
+            // todo platforms
             return _walls.Any(w => w.Active(this) && (w.Cell == a) && w.GetTransitPreventionTarget() == b)
                 || _walls.Any(w => w.Active(this) && (w.Cell == b) && w.GetTransitPreventionTarget() == a);
         }
@@ -157,6 +250,20 @@ namespace foxer.Core.Game
             return CheckArrayBounds(x, y) 
                 ? _entitesToCells[x, y] 
                 : Enumerable.Empty<EntityBase>();
+        }
+
+        public IEnumerable<EntityBase> GetEntitesOnPlatform(int x, int y, IPlatform platform)
+        {
+            var i = _platforms[x, y].IndexOf(platform);
+            if(i == _platforms[x, y].Count - 1)
+            {
+                return _entitesToCells[x, y].Where(e => e != platform && e.Z >= platform.Z);
+            }
+            else
+            {
+                var nextPlatformZ = _platforms[x, y][i + 1].Z;
+                return _entitesToCells[x, y].Where(e => e != platform && e.Z >= platform.Z && e.Z < nextPlatformZ);
+            }
         }
 
         public IEnumerable<TEntity> GetNearestEntitesByType<TEntity>(int x, int y, int count)
@@ -197,7 +304,7 @@ namespace foxer.Core.Game
 
         internal bool TryCreateNow(EntityBase entity)
         {
-            if (!entity.CanBeCreated(this, entity.CellX, entity.CellY))
+            if (!entity.CanBeCreated(this, entity.CellX, entity.CellY, GetPlatform(entity)))
             {
                 return false;
             }
@@ -210,11 +317,28 @@ namespace foxer.Core.Game
             {
                 _entitesByType[type] = new List<EntityBase>();
             }
+
             _entitesByType[type].Add(entity);
 
             if (entity is IWall wall)
             {
                 _walls.Add(wall);
+            }
+
+            if (entity is IPlatform platform)
+            {
+                if (!_platforms[entity.CellX, entity.CellY].Any(p => p.Z > platform.Z))
+                {
+                    _platforms[entity.CellX, entity.CellY].Add(platform);
+                }
+
+                for (int i = 0; i < _platforms[entity.CellX, entity.CellY].Count; i++)
+                {
+                    if(_platforms[entity.CellX, entity.CellY][i].Z > platform.Z)
+                    {
+                        _platforms[entity.CellX, entity.CellY].Insert(i, platform);
+                    }
+                }
             }
 
             return true;
@@ -227,21 +351,11 @@ namespace foxer.Core.Game
                 : Enumerable.Empty<EntityBase>();
         }
 
-        public bool CanBePlaced(EntityBase entity, int x, int y)
+        public bool CanBePlaced(EntityBase entity, int x, int y, IPlatform platform)
         {
-            return _game.GetDescriptor(entity.GetType()).CanBePlaced(this, entity, x, y, entity.Z);
+            return _game.GetDescriptor(entity.GetType()).CanBePlaced(this, entity, x, y, platform);
         }
 
-        public bool CanBeCreated(EntityBase entity, int x, int y)
-        {
-            return CanBePlaced(entity, x, y);
-        }
-
-        public bool CanBeCreated<T>(int x, int y, float z = 0)
-        {
-            return _game.GetDescriptor(typeof(T)).CanBePlaced(this, null, x, y, z);
-        }
-        
         public ItemBase GetLoot(EntityBase entity)
         {
             return _game.GetDescriptor(entity.GetType()).GetLoot(this, entity);

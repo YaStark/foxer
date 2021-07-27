@@ -8,11 +8,11 @@ namespace foxer.Core.Game.Animation
         private readonly EntityBase _parent;
         private readonly MovingAnimation _moving;
 
-        public double Speed { get; }
-        public double AnimationSpeed { get; }
+        public float Speed { get; }
+        public float AnimationSpeed { get; }
         public EntityBase Target { get; set; }
 
-        public FollowingAnimation(EntityBase parent, double speed, double animationSpeed = 0)
+        public FollowingAnimation(EntityBase parent, float speed, float animationSpeed = 0)
         {
             _parent = parent;
             Speed = speed;

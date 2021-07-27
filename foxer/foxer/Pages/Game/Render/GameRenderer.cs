@@ -28,10 +28,11 @@ namespace foxer.Pages
 
         public void Draw(INativeCanvas canvas)
         {
+            canvas.DrawRectangle(new RectangleF(PointF.Empty, canvas.Size), Color.SkyBlue);
             canvas.Save();
 
-            RectangleF viewport = _vm.GetViewPort(canvas.Size);
             var size = canvas.Size;
+            RectangleF viewport = _vm.GetViewPort(size);
             var sx = size.Width / viewport.Width;
             var sy = size.Height / viewport.Height;
             var scale = Math.Min(sx, sy);
@@ -76,10 +77,15 @@ namespace foxer.Pages
                 return true;
             }
 
+            RectangleF viewport = _vm.GetViewPort(size);
             var touchedCell = ConvertTouchToCell(pt, size);
+            var fieldModel = _vm.GetStageField();
+            var center = new PointF(viewport.X + viewport.Width / 2, viewport.Y + viewport.Height / 2);
+            var rBounds = GetRenderableBounds(size, center, viewport, fieldModel.GetLength(0), fieldModel.GetLength(1));
+
             for (int i = _layers.Count - 1; i >= 0; i--)
             {
-                if (_layers[i].Touch(touchedCell.X, touchedCell.Y))
+                if (_layers[i].Touch(touchedCell.X, touchedCell.Y, rBounds))
                 {
                     return true;
                 }
@@ -93,15 +99,15 @@ namespace foxer.Pages
             _layers.Add(renderer);
         }
 
-        private Point ConvertTouchToCell(PointF pt, SizeF size)
+        private PointF ConvertTouchToCell(PointF pt, SizeF size)
         {
             RectangleF viewport = _vm.GetViewPort(size);
             var scale = Math.Min(size.Width / viewport.Width, size.Height / viewport.Height);
             var x0 = pt.X - size.Width / 2;
             var y0 = pt.Y - size.Height / 2;
-            return new Point(
-                (int)(MATH_COS_45 * (x0 + y0) / scale + viewport.Width / 2 + viewport.X),
-                (int)(MATH_COS_45 * (y0 - x0) / scale + viewport.Height / 2 + viewport.Y));
+            return new PointF(
+                MATH_COS_45 * (x0 + y0) / scale + viewport.Width / 2 + viewport.X,
+                MATH_COS_45 * (y0 - x0) / scale + viewport.Height / 2 + viewport.Y);
         }
 
         private static bool CheckCellVisibility(float i, float j, PointF viewportCenter, RectangleF viewport)
@@ -115,10 +121,11 @@ namespace foxer.Pages
 
         private Rectangle GetRenderableBounds(SizeF canvasSize, PointF viewportCenter, RectangleF viewport, int width, int height)
         {
-            var x0 = ConvertTouchToCell(new PointF(0, 0), canvasSize).X;
-            var x1 = ConvertTouchToCell(new PointF(canvasSize.Width, canvasSize.Height), canvasSize).X;
-            var y0 = ConvertTouchToCell(new PointF(canvasSize.Width, 0), canvasSize).Y;
-            var y1 = ConvertTouchToCell(new PointF(0, canvasSize.Height), canvasSize).Y;
+            // todo optimize
+            var x0 = (int)ConvertTouchToCell(new PointF(0, 0), canvasSize).X;
+            var x1 = (int)ConvertTouchToCell(new PointF(canvasSize.Width, canvasSize.Height), canvasSize).X;
+            var y0 = (int)ConvertTouchToCell(new PointF(canvasSize.Width, 0), canvasSize).Y;
+            var y1 = (int)ConvertTouchToCell(new PointF(0, canvasSize.Height), canvasSize).Y;
             return Rectangle.FromLTRB(
                 Math.Min(width - 1, Math.Max(0, Math.Min(x0, x1))),
                 Math.Min(height - 1, Math.Max(0, Math.Min(y0, y1))),

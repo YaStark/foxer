@@ -23,5 +23,10 @@ namespace foxer.Core.Game.Entities
                 StartAnimation(Pause.Coroutine, Bubble.Coroutine);
             }
         }
+
+        public override bool UseHitbox()
+        {
+            return false;
+        }
     }
 }

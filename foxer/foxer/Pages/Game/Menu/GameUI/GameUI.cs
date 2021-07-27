@@ -13,13 +13,13 @@ namespace foxer.Pages.Game.Menu
             // + + + + + + + + + + + F   I + + + + + + +
             // + + + + + + + + + + + F   K + + + + + + +
             // + + + + + + + + + + + F   + + + + + + + +
-            // + + + + + + + + + + + F   + + + + + + + +
-            // + + + + + + + + + + + +   + + + + + + + +
-            // + + + + + + + + + + + +   + + + + + + + +
-            // + + + + + + + + + + + +   + + + + + + + +
-            //                           + + + + + + + +
-            //                           + + + + + + + +
-            //                           + + + + + + + +
+            // R R R + + + + + + + + F   + + + + + + + +
+            // R R R + + + + + + + + +   + + + + + + + +
+            // R R R + + + + + + + + +   + + + + + + + +
+            // + + + B B B B + + + + +   + + + + + + + +
+            //                           + + + + + R R R
+            //                           + + + + + R R R
+            //                           + + + + + R R R
             //                           W F F F F + + +
 
             BeginCreateCell(new MenuButton(viewModel.CommandOptions, Properties.Resources.icon_menu)) // M
@@ -33,6 +33,9 @@ namespace foxer.Pages.Game.Menu
 
             BeginCreateCell(new WalkMenuItem(viewModel))
                 .SetDefaultLayout(12, 0).SetTransponedLayout(0, 12).End(); // W
+
+            BeginCreateCell(new EntityRotationMenuItem(viewModel))
+                .SetDefaultLayout(0, 4, 3, 3).SetTransponedLayout(5, 8, 3, 3).End();
 
             for (int i = 0; i < viewModel.FastPanel.Length; i++)
             {

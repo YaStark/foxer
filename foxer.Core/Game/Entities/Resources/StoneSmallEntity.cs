@@ -14,5 +14,10 @@ namespace foxer.Core.Game.Entities
         {
             Kind = kind;
         }
+
+        public override bool UseHitbox()
+        {
+            return false;
+        }
     }
 }

@@ -10,9 +10,10 @@ namespace foxer.Core.Game.Entities
         {
         }
 
-        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, float z)
+        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
         {
-            return cell?.Kind == CellKind.Water;
+            return platform == stage.DefaultPlatform
+                && cell?.Kind == CellKind.Water;
         }
     }
 }

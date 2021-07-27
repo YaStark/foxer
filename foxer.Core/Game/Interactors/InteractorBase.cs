@@ -25,16 +25,19 @@ namespace foxer.Core.Game.Interactors
         protected static Point[] GetPathToItem(EntityBase walker, EntityBase target, Stage stage)
         {
             // todo set distance
-            var pts = target.Cell.Nearest4()
-                .Where(pt => stage.CheckCanStandOnCell(walker, pt.X, pt.Y))
+            var targetPlatform = stage.GetPlatform(target);
+            var cells = target.Cell.Nearest4()
+                // transit from target cell to nearest4 cells
+                .Select(pt => new WalkCell(pt, stage.GetPlatformOnTransit(walker, target.Cell, pt, targetPlatform)))
+                .Where(cell => cell.Platform != null)
                 .ToArray();
 
-            if (!pts.Any())
+            if (!cells.Any())
             {
                 return null;
             }
 
-            return new WalkWithOptionTargetsBuilder(stage, walker, null, null, pts).ShortestPath;
+            return new WalkWithOptionTargetsBuilder(stage, walker, null, null, cells).ShortestPath;
         }
     }
 }

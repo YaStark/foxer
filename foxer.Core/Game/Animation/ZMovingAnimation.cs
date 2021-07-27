@@ -25,18 +25,16 @@ namespace foxer.Core.Game.Animation
             {
                 if (args.CancellationToken.IsCancellationRequested)
                 {
-                    Host.Z = initialZ;
-                    yield break;
+                    break;
                 }
-
 
                 duration -= (int)args.DelayMs;
                 Progress = Math.Min(1, Math.Max(0, 1 - (double)duration / DurationMs));
-                Host.Z = initialZ + DeltaZ * (1 - (float)Math.Cos(Progress * Math.PI * 2));
+                Host.MoveZ(initialZ + DeltaZ * (1 - (float)Math.Cos(Progress * Math.PI * 2)));
                 yield return this;
             }
 
-            Host.Z = initialZ;
+            Host.MoveZ(initialZ);
             Progress = 0;
         }
     }

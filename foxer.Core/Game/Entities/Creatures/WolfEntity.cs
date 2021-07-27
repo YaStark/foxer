@@ -9,8 +9,8 @@ namespace foxer.Core.Game.Entities
 {
     public class WolfEntity : EntityBase
     {
-        private const double SPEED_WALK = 0.001;
-        private const double SPEED_ANIMATION_WALK = SPEED_WALK * 2;
+        private const float SPEED_WALK = 0.001f;
+        private const float SPEED_ANIMATION_WALK = SPEED_WALK * 2;
         private const double PROB_SIT_AFTER_RND_WALK = 0.5;
         private static readonly Random _rnd = new Random();
 
@@ -39,10 +39,10 @@ namespace foxer.Core.Game.Entities
             }
 
             var randomWalkBuilder = new RandomWalkBuilder(stage, null, null, this, 5);
-            var target = randomWalkBuilder.Points
-                .OrderBy(x => MathUtils.L1(Cell, x) + _rnd.Next(5))
+            var target = randomWalkBuilder.GetPoints()
+                .OrderBy(x => MathUtils.L1(Cell, x.Cell) + _rnd.Next(5))
                 .FirstOrDefault();
-            if(target != default(Point))
+            if(target != null)
             {
                 Walk.Targets = randomWalkBuilder.BuildWalkPath(target);
                 StartAnimation(

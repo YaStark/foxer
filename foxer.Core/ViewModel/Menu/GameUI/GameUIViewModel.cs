@@ -1,6 +1,7 @@
 ﻿using foxer.Core.Game;
 using foxer.Core.Game.Entities;
 using foxer.Core.Game.Items;
+using System;
 using System.Drawing;
 
 namespace foxer.Core.ViewModel.Menu
@@ -35,6 +36,18 @@ namespace foxer.Core.ViewModel.Menu
             ViewModel.ActiveEntity.WalkMode = false;
         }
 
+        public bool ShowRotationPanel()
+        {
+            return ActiveEntity?.Hand is IBuildableItem item
+                && item.UseRotation();
+        }
+
+        public void SetItemRotation(int angle)
+        {
+            var item = ActiveEntity?.Hand as IBuildableItem;
+            item?.RotatePreview(angle);
+        }
+
         public void SetWalkMode()
         {
             ViewModel.ActiveEntity.WalkMode = true;
@@ -46,7 +59,7 @@ namespace foxer.Core.ViewModel.Menu
             return false;
         }
 
-        public bool ProcessClickOnBuildableLayer(float x, float y)
+        public bool ProcessClickOnBuildableLayer(float x, float y, IPlatform platform)
         {
             if (Stage == null)
             {
@@ -54,13 +67,17 @@ namespace foxer.Core.ViewModel.Menu
             }
 
             var touchedCell = new Point((int)x, (int)y);
-            if (Stage.ActiveEntity?.Hand is IBuildableItem buildable
-                && buildable.CheckBuildDistance(Stage.ActiveEntity.Cell, touchedCell))
+            if(platform == null)
             {
-                if (buildable.CheckBuildDistance(Stage.ActiveEntity.Cell, touchedCell)
-                    && buildable.CheckCanBuild(Stage, touchedCell.X, touchedCell.Y))
+                platform = Stage.DefaultPlatform;
+            }
+
+            if (Stage.ActiveEntity?.Hand is IBuildableItem buildable
+                && buildable.CheckBuildDistance(Stage.ActiveEntity.Cell, touchedCell)) // todo check by Z too
+            {
+                if (buildable.CheckCanBuild(Stage, touchedCell.X, touchedCell.Y, platform.Level))
                 {
-                    Stage.AddEntity(buildable.Create(Stage, touchedCell.X, touchedCell.Y));
+                    Stage.AddEntity(buildable.Create(Stage, touchedCell.X, touchedCell.Y, platform.Level));
 
                     if(Stage.ItemManager.CanStack(Stage.ActiveEntity.Hand))
                     {

@@ -9,11 +9,11 @@ namespace foxer.Core.Game.Animation
         private readonly MovingAnimation _movingAnimation;
         private readonly EntityBase _parent;
 
-        public double Speed => _movingAnimation.Speed;
-        public double AnimationSpeed => _movingAnimation.AnimationSpeed;
+        public float Speed => _movingAnimation.Speed;
+        public float AnimationSpeed => _movingAnimation.AnimationSpeed;
         public Point[] Targets { get; set; }
 
-        public MovingByPathAnimation(EntityBase parent, double speed, double animationSpeed = 0)
+        public MovingByPathAnimation(EntityBase parent, float speed, float animationSpeed = 0)
         {
             _movingAnimation = new MovingAnimation(parent, speed, animationSpeed);
             _parent = parent;

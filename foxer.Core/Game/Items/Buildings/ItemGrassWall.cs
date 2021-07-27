@@ -1,38 +1,19 @@
-﻿using System.Drawing;
-using foxer.Core.Game.Entities;
-using foxer.Core.Utils;
+﻿using foxer.Core.Game.Entities;
+using System.Linq;
 
 namespace foxer.Core.Game.Items
 {
-    public class ItemGrassWall : ItemBase, IBuildableItem
+    public class ItemGrassWall : BuildableItemBase<GrassWallEntity>
     {
         public ItemGrassWall(int count)
         {
             Count = count;
         }
 
-        public bool CheckBuildDistance(Point player, Point target)
+        protected override EntityBase CreateEntity(int x0, int y0, int x, int y, bool preview)
         {
-            return MathUtils.L2(player, target) < 1.5;
-        }
-
-        public bool CheckCanBuild(Stage stage, int x, int y)
-        {
-            return stage.GetCell(x, y)?.Kind == Cells.CellKind.Floor
-                && stage.CanBeCreated<GrassWallEntity>(x, y);
-        }
-
-        public EntityBase Create(Stage stage, int x, int y)
-        {
-            var wall = new GrassWallEntity(x, y);
-            wall.Rotation = GeomUtils.GetAngle90(stage.ActiveEntity.Cell, wall.Cell);
-            return wall;
-        }
-
-        public EntityBase CreatePreviewItem(int x0, int y0, int x, int y)
-        {
-            var wall = new GrassWallEntity(x, y);
-            wall.Rotation = GeomUtils.GetAngle90(new Point(x0, y0), wall.Cell);
+            var wall = new GrassWallEntity(x, y, 0);
+            wall.Rotation = Rotation;
             return wall;
         }
     }

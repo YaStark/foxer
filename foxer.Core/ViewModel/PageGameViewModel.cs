@@ -9,7 +9,6 @@ using foxer.Core.Utils;
 using foxer.Core.ViewModel.Menu;
 using foxer.Core.ViewModel.Menu.Craft;
 using System.Drawing;
-using System.Windows.Input;
 
 namespace foxer.Core.ViewModel
 {
@@ -91,8 +90,8 @@ namespace foxer.Core.ViewModel
             {
                 float side2 = side1 * canvasSize.Height / canvasSize.Width;
                 return new RectangleF(
-                    (float)_game.Stage.ActiveEntity.X - side1 / 2,
-                    (float)_game.Stage.ActiveEntity.Y - side2 / 2,
+                    _game.Stage.ActiveEntity.X - side1 / 2,
+                    _game.Stage.ActiveEntity.Y - side2 / 2,
                     side1,
                     side2);
             }
@@ -100,17 +99,35 @@ namespace foxer.Core.ViewModel
             {
                 float side2 = side1 * canvasSize.Width / canvasSize.Height;
                 return new RectangleF(
-                    (float)_game.Stage.ActiveEntity.X - side2 / 2,
-                    (float)_game.Stage.ActiveEntity.Y - side1 / 2,
+                    _game.Stage.ActiveEntity.X - side2 / 2,
+                    _game.Stage.ActiveEntity.Y - side1 / 2,
                     side2,
                     side1);
             }
         }
 
-        public bool ProcessClickOnEntityLayer(float x, float y)
+        public bool ProcessClickOnEntityLayer(int x, int y, EntityBase entity)
         {
-            ActiveEntity?.SetWalkTarget(new Point((int)x, (int)y));
-            return true;
+            if(entity == null)
+            {
+                ActiveEntity.SetWalkTarget(Stage, x, y, Stage.DefaultPlatform);
+                return true;
+            }
+
+            if (Stage == null
+                || ActiveEntity.TryInteract(Stage, entity))
+            {
+                return true;
+            }
+
+            if(entity is IPlatform platform 
+                && platform.CanSupport(ActiveEntity))
+            {
+                ActiveEntity.SetWalkTarget(Stage, x, y, platform);
+                return true;
+            }
+
+            return false;
         }
 
         public void Update(uint delayMs)

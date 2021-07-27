@@ -1,17 +1,21 @@
 ﻿namespace foxer.Core.Game.Entities
 {
-    public class GrassFloorEntity : EntityBase, IPlatform
+    public class GrassFloorEntity : PlatformEntityBase
     {
-        public GrassFloorEntity(int x, int y)
-            : base(x, y, 0)
+        public GrassFloorEntity(int x, int y, float z)
+            : base(x, y, z)
         {
         }
 
-        public float Level => Z + 0.2f;
-
-        public bool Active(Stage stage)
+        public override float GetHeight()
         {
-            return true;
+            return 0.2f;
+        }
+
+        public override bool CanSupport(EntityBase entity)
+        {
+            return !(entity is GrassFloorEntity)
+                && !(entity is GrassRoofEntity);
         }
     }
 }

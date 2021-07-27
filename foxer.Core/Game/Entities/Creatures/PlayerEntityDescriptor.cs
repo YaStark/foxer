@@ -10,12 +10,21 @@ namespace foxer.Core.Game.Entities
         {
         }
 
-        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, float z)
+        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
         {
-            if(!base.OnCanBePlaced(stage, cell, entites, z)) return false;
-            return cell.Kind == CellKind.Door
-                || cell.Kind == CellKind.Floor
-                || cell.Kind == CellKind.Road;
+            if (!base.OnCanBePlaced(stage, cell, entites, platform))
+            {
+                return false;
+            }
+
+            if(platform == stage.DefaultPlatform)
+            {
+                return cell.Kind == CellKind.Door
+                    || cell.Kind == CellKind.Floor
+                    || cell.Kind == CellKind.Road;
+            }
+
+            return true;
         }
     }
 }

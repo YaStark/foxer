@@ -15,12 +15,23 @@ namespace foxer.Core.Game.Entities
         public MovingAnimation Fly { get; }
 
         public BeeEntity(int x, int y)
-             : base(x, y, 0.5f)
+             : base(x, y, 0)
         {
             Fly = new MovingAnimation(this, _flySpeedScalarCellPerMs);
             _escapeStressCellsBehavior = new EscapeStressCellsBehavior(this);
         }
 
+        public void BeginEscape(Point[] targets)
+        {
+            Fly.Target = targets.Last();
+            StartAnimation(Fly.Coroutine);
+        }
+
+        public override bool UseHitbox()
+        {
+            return false;
+        }
+        
         protected override void OnUpdate(Stage stage, uint timeMs)
         {
             if(_escapeStressCellsBehavior.OnUpdate(this, stage, timeMs))
@@ -63,12 +74,6 @@ namespace foxer.Core.Game.Entities
                     target0.Y + (float)_rnd.NextDouble() - 0.5f);
                 counter--;
             }
-        }
-
-        public void BeginEscape(Point[] targets)
-        {
-            Fly.Target = targets.Last();
-            StartAnimation(Fly.Coroutine);
         }
     }
 }

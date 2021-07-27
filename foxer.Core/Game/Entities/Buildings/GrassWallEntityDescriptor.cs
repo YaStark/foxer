@@ -1,26 +1,33 @@
-﻿using System.Collections.Generic;
-using foxer.Core.Game.Cells;
+﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Entities.Descriptors;
+using System.Collections.Generic;
 
 namespace foxer.Core.Game.Entities
 {
     public class GrassWallEntityDescriptor : EntityDescriptor<GrassWallEntity>
     {
-        public GrassWallEntityDescriptor() 
+        public GrassWallEntityDescriptor()
             : base(EntityKind.BigItem)
         {
         }
 
-        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, float z)
+        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
         {
-            return base.OnCanBePlaced(stage, cell, entites, z)
-                && cell.Kind == CellKind.Floor;
+            if(!base.OnCanBePlaced(stage, cell, entites, platform))
+            {
+                return false;
+            }
+
+            if(platform == stage.DefaultPlatform)
+            {
+                return cell.Kind == CellKind.Floor;
+            }
+
+            return true;
         }
 
         protected override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
         {
-            // todo other walls?
-            // todo зависит от текущей сущности - если напр. постройка слишком высока
             return true;
         }
     }
