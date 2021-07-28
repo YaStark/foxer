@@ -18,7 +18,7 @@ namespace foxer.Core.Game.Entities
             {
                 float baseWeight = 100;
                 float weight = baseWeight;
-                weight += stage.GetEntitesOnPlatform(x, y, platform).Count() * baseWeight / 10;
+                weight += stage.GetOverlappedEntites(entity, x, y, platform.Level).Count() * baseWeight / 10;
                 return (int)weight;
             }
         }
@@ -73,7 +73,7 @@ namespace foxer.Core.Game.Entities
 
         public override float GetHeight()
         {
-            return 1.7f;
+            return 1.45f;
         }
 
         protected override void OnUpdate(Stage stage, uint timeMs)

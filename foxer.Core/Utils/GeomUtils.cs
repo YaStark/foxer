@@ -51,11 +51,11 @@ namespace foxer.Core.Utils
         public static RectangleF[,] SplitOnCells(RectangleF bounds, int width, int height, float relMargin = 0.05f)
         {
             var result = new RectangleF[width, height];
-            float cellSizeW = (bounds.Width / width - relMargin) / (1 + relMargin);
+            float cellSizeW = (bounds.Width / width - relMargin) / (1 + relMargin); 
             float cellSizeH = (bounds.Height / height - relMargin) / (1 + relMargin);
             int cellSize = (int)Math.Min(cellSizeW, cellSizeH);
-            float gapX = (bounds.Width - cellSize * width) / (width - 1);
-            float gapY = (bounds.Height - cellSize * height) / (height - 1);
+            float gapX = width > 1 ? (bounds.Width - cellSize * width) / (width - 1) : 0;
+            float gapY = height > 1 ? (bounds.Height - cellSize * height) / (height - 1) : 0;
             Size cellSizeX = new Size(cellSize, cellSize);
             for (int i = 0; i < width; i++)
             {

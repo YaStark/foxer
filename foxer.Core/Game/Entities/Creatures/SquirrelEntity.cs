@@ -82,11 +82,7 @@ namespace foxer.Core.Game.Entities
 
         private bool CheckOtherSquirrelsInCell(Stage stage)
         {
-            var platform = stage.GetPlatform(this);
-            return stage.GetEntitesOnPlatform(CellX, CellY, platform)
-                        .Any(x => x is SquirrelEntity squirrel
-                        && squirrel != this
-                        && squirrel.ActiveAnimation == squirrel.Idle);
+            return stage.GetOverlappedEntites(this).Any(e => e is SquirrelEntity);
         }
 
         private bool Feed(Stage stage)
@@ -116,7 +112,7 @@ namespace foxer.Core.Game.Entities
             // идет закапывать желудь или есть его на полянку
             var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 10);
             var lawnCells = walkBuilder.GetPoints()
-                    .Where(pt => !stage.GetEntitesOnPlatform(pt.X, pt.Y, pt.Platform).Any(e => e is TreeEntity))
+                    .Where(pt => !stage.GetOverlappedEntites(this, pt.Cell.X, pt.Cell.Y, pt.Platform.Level).Any(e => e is TreeEntity))
                     .Where(pt => stage.StressManager.GetStressLevelInCell(this, pt.X, pt.Y) <= 0);
             if (!lawnCells.Any())
             {
@@ -192,9 +188,7 @@ namespace foxer.Core.Game.Entities
 
         private IEnumerable<EntityAnimation> HideIfTreeIsThere(EntityCoroutineArgs arg) // todo сделать внешний метод
         {
-            if(arg.Stage
-                .GetEntitesOnPlatform(CellX, CellY, arg.Stage.GetPlatform(this))
-                .Any(e => e is TreeEntity tree && CanHideInTree(tree)))
+            if(arg.Stage.GetOverlappedEntites(this).Any(e => e is TreeEntity tree && CanHideInTree(tree)))
             {
                 foreach (var item in Hide.Coroutine(arg))
                 {

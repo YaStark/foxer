@@ -11,12 +11,15 @@ namespace foxer.Core.Utils
 {
     public static class GameUtils
     {
+        /// <summary>
+        /// Order: left - top - right - bottom
+        /// </summary>
         public static Point[] Nearest4(this Point source)
         {
             return new[] {
-                new Point(source.X + 1, source.Y),
                 new Point(source.X - 1, source.Y),
                 new Point(source.X, source.Y - 1),
+                new Point(source.X + 1, source.Y),
                 new Point(source.X, source.Y + 1)
             };
         }

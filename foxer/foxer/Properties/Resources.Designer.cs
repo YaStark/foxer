@@ -583,16 +583,6 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] grass_wall {
-            get {
-                object obj = ResourceManager.GetObject("grass_wall", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
         internal static byte[] icon_cancel {
             get {
                 object obj = ResourceManager.GetObject("icon_cancel", resourceCulture);
@@ -653,6 +643,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_grass_door {
+            get {
+                object obj = ResourceManager.GetObject("icon_grass_door", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_grass_floor {
             get {
                 object obj = ResourceManager.GetObject("icon_grass_floor", resourceCulture);
@@ -676,6 +676,16 @@ namespace foxer.Properties {
         internal static byte[] icon_grass_wall {
             get {
                 object obj = ResourceManager.GetObject("icon_grass_wall", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] icon_grass_window {
+            get {
+                object obj = ResourceManager.GetObject("icon_grass_window", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -893,9 +903,59 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] sprite_grass_door {
+            get {
+                object obj = ResourceManager.GetObject("sprite_grass_door", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] sprite_grass_roof {
             get {
                 object obj = ResourceManager.GetObject("sprite_grass_roof", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_grass_roof_inner {
+            get {
+                object obj = ResourceManager.GetObject("sprite_grass_roof_inner", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_grass_roof_outer {
+            get {
+                object obj = ResourceManager.GetObject("sprite_grass_roof_outer", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_grass_wall {
+            get {
+                object obj = ResourceManager.GetObject("sprite_grass_wall", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_grass_window {
+            get {
+                object obj = ResourceManager.GetObject("sprite_grass_window", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -956,16 +1016,6 @@ namespace foxer.Properties {
         internal static byte[] sprite_stones_small {
             get {
                 object obj = ResourceManager.GetObject("sprite_stones_small", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] sprite_wall {
-            get {
-                object obj = ResourceManager.GetObject("sprite_wall", resourceCulture);
                 return ((byte[])(obj));
             }
         }

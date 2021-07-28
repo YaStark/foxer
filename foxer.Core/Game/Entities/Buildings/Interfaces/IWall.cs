@@ -4,10 +4,12 @@ namespace foxer.Core.Game.Entities
 {
     public interface IWall
     {
+        int Rotation { get; }
+
         Point Cell { get; }
 
         bool Active(Stage stage);
 
-        Point GetTransitPreventionTarget();
+        bool CanTransit(Point to);
     }
 }

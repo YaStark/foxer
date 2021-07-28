@@ -19,14 +19,15 @@ namespace foxer.Core.Game.Items
 
         public bool CheckCanBuild(Stage stage, int x, int y, float z)
         {
-            return OnCheckCanBuild(stage, x, y, z);
-        }
-
-        protected virtual bool OnCheckCanBuild(Stage stage, int x, int y, float z)
-        {
             var entity = CreatePreviewItem(stage.ActiveEntity.CellX, stage.ActiveEntity.CellY, x, y);
             var platform = stage.GetLowerPlatform(entity, x, y, z + 0.01f);
-            return stage.CanBePlaced(entity, x, y, platform);
+            return stage.CanBePlaced(entity, x, y, platform)
+                && OnCheckCanBuild(stage, x, y, platform);
+        }
+
+        protected virtual bool OnCheckCanBuild(Stage stage, int x, int y, IPlatform platform)
+        {
+            return true;
         }
 
         public EntityBase Create(Stage stage, int x, int y, float z)

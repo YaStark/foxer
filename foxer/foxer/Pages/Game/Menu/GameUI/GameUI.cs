@@ -34,8 +34,11 @@ namespace foxer.Pages.Game.Menu
             BeginCreateCell(new WalkMenuItem(viewModel))
                 .SetDefaultLayout(12, 0).SetTransponedLayout(0, 12).End(); // W
 
-            BeginCreateCell(new EntityRotationMenuItem(viewModel))
+            BeginCreateCell(new EntityRotationMenuItem(viewModel)) // R
                 .SetDefaultLayout(0, 4, 3, 3).SetTransponedLayout(5, 8, 3, 3).End();
+
+            BeginCreateCell(new BuildingOptionsMenuItem(viewModel, 4))
+                .SetDefaultLayout(3, 7, 4, 1).SetTransponedLayout(7, 3, 1, 4).End();
 
             for (int i = 0; i < viewModel.FastPanel.Length; i++)
             {

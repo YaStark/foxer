@@ -17,9 +17,4 @@ namespace foxer.Core.Game.Items
         bool UseRotation();
         void RotatePreview(int angle360);
     }
-
-    public interface IBuildableItemOption
-    {
-        void Apply();
-    }
 }

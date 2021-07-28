@@ -15,9 +15,9 @@ namespace foxer.Core.Game
 
         public WalkBuilderCell Bottom { get => LTRB[3]; set => LTRB[3] = value; }
 
-        public int X { get; }
+        public int X => Cell.X;
 
-        public int Y { get; }
+        public int Y => Cell.Y;
 
         public Point Cell { get; }
 
@@ -27,8 +27,6 @@ namespace foxer.Core.Game
 
         public WalkBuilderCell(Point pt, int weight)
         {
-            X = pt.X;
-            Y = pt.Y;
             Cell = pt;
             Weight = weight;
         }

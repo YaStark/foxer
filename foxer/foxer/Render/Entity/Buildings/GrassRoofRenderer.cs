@@ -7,13 +7,32 @@ namespace foxer.Render
 {
     public class GrassRoofRenderer : EntityRendererBase<GrassRoofEntity>
     {
-        private static readonly RotatingSpriteRendererHelper _rotate = new RotatingSpriteRendererHelper(
+        private static readonly RotatingSpriteRendererHelper _common = new RotatingSpriteRendererHelper(
             Properties.Resources.sprite_grass_roof, 4);
+
+        private static readonly RotatingSpriteRendererHelper _outer = new RotatingSpriteRendererHelper(
+            Properties.Resources.sprite_grass_roof_outer, 4);
+
+        private static readonly RotatingSpriteRendererHelper _inner = new RotatingSpriteRendererHelper(
+            Properties.Resources.sprite_grass_roof_inner, 4);
 
         protected override void Render(INativeCanvas canvas, GrassRoofEntity entity, RectangleF bounds)
         {
             bounds = GeomUtils.Deflate(bounds, -bounds.Width / 2, -bounds.Height / 2);
-            _rotate.Render(canvas, bounds, entity.Rotation);
+            switch(entity.RoofKind)
+            {
+                case RoofKind.Common:
+                    _common.Render(canvas, bounds, entity.Rotation);
+                    return;
+
+                case RoofKind.Inner:
+                    _inner.Render(canvas, bounds, entity.Rotation);
+                    return;
+
+                case RoofKind.Outer:
+                    _outer.Render(canvas, bounds, entity.Rotation);
+                    return;
+            }
         }
     }
 }

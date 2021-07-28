@@ -643,14 +643,8 @@
   <data name="grass_floor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\buildings\grass_floor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="grass_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\buildings\grass_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="icon_grass_floor" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\items\icon_grass_floor.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="sprite_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\buildings\sprite_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="icon_grass_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\items\icon_grass_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -660,5 +654,26 @@
   </data>
   <data name="icon_grass_roof" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\items\icon_grass_roof.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_grass_door" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_grass_door.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_grass_window" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_grass_window.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_grass_door" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\sprite_grass_door.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_grass_roof_outer" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\sprite_grass_roof_outer.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_grass_wall" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\sprite_grass_wall.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_grass_window" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\sprite_grass_window.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_grass_roof_inner" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\buildings\sprite_grass_roof_inner.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

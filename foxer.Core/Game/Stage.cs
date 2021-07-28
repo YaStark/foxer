@@ -40,6 +40,8 @@ namespace foxer.Core.Game
 
         public StressManager StressManager { get; }
 
+        public RoofKindManager RoofKindManager { get; }
+
         public ItemManager ItemManager => _game.ItemManager;
 
         public CellBase[,] Cells { get; private set; }
@@ -56,6 +58,8 @@ namespace foxer.Core.Game
 
         public Stage(Game game, string name, int width, int height)
         {
+            RoofKindManager = new RoofKindManager(this);
+
             _game = game;
             StressManager = new StressManager(_game.Descriptors);
             WalkBuilderFieldFactory = new WalkBuilderFieldFactory(width, height);
@@ -143,6 +147,8 @@ namespace foxer.Core.Game
                 {
                     _platforms[entity.CellX, entity.CellY].Remove(platform);
                 }
+
+                RoofKindManager.OnRemove(entity);
             }
 
             _entitesToRemove.Clear();
@@ -235,9 +241,8 @@ namespace foxer.Core.Game
 
         public bool IsWallBetweeen(Point a, Point b)
         {
-            // todo platforms
-            return _walls.Any(w => w.Active(this) && (w.Cell == a) && w.GetTransitPreventionTarget() == b)
-                || _walls.Any(w => w.Active(this) && (w.Cell == b) && w.GetTransitPreventionTarget() == a);
+            return _walls.Any(w => w.Active(this) && (w.Cell == a) && !w.CanTransit(b))
+                || _walls.Any(w => w.Active(this) && (w.Cell == b) && !w.CanTransit(a));
         }
 
         internal void LoadLevel(CellDoor door)
@@ -252,18 +257,29 @@ namespace foxer.Core.Game
                 : Enumerable.Empty<EntityBase>();
         }
 
-        public IEnumerable<EntityBase> GetEntitesOnPlatform(int x, int y, IPlatform platform)
+        public IEnumerable<EntityBase> GetOverlappedEntites(EntityBase entity)
         {
-            var i = _platforms[x, y].IndexOf(platform);
-            if(i == _platforms[x, y].Count - 1)
-            {
-                return _entitesToCells[x, y].Where(e => e != platform && e.Z >= platform.Z);
-            }
-            else
-            {
-                var nextPlatformZ = _platforms[x, y][i + 1].Z;
-                return _entitesToCells[x, y].Where(e => e != platform && e.Z >= platform.Z && e.Z < nextPlatformZ);
-            }
+            return GetOverlappedEntites(entity, entity.CellX, entity.CellY, entity.Z);
+        }
+
+        public IEnumerable<EntityBase> GetOverlappedEntites(EntityBase entity, int x, int y, float z)
+        {
+            return GetOverlappedEntites(x, y, z, entity.GetHeight()).Where(e => e != entity);
+        }
+
+        public IEnumerable<EntityBase> GetOverlappedEntites(int x, int y, float z, float height)
+        {
+            return GetEntitesInCell(x, y).Where(e => z <= e.Z + e.GetHeight() && e.Z <= z + height);
+        }
+
+        public IEnumerable<TEntity> GetOverlappedEntites<TEntity>(EntityBase entity, Point cell, float z)
+            where TEntity : EntityBase
+        {
+            return GetEntitesInCell(cell.X, cell.Y)
+                .OfType<TEntity>()
+                .Where(e => e != entity
+                    && z < e.Z + e.GetHeight()
+                    && e.Z < z + entity.GetHeight());
         }
 
         public IEnumerable<TEntity> GetNearestEntitesByType<TEntity>(int x, int y, int count)
@@ -331,16 +347,20 @@ namespace foxer.Core.Game
                 {
                     _platforms[entity.CellX, entity.CellY].Add(platform);
                 }
-
-                for (int i = 0; i < _platforms[entity.CellX, entity.CellY].Count; i++)
+                else
                 {
-                    if(_platforms[entity.CellX, entity.CellY][i].Z > platform.Z)
+                    for (int i = 0; i < _platforms[entity.CellX, entity.CellY].Count; i++)
                     {
-                        _platforms[entity.CellX, entity.CellY].Insert(i, platform);
+                        if (_platforms[entity.CellX, entity.CellY][i].Z > platform.Z)
+                        {
+                            _platforms[entity.CellX, entity.CellY].Insert(i, platform);
+                            break;
+                        }
                     }
                 }
             }
 
+            RoofKindManager.OnAdd(entity);
             return true;
         }
 

@@ -34,8 +34,11 @@ namespace foxer.Core.Game.Entities.Descriptors
                 return false;
             }
 
-            var entites = stage.GetEntitesOnPlatform(x, y, platform).Where(e => e != entity);
-            return OnCanBePlaced(stage, cell, entites, platform);
+            return OnCanBePlaced(
+                stage, 
+                cell,
+                stage.GetOverlappedEntites(entity, x, y, platform.Level), 
+                platform);
         }
 
         protected virtual bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
