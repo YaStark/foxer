@@ -37,7 +37,10 @@ namespace foxer.Core.Game.Interactors
                 return null;
             }
 
-            return new WalkWithOptionTargetsBuilder(stage, walker, null, null, cells).ShortestPath;
+            using (var builder = new WalkBuilderWithMultipleTargets(stage, walker, null, null, cells))
+            {
+                return builder.GetShortestPath();
+            }
         }
     }
 }

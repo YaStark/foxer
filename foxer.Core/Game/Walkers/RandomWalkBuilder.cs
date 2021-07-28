@@ -1,5 +1,6 @@
 ﻿using foxer.Core.Game.Entities;
 using foxer.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -24,9 +25,7 @@ namespace foxer.Core.Game
 
         public IEnumerable<IWalkBuilderCell> GetPoints()
         {
-            return Field.Cast<WalkBuilderCell[]>()
-                .SelectMany(a => a)
-                .Where(c => !c.IsEmpty());
+            return GetUsedPoints();
         }
 
         public Point[] BuildWalkPath(IWalkBuilderCell cell)

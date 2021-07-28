@@ -38,24 +38,27 @@ namespace foxer.Core.Game.Entities
                 return;
             }
 
-            var randomWalkBuilder = new RandomWalkBuilder(stage, null, null, this, 5);
-            var target = randomWalkBuilder.GetPoints()
-                .OrderBy(x => MathUtils.L1(Cell, x.Cell) + _rnd.Next(5))
-                .FirstOrDefault();
-            if(target != null)
+            using (var randomWalkBuilder = new RandomWalkBuilder(stage, null, null, this, 5))
             {
-                Walk.Targets = randomWalkBuilder.BuildWalkPath(target);
-                StartAnimation(
-                    StandUp,
-                    Walk.Coroutine,
-                    SitDown,
-                    AttackOrIdle);
-            }
-            else
-            {
-                StartAnimation(
-                    SitDown,
-                    AttackOrIdle);
+                var target = randomWalkBuilder.GetPoints()
+                    .OrderBy(x => MathUtils.L1(Cell, x.Cell) + _rnd.Next(5))
+                    .FirstOrDefault();
+
+                if (target != null)
+                {
+                    Walk.Targets = randomWalkBuilder.BuildWalkPath(target);
+                    StartAnimation(
+                        StandUp,
+                        Walk.Coroutine,
+                        SitDown,
+                        AttackOrIdle);
+                }
+                else
+                {
+                    StartAnimation(
+                        SitDown,
+                        AttackOrIdle);
+                }
             }
         }
 

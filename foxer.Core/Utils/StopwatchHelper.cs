@@ -87,5 +87,11 @@ namespace foxer.Core.Utils
 
             Debug.WriteLine($"##### End {MainScope} #####");
         }
+
+        public void Clear()
+        {
+            _scopes.Clear();
+            _points.Clear();
+        }
     }
 }

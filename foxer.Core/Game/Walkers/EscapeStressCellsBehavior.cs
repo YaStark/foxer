@@ -44,9 +44,15 @@ namespace foxer.Core.Game
             }
 
             var target = cells.OrderBy(cell => stage.StressManager.GetStressLevelInCell(entity, cell.X, cell.Y)).First();
-            Escaping = true;
-            _user.BeginEscape(new[] { target });
-            return true;
+            var current = stage.StressManager.GetStressLevelInCell(entity, entity.CellX, entity.CellY);
+            if (stage.StressManager.GetStressLevelInCell(entity, target.X, target.Y) < current)
+            {
+                Escaping = true;
+                _user.BeginEscape(new[] { target });
+                return true;
+            }
+
+            return false;
         }
     }
 }

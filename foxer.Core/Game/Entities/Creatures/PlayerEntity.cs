@@ -99,19 +99,20 @@ namespace foxer.Core.Game.Entities
 
             if (stage.CanBePlaced(this, target.Value.X, target.Value.Y, _newWalkTargetPlatform))
             {
-                var walker = new WalkBuilder(
-                    stage, 
-                    this, 
-                    new PlayerWalkWeightProvider(), 
-                    null, 
-                    new WalkCell(target.Value, _newWalkTargetPlatform));
-
-                var path = walker.GetPath();
-                if (path != null && path.Length < MAX_WALK_DISTANSE)
+                using (var walker = new WalkBuilder(
+                    stage,
+                    this,
+                    new PlayerWalkWeightProvider(),
+                    null,
+                    new WalkCell(target.Value, _newWalkTargetPlatform)))
                 {
-                    _path = path;
-                    StartAnimation(WalkByPath);
-                    return;
+                    var path = walker.GetPath();
+                    if (path != null && path.Length < MAX_WALK_DISTANSE)
+                    {
+                        _path = path;
+                        StartAnimation(WalkByPath);
+                        return;
+                    }
                 }
             }
 

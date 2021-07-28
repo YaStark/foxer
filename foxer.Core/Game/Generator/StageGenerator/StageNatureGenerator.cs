@@ -75,22 +75,26 @@ namespace foxer.Core.Game.Generator.StageGenerator
         private void GenerateWolfes(Stage stage, Random rnd, Point firstCell, int count)
         {
             var host = new WolfEntity(firstCell.X, firstCell.Y);
-            var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2);
-            var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
-            foreach(var cell in cells)
+            using (var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2))
             {
-                stage.TryCreateNow(new WolfEntity(cell.X, cell.Y));
+                var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
+                foreach (var cell in cells)
+                {
+                    stage.TryCreateNow(new WolfEntity(cell.X, cell.Y));
+                }
             }
         }
 
         private void GenerateSquirrels(Stage stage, Random rnd, Point firstCell, int count)
         {
             var host = new SquirrelEntity(firstCell.X, firstCell.Y);
-            var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2);
-            var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
-            foreach (var cell in cells)
+            using (var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2))
             {
-                stage.TryCreateNow(new SquirrelEntity(cell.X, cell.Y));
+                var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
+                foreach (var cell in cells)
+                {
+                    stage.TryCreateNow(new SquirrelEntity(cell.X, cell.Y));
+                }
             }
         }
     }

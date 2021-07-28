@@ -15,9 +15,9 @@ namespace foxer.Core.Game.Entities
             Kind = kind;
         }
 
-        public override bool UseHitbox()
+        public override float GetHeight()
         {
-            return false;
+            return 0.2f;
         }
     }
 }

@@ -27,17 +27,6 @@ namespace foxer.Core.Game
 
         public WalkBuilderCell[,][] Get(Type entityType)
         {
-            for (int i = 0; i < _field.GetLength(0); i++)
-            {
-                for (int j = 0; j < _field.GetLength(1); j++)
-                {
-                    for (int k = 0; k < _field[i, j].Length; k++)
-                    {
-                        _field[i, j][k].Clear();
-                    }
-                }
-            }
-
             return _field;
         }
 

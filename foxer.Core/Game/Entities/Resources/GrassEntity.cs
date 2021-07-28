@@ -35,10 +35,5 @@ namespace foxer.Core.Game.Entities
         {
             _ageMs = 0;
         }
-
-        public override bool UseHitbox()
-        {
-            return false;
-        }
     }
 }

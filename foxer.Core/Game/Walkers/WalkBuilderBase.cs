@@ -6,8 +6,10 @@ using System.Linq;
 
 namespace foxer.Core.Game
 {
-    public abstract class WalkBuilderBase
+    public abstract class WalkBuilderBase : IDisposable
     {
+        private readonly List<WalkBuilderCell> _cells = new List<WalkBuilderCell>();
+
         protected WalkBuilderCell[,][] Field { get; }
         protected WalkBuilderCell InitialCell { get; }
 
@@ -31,6 +33,8 @@ namespace foxer.Core.Game
             InitialCell = Field[Host.CellX, Host.CellY][0];
             InitialCell.Weight = 1;
             InitialCell.Platform = Stage.GetPlatform(Host);
+
+            _cells.Add(InitialCell);
         }
 
         protected void BuildField()
@@ -56,6 +60,11 @@ namespace foxer.Core.Game
         protected abstract bool CheckDestination(WalkBuilderCell cell);
 
         protected abstract bool CanUseCell(WalkBuilderCell cell);
+
+        protected IEnumerable<IWalkBuilderCell> GetUsedPoints()
+        {
+            return _cells;
+        }
 
         protected Point[] BuildPath(WalkBuilderCell finalCell)
         {
@@ -144,9 +153,10 @@ namespace foxer.Core.Game
                 cell = Field[x, y][Field[x, y].Count(c => !c.IsEmpty())];
                 cell.Weight = value;
                 cell.Platform = platform;
+                _cells.Add(cell);
             }
 
-            if(CanUseCell(cell))
+            if (CanUseCell(cell))
             {
                 origin.LTRB[i] = cell;
                 queue.Enqueue(origin.LTRB[i]);
@@ -162,6 +172,14 @@ namespace foxer.Core.Game
             }
 
             return (int)(Math.Atan(Stage.StressManager.GetStressLevelInCell(Host, x, y)) / Math.PI * 5) + 6;
+        }
+
+        public void Dispose()
+        {
+            foreach(var cell in _cells)
+            {
+                cell.Clear();
+            }
         }
     }
 }
