@@ -217,18 +217,6 @@
   <data name="cell_selected" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\menu\cell_selected.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="flower_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plants\flower_1.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="flower_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plants\flower_2.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="flower_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plants\flower_3.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="flower_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\plants\flower_4.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="grass_corn_bottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\grass_corn_bottom.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -675,5 +663,20 @@
   </data>
   <data name="sprite_grass_roof_inner" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\buildings\sprite_grass_roof_inner.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_flowers" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\plants\sprite_flowers.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_blue_flower" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_blue_flower.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_dandelion" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_dandelion.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_red_flower" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_red_flower.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="icon_sunflower" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\items\icon_sunflower.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

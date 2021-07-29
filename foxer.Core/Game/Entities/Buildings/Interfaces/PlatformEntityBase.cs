@@ -2,14 +2,17 @@
 
 namespace foxer.Core.Game.Entities
 {
-    public abstract class PlatformEntityBase : EntityBase, IPlatform
+    public abstract class PlatformEntityBase : EntityBase, IPlatform, IConstruction
     {
-        protected PlatformEntityBase(int x, int y, float z) 
+        public float Level => Z + GetHeight();
+
+        public ConstructionLevel ConstructionLevel { get; }
+
+        protected PlatformEntityBase(int x, int y, float z, ConstructionLevel constructionLevel) 
             : base(x, y, z)
         {
+            ConstructionLevel = constructionLevel;
         }
-
-        public float Level => Z + GetHeight();
 
         public bool Active(Stage stage)
         {

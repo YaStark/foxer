@@ -1,5 +1,6 @@
 ﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Entities.Descriptors;
+using foxer.Core.Game.Items;
 using System.Collections.Generic;
 
 namespace foxer.Core.Game.Entities
@@ -29,6 +30,11 @@ namespace foxer.Core.Game.Entities
         protected override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
         {
             return true;
+        }
+
+        protected override ItemBase OnGetLoot(Stage stage, GrassWallEntity entity)
+        {
+            return stage.ItemManager.Create<ItemGrassWall>(stage, 1);
         }
     }
 }

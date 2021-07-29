@@ -28,7 +28,7 @@ namespace foxer.Core.Game.Generator.StageGenerator
                     if (args.Rnd.NextDouble() < PROB_FLOWER_ON_FLOOR
                         && cell?.Kind == CellKind.Floor)
                     {
-                        stage.TryCreateNow(new FlowerEntity(cell, args.Rnd.Next()));
+                        stage.TryCreateNow(new FlowerEntity(i, j, args.Rnd.Next()));
                         if (args.Rnd.NextDouble() < PROB_BEE_ON_FLOWER)
                         {
                             stage.TryCreateNow(new BeeEntity(cell.X, cell.Y));

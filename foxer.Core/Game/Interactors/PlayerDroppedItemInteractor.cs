@@ -4,19 +4,25 @@ using System.Drawing;
 
 namespace foxer.Core.Game.Interactors
 {
-    public class PlayerDroppedItemInteractor : InteractorBase<PlayerEntity, DroppedItemEntity>
+    public class PlayerDroppedItemInteractor : InteractorBase<PlayerEntity>
     {
-        protected override bool CanInteract(PlayerEntity subj, DroppedItemEntity obj, InteractorArgs arg)
+        protected override bool CanInteract(PlayerEntity subj, object obj, InteractorArgs arg)
         {
-            return arg.Stage.InventoryManager.CanAccomodate(obj.Item);
+            return obj is DroppedItemEntity entity
+                && arg.Stage.InventoryManager.CanAccomodate(entity.Item);
         }
 
-        protected override bool Interact(PlayerEntity player, DroppedItemEntity droppedItem, InteractorArgs arg)
+        protected override bool Interact(PlayerEntity player, object obj, InteractorArgs arg)
         {
-            Point[] path = null;
-            if (MathUtils.L1(player.Cell, droppedItem.Cell) > 1)
+            if(!(obj is DroppedItemEntity entity))
             {
-                path = GetPathToItem(player, droppedItem, arg.Stage);
+                return false;
+            }
+
+            Point[] path = null;
+            if (MathUtils.L1(player.Cell, entity.Cell) > 1)
+            {
+                path = GetPathToItem(player, entity, arg.Stage);
                 if (path == null)
                 {
                     return false;
@@ -27,8 +33,8 @@ namespace foxer.Core.Game.Interactors
                 path,
                 GameUtils.DelegateCoroutine(x =>
                 {
-                    player.RotateTo(droppedItem.Cell);
-                    droppedItem.DoGather(player, i => arg.Stage.InventoryManager.Accomodate(i));
+                    player.RotateTo(entity.Cell);
+                    entity.DoGather(player, i => arg.Stage.InventoryManager.Accomodate(i));
                 }));
 
             return true;

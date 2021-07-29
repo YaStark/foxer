@@ -1,11 +1,13 @@
-﻿namespace foxer.Core.Game.Entities
+﻿using foxer.Core.Utils;
+
+namespace foxer.Core.Game.Entities
 {
     public class GrassRoofEntity : PlatformEntityBase, IRoof
     {
         public RoofKind RoofKind { get; set; }
 
         public GrassRoofEntity(int x, int y, float z)
-            : base(x, y, z)
+            : base(x, y, z, ConstructionLevel.Primitive)
         {
         }
 
@@ -23,6 +25,11 @@
         {
             return base.CanBeCreated(stage, x, y, platform)
                 && platform is IWall;
+        }
+
+        public override float GetZIndex()
+        {
+            return GameUtils.GetZIndexForWalls(Rotation);
         }
     }
 }

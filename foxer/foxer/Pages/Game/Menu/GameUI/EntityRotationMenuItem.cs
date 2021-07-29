@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using foxer.Core.Game.Items;
 using foxer.Core.Utils;
 using foxer.Core.ViewModel.Menu;
 using foxer.Render;

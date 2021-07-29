@@ -43,24 +43,6 @@ namespace foxer.Core.Game.Inventory
             return CanAccomodate(item.GetType(), item.Count);
         }
 
-        public bool Contains(Type itemType, int count)
-        {
-            foreach (var inventory in Inventories)
-            {
-                for (int i = 0; i < inventory.Count; i++)
-                {
-                    if (CheckInventorySlotActive(inventory, i)
-                        && inventory[i]?.GetType() == itemType)
-                    {
-                        count -= inventory[i].Count;
-                        if (count <= 0) return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
         public int Count(Type itemType)
         {
             int count = 0;
@@ -79,14 +61,14 @@ namespace foxer.Core.Game.Inventory
             return count;
         }
 
-        public bool TrySpend(Type itemType, int count)
+        public bool TrySpend(Type[] itemTypes, int count)
         {
             foreach (var inventory in Inventories)
             {
                 for (int i = 0; i < inventory.Count; i++)
                 {
                     if (CheckInventorySlotActive(inventory, i)
-                        && inventory[i]?.GetType() == itemType)
+                        && itemTypes.Contains(inventory[i]?.GetType()))
                     {
                         if(ItemManager.CanStack(inventory[i]))
                         {

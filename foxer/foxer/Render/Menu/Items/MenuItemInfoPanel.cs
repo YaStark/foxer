@@ -29,22 +29,8 @@ namespace foxer.Render.Menu.Items
             var bounds = GeomUtils.Deflate(args.Bounds, args.CellSize.Width / 5, args.CellSize.Height / 5);
             var boundsHeader = new RectangleF(bounds.Location, new SizeF(bounds.Width, textSize * 2));
             canvas.DrawText(
-                infoProvider.GetName(selected, args.Stage), 
+                infoProvider.GetText(selected, args.Stage), 
                 boundsHeader, 
-                Color.Black, 
-                textSize, 
-                HorAlign.Near);
-
-            textSize *= 0.7f;
-            var boundsText = RectangleF.FromLTRB(
-                bounds.Left, 
-                bounds.Top + boundsHeader.Height, 
-                bounds.Right,
-                bounds.Bottom);
-
-            canvas.DrawText(
-                infoProvider.GetDescription(selected, args.Stage), 
-                boundsText, 
                 Color.Black, 
                 textSize, 
                 HorAlign.Near);

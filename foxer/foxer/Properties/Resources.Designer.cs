@@ -403,46 +403,6 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
-        internal static byte[] flower_1 {
-            get {
-                object obj = ResourceManager.GetObject("flower_1", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] flower_2 {
-            get {
-                object obj = ResourceManager.GetObject("flower_2", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] flower_3 {
-            get {
-                object obj = ResourceManager.GetObject("flower_3", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
-        internal static byte[] flower_4 {
-            get {
-                object obj = ResourceManager.GetObject("flower_4", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Byte[].
-        /// </summary>
         internal static byte[] grass_corn_bottom {
             get {
                 object obj = ResourceManager.GetObject("grass_corn_bottom", resourceCulture);
@@ -583,6 +543,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_blue_flower {
+            get {
+                object obj = ResourceManager.GetObject("icon_blue_flower", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_cancel {
             get {
                 object obj = ResourceManager.GetObject("icon_cancel", resourceCulture);
@@ -596,6 +566,16 @@ namespace foxer.Properties {
         internal static byte[] icon_craft {
             get {
                 object obj = ResourceManager.GetObject("icon_craft", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] icon_dandelion {
+            get {
+                object obj = ResourceManager.GetObject("icon_dandelion", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -713,6 +693,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] icon_red_flower {
+            get {
+                object obj = ResourceManager.GetObject("icon_red_flower", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_sticks {
             get {
                 object obj = ResourceManager.GetObject("icon_sticks", resourceCulture);
@@ -746,6 +736,16 @@ namespace foxer.Properties {
         internal static byte[] icon_stone_oven {
             get {
                 object obj = ResourceManager.GetObject("icon_stone_oven", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] icon_sunflower {
+            get {
+                object obj = ResourceManager.GetObject("icon_sunflower", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -886,6 +886,16 @@ namespace foxer.Properties {
         internal static byte[] road_top {
             get {
                 object obj = ResourceManager.GetObject("road_top", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_flowers {
+            get {
+                object obj = ResourceManager.GetObject("sprite_flowers", resourceCulture);
                 return ((byte[])(obj));
             }
         }

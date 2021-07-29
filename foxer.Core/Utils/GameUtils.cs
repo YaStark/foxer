@@ -33,6 +33,23 @@ namespace foxer.Core.Utils
             };
         }
 
+        public static float GetZIndexForWalls(int rotation)
+        {
+            switch (rotation)
+            {
+                case 0:
+                case 270:
+                    return 0.5f;
+
+                case 90:
+                case 180:
+                    return -0.5f;
+
+                default:
+                    return 0;
+            }
+        }
+
         public static Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>> EnsureCoroutine(Func<EntityCoroutineArgs, bool> action)
         {
             return (arg) =>

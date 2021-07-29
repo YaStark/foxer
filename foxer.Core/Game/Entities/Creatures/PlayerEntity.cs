@@ -50,11 +50,11 @@ namespace foxer.Core.Game.Entities
         static PlayerEntity()
         {
             _interactors.Add(new PlayerTreeAxeInteractor());
-            _interactors.Add(SimpleToolResourceInteractors.TreeHand);
-            _interactors.Add(SimpleToolResourceInteractors.StoneHand);
-            _interactors.Add(SimpleToolResourceInteractors.StoneHand);
+            _interactors.Add(new PlayerHandToolInteractor());
             _interactors.Add(new PlayerDroppedItemInteractor());
-            _interactors.Add(new PlayerGrassInteractor());
+
+            // todo keep it last
+            _interactors.Add(new DefaultToolInteractor());
         }
 
         public PlayerEntity(int x, int y)

@@ -3,7 +3,7 @@
     public class StoneOvenEntity : PlatformEntityBase
     {
         public StoneOvenEntity(int x, int y, float z) 
-            : base(x, y, z)
+            : base(x, y, z, ConstructionLevel.Primitive)
         {
         }
 

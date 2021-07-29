@@ -16,24 +16,12 @@ namespace foxer.Core.Game.Info
             return item is CraftRequirementsBase;
         }
 
-        public string GetDescription(object item, Stage stage)
-        {
-            // todo add another types of requirements 
-
-            if(item is CraftResourceRequirementsBase resReq)
-            {
-                return $"{resReq.Crafter.Source.Count(resReq.ItemType)} / {resReq.Count}";
-            }
-
-            return string.Empty;
-        }
-
-        public string GetName(object item, Stage stage)
+        public string GetText(object item, Stage stage)
         {
             if (item is CraftResourceRequirementsBase resReq
                 && _itemInfoManager.TryGet(resReq.ItemType, out var info))
             {
-                return $"{info.GetName(null, stage)}";
+                return $"{info.GetText(null, stage)} ({resReq.Crafter.Source.Count(resReq.ItemType)} / {resReq.Count})";
             }
 
             return string.Empty;

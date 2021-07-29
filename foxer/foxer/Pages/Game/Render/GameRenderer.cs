@@ -16,14 +16,16 @@ namespace foxer.Pages
 
         private readonly List<IGameLayerRenderer> _layers = new List<IGameLayerRenderer>();
 
+        public GameLayerEntityRenderer EntityRenderer { get; }
+
         public GameRenderer(PageGameViewModel vm, MenuHost menuHost)
         {
             _vm = vm;
             _menuHost = menuHost;
-            var entityRenderer = new GameLayerEntityRenderer(vm);
+            EntityRenderer = new GameLayerEntityRenderer(vm);
             _layers.Add(new GameLayerCellsRenderer(vm));
-            _layers.Add(entityRenderer);
-            _layers.Add(new GameLayerBuilderRenderer(vm.GameUI, entityRenderer, menuHost));
+            _layers.Add(EntityRenderer);
+            _layers.Add(new GameLayerBuilderRenderer(vm.GameUI, EntityRenderer, menuHost));
         }
 
         public void Draw(INativeCanvas canvas)

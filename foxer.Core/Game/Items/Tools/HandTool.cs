@@ -13,6 +13,9 @@ namespace foxer.Core.Game.Entities
                 case GrassEntity grass:
                     return grass.CanGather;
 
+                case FlowerEntity flower:
+                    return true;
+
                 case TreeEntity tree:
                     return tree.Age < TreeEntity.AGE_MEDIUM;
 
@@ -26,6 +29,11 @@ namespace foxer.Core.Game.Entities
 
         public int GetSwipesCount(EntityBase entity)
         {
+            if(entity is FlowerEntity flower)
+            {
+                return 1;
+            }
+
             return 3;
         }
     }

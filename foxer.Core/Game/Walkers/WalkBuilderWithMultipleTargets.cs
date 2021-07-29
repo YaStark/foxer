@@ -54,7 +54,7 @@ namespace foxer.Core.Game
         {
             var targetCell = _incompletedTargets.FirstOrDefault(t => t.Cell == cell.Cell && t.Platform == cell.Platform);
             if (targetCell != null) _incompletedTargets.Remove(targetCell);
-            return _incompletedTargets.Any();
+            return !_incompletedTargets.Any();
         }
 
         protected override bool CanUseCell(WalkBuilderCell cell)

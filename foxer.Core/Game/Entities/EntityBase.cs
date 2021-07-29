@@ -13,21 +13,21 @@ namespace foxer.Core.Game.Entities
         private bool _destroying = false;
         private Coroutine<EntityAnimation, EntityCoroutineArgs> _coroutine = new Coroutine<EntityAnimation, EntityCoroutineArgs>();
 
-        public int CellX { get; private set; }
+        public int CellX => Cell.X;
 
-        public int CellY { get; private set; }
+        public int CellY => Cell.Y;
 
-        public Point Cell => new Point(CellX, CellY);
+        public Point Cell { get; private set; } 
 
         public Point PreviousFrameCell { get; private set; }
 
-        public float X { get; private set; }
+        public float X => Location.X;
 
-        public float Y { get; private set; }
+        public float Y => Location.Y;
 
         public float Z { get; private set; }
 
-        public PointF Location => new PointF((float)X, (float)Y);
+        public PointF Location { get; private set; }
 
         public int Rotation { get; set; }
 
@@ -43,11 +43,9 @@ namespace foxer.Core.Game.Entities
 
         protected EntityBase(int x, int y, float z)
         {
-            X = x;
-            Y = y;
+            Cell = new Point(x, y);
+            Location = new PointF(x, y);
             Z = z;
-            CellX = x;
-            CellY = y;
         }
 
         public void Update(Stage stage, uint timeMs)
@@ -86,6 +84,14 @@ namespace foxer.Core.Game.Entities
             return 1f;
         }
 
+        /// <summary>
+        /// Use to describe offset the real bounds from the current Location
+        /// </summary>
+        public virtual float GetZIndex()
+        {
+            return 0;
+        }
+
         public virtual float GetMaxClimbHeight(Stage stage)
         {
             return 0.25f;
@@ -118,19 +124,15 @@ namespace foxer.Core.Game.Entities
                 Z = newPlatform.Level;
             }
 
-            CellX = cellX;
-            CellY = cellY;
-            X = x;
-            Y = y;
+            Cell = new Point(cellX, cellY);
+            Location = new PointF(x, y);
             return true;
         }
 
         public bool Teleport(Stage stage, float x, float y, IPlatform platform)
         {
-            CellX = (int)Math.Round(x);
-            CellY = (int)Math.Round(y);
-            X = x;
-            Y = y;
+            Cell = new Point((int)Math.Round(x), (int)Math.Round(y));
+            Location = new PointF(x, y);
             Z = platform.Level;
             return true;
         }

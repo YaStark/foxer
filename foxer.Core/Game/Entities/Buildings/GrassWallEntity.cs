@@ -1,13 +1,16 @@
-﻿using System;
+﻿using foxer.Core.Utils;
+using System;
 using System.Drawing;
 
 namespace foxer.Core.Game.Entities
 {
-    public class GrassWallEntity : EntityBase, IWall, IPlatform
+    public class GrassWallEntity : EntityBase, IWall, IPlatform, IConstruction
     {
         public float Level => Z + GetHeight();
 
         public WallKind WallKind { get; }
+
+        public ConstructionLevel ConstructionLevel { get; } = ConstructionLevel.Primitive;
 
         public GrassWallEntity(int x, int y, WallKind wallKind)
             : base(x, y, 0)
@@ -30,16 +33,10 @@ namespace foxer.Core.Game.Entities
             return false;
         }
 
-        public override float GetHeight()
-        {
-            return 1.5f;
-        }
+        public override float GetHeight() => 1.5f;
 
-        public bool IsColliderFor(Type entityType)
-        {
-            return false;
-        }
-
+        public bool IsColliderFor(Type entityType) => false;
+        
         public bool CanTransit(Point nearestTo)
         {
             if (WallKind == WallKind.Door)
@@ -56,6 +53,11 @@ namespace foxer.Core.Game.Entities
                 case 2: return nearestTo != new Point(CellX - 1, CellY);
                 case 3: return nearestTo != new Point(CellX, CellY + 1);
             }
+        }
+
+        public override float GetZIndex()
+        {
+            return GameUtils.GetZIndexForWalls(Rotation);
         }
     }
 }

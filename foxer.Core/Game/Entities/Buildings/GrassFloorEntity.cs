@@ -3,7 +3,7 @@
     public class GrassFloorEntity : PlatformEntityBase
     {
         public GrassFloorEntity(int x, int y, float z)
-            : base(x, y, z)
+            : base(x, y, z, ConstructionLevel.Primitive)
         {
         }
 
@@ -16,6 +16,11 @@
         {
             return !(entity is GrassFloorEntity)
                 && !(entity is GrassRoofEntity);
+        }
+
+        public override float GetZIndex()
+        {
+            return -0.5f;
         }
     }
 }

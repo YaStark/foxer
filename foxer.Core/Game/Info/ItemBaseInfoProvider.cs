@@ -6,17 +6,13 @@ namespace foxer.Core.Game.Info
         where TItem : ItemBase
     {
         private readonly string _defaultName;
-        private readonly string _defaultDescription;
 
-        public ItemBaseInfoProvider(
-            string defaultName,
-            string defaultDescription)
+        public ItemBaseInfoProvider(string defaultName)
         {
             _defaultName = defaultName;
-            _defaultDescription = defaultDescription;
         }
 
-        public string GetName(object item, Stage stage)
+        public string GetText(object item, Stage stage)
         {
             if(item is TItem tItem)
             {
@@ -24,11 +20,6 @@ namespace foxer.Core.Game.Info
             }
 
             return _defaultName;
-        }
-
-        public string GetDescription(object item, Stage stage)
-        {
-            return _defaultDescription;
         }
     }
 }

@@ -8,8 +8,7 @@ using System.Drawing;
 
 namespace foxer.Core.Game.Interactors
 {
-    public abstract class PlayerResourceInteractorBase<TResourceEntity> : InteractorBase<PlayerEntity, TResourceEntity>
-        where TResourceEntity : EntityBase
+    public abstract class PlayerResourceInteractorBase : InteractorBase<PlayerEntity>
     {
         protected virtual IToolItem GetTool(PlayerEntity player)
         {
@@ -18,29 +17,31 @@ namespace foxer.Core.Game.Interactors
 
         protected abstract SimpleAnimation GetToolAnimation(PlayerEntity player);
 
-        protected virtual void OnToolSwipe(PlayerEntity player, TResourceEntity subj, InteractorArgs arg)
+        protected virtual void OnToolSwipe(PlayerEntity player, EntityBase subj, InteractorArgs arg)
         {
             GetToolAnimation(player).DurationMs = GetTool(player).SwipeMs;
             player.SetWorkAggression();
         }
 
-        protected virtual void OnEndInteract(PlayerEntity player, TResourceEntity subj, InteractorArgs arg)
+        protected virtual void OnEndInteract(PlayerEntity player, EntityBase subj, InteractorArgs arg)
         {
             subj.BeginDestroy();
         }
 
-        protected override bool CanInteract(PlayerEntity player, TResourceEntity obj, InteractorArgs arg)
+        protected override bool CanInteract(PlayerEntity player, object obj, InteractorArgs arg)
         {
-            return GetTool(player)?.CanInteract(obj) == true;
+            return obj is EntityBase entity
+                && GetTool(player)?.CanInteract(entity) == true;
         }
 
-        protected override bool Interact(PlayerEntity player, TResourceEntity obj, InteractorArgs arg)
+        protected override bool Interact(PlayerEntity player, object obj, InteractorArgs arg)
         {
-            return GetTool(player)?.CanInteract(obj) == true
-                && UseTool(player, obj, arg);
+            return obj is EntityBase entity
+                && GetTool(player)?.CanInteract(entity) == true
+                && UseTool(player, entity, arg);
         }
 
-        private bool UseTool(PlayerEntity player, TResourceEntity obj, InteractorArgs arg)
+        private bool UseTool(PlayerEntity player, EntityBase obj, InteractorArgs arg)
         {
             Point[] path = null;
             if (MathUtils.L1(player.Cell, obj.Cell) > 1)

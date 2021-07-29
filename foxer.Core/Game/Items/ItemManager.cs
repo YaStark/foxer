@@ -33,6 +33,11 @@ namespace foxer.Core.Game.Items
             AddItemInfo<ItemStone>(true, (s, i) => new ItemStone(i));
             AddItemInfo<ItemWood>(true, (s, i) => new ItemWood(i));
 
+            AddItemInfo<ItemDandelion>(true, (s, i) => new ItemDandelion(i));
+            AddItemInfo<ItemRedFlower>(true, (s, i) => new ItemRedFlower(i));
+            AddItemInfo<ItemSunflower>(true, (s, i) => new ItemSunflower(i));
+            AddItemInfo<ItemBlueFlower>(true, (s, i) => new ItemBlueFlower(i));
+
             // buldings
             AddItemInfo<ItemStoneOven>(false, (s, i) => new ItemStoneOven());
             AddItemInfo<ItemGrassWall>(true, (s, i) => new ItemGrassWall(i));

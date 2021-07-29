@@ -1,19 +1,29 @@
 ﻿using foxer.Core.Game.Animation;
 using foxer.Core.Game.Entities;
+using foxer.Core.Game.Items;
 
 namespace foxer.Core.Game.Interactors
 {
-    public class PlayerTreeAxeInteractor : PlayerResourceInteractorBase<TreeEntity>
+    public class PlayerTreeAxeInteractor : PlayerResourceInteractorBase
     {
+        protected override bool CanInteract(PlayerEntity player, object obj, InteractorArgs arg)
+        {
+            return base.CanInteract(player, obj, arg)
+                && player.Hand is ItemStoneAxe;
+        }
+
         protected override SimpleAnimation GetToolAnimation(PlayerEntity player)
         {
             return player.Chop;
         }
 
-        protected override void OnToolSwipe(PlayerEntity player, TreeEntity tree, InteractorArgs arg)
+        protected override void OnToolSwipe(PlayerEntity player, EntityBase entity, InteractorArgs arg)
         {
-            base.OnToolSwipe(player, tree, arg);
-            tree.DoShake();
+            base.OnToolSwipe(player, entity, arg);
+            if(entity is TreeEntity tree)
+            {
+                tree.DoShake();
+            }
         }
     }
 }

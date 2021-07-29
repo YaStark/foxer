@@ -18,12 +18,12 @@ namespace foxer.Pages.Game.Menu
             // + + + + + + + 0 0 0 0 0 +   + + + + + + + +
             // + + + + + + + 0 0 0 0 0 +   + + + + + + + +
             // + + + + + + + V V V V V +   + + + + + + + +
-            // + + + + + + + V V V V V +   + F 0 0 0 0 0 +
+            // + + + + + + + + + + + + +   + F 0 0 0 0 0 +
             //                             + F 0 0 0 0 0 +
             //                             + f 0 0 0 0 0 +
             //                             + f 0 0 0 0 0 +
             //                             + + V V V V V +
-            //                             + + V V V V V +
+            //                             + + + + + + + +
 
             BeginCreateCell(new MenuText(title, Color.Black, true))
                 .SetDefaultLayout(5, 0, 5, 1).SetTransponedLayout(3, 0, 4, 1).End(); // TITLE
@@ -41,7 +41,7 @@ namespace foxer.Pages.Game.Menu
                 .SetDefaultLayout(2, 0).SetTransponedLayout(0, 2).End();
 
             BeginCreateCell(new MenuItemInfoPanel(viewModel.ItemInfoProviderFactory)) // V
-                .SetDefaultLayout(7, 6, 5, 2).SetTransponedLayout(2, 11, 5, 2).End();
+                .SetDefaultLayout(7, 6, 5, 1).SetTransponedLayout(2, 11, 5, 1).End();
 
             for (int i = 0; i < viewModel.FastPanel.Length; i++)
             {

@@ -1,6 +1,4 @@
-﻿using foxer.Core.Game;
-using foxer.Core.Game.Entities;
-using foxer.Core.Utils;
+﻿using foxer.Core.Game.Entities;
 using foxer.Core.ViewModel;
 using foxer.Render;
 using System.Collections.Generic;
@@ -66,8 +64,7 @@ namespace foxer.Pages
 
         private double GetDistanceToCamera(EntityBase entity)
         {
-            double z = entity.Z * 4;
-            return entity.X + entity.Y + z;
+            return entity.X + entity.Y + entity.Z * 0.7f + entity.GetZIndex();
         }
 
         public bool Touch(float x, float y, Rectangle viewportBounds)

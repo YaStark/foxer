@@ -20,6 +20,11 @@ namespace foxer.Render.Items
             Add(new SimpleItemRenderer<ItemGrassWall>(Properties.Resources.icon_grass_wall));
             Add(new SimpleItemRenderer<ItemGrassFloor>(Properties.Resources.icon_grass_floor));
             Add(new SimpleItemRenderer<ItemGrassRoof>(Properties.Resources.icon_grass_roof));
+
+            Add(new SimpleItemRenderer<ItemBlueFlower>(Properties.Resources.icon_blue_flower));
+            Add(new SimpleItemRenderer<ItemRedFlower>(Properties.Resources.icon_red_flower));
+            Add(new SimpleItemRenderer<ItemSunflower>(Properties.Resources.icon_sunflower));
+            Add(new SimpleItemRenderer<ItemDandelion>(Properties.Resources.icon_dandelion));
         }
 
         public IItemRenderer GetRenderer(ItemBase item)

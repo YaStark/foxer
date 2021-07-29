@@ -8,11 +8,23 @@ namespace foxer.Core.Game.Items
 
         public bool CanInteract(EntityBase entity)
         {
-            return false; // todo
+            if(entity is IConstruction construction
+                && construction.ConstructionLevel == ConstructionLevel.Primitive)
+            {
+                return true;
+            }
+
+            // todo dig
+            return false;
         }
 
         public int GetSwipesCount(EntityBase entity)
         {
+            if (entity is IConstruction)
+            {
+                return 2;
+            }
+
             return 4;
         }
     }

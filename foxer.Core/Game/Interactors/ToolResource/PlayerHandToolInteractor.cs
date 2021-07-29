@@ -5,7 +5,7 @@ using foxer.Core.Utils;
 
 namespace foxer.Core.Game.Interactors
 {
-    public class PlayerGrassInteractor : PlayerResourceInteractorBase<GrassEntity>
+    public class PlayerHandToolInteractor : PlayerResourceInteractorBase
     {
         protected override IToolItem GetTool(PlayerEntity player)
         {
@@ -16,11 +16,17 @@ namespace foxer.Core.Game.Interactors
         {
             return player.ShakeHands;
         }
-        
-        protected override void OnEndInteract(PlayerEntity player, GrassEntity subj, InteractorArgs arg)
+
+        protected override void OnEndInteract(PlayerEntity player, EntityBase subj, InteractorArgs arg)
         {
-            subj.Cut();
-            arg.Stage.CreateDroppedLootItem(subj);
+            if(subj is GrassEntity grass)
+            {
+                grass.Cut();
+                arg.Stage.CreateDroppedLootItem(subj);
+                return;
+            }
+
+            base.OnEndInteract(player, subj, arg);
         }
     }
 }

@@ -2,23 +2,16 @@
 {
     public class StaticInfoProvider<TItem> : IItemInfoProvider
     {
-        private readonly string _name;
-        private readonly string _description;
+        private readonly string _text;
 
-        public StaticInfoProvider(string name, string description)
+        public StaticInfoProvider(string text)
         {
-            _name = name;
-            _description = description;
+            _text = text;
         }
 
-        public string GetDescription(object item, Stage stage)
+        public string GetText(object item, Stage stage)
         {
-            return _description;
-        }
-
-        public string GetName(object item, Stage stage)
-        {
-            return _name;
+            return _text;
         }
     }
 }

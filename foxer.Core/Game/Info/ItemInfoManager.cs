@@ -17,15 +17,23 @@ namespace foxer.Core.Game.Info
             _itemsWideTyped.Add(new RequirementsInfoProvider(this));
 
             // items
-            Add(new ItemBaseInfoProvider<ItemGrass>("Grass", "Fresh and juicy"));
-            Add(new ItemBaseInfoProvider<ItemStick>("Stick", "Thin and weak branch"));
-            Add(new ItemBaseInfoProvider<ItemStone>("Stone", "Heavy enough"));
-            Add(new ItemBaseInfoProvider<ItemWood>("Wood", "Solid and sturdy piece of wood"));
+            Add(new ItemBaseInfoProvider<ItemGrass>("Grass"));
+            Add(new ItemBaseInfoProvider<ItemStick>("Stick"));
+            Add(new ItemBaseInfoProvider<ItemStone>("Stone"));
+            Add(new ItemBaseInfoProvider<ItemWood>("Wood"));
 
-            Add(new ItemBaseInfoProvider<ItemStoneOven>("Stone oven", "Just 15 stones piled in a heap"));
+            Add(new ItemBaseInfoProvider<ItemBlueFlower>("Blue flower"));
+            Add(new ItemBaseInfoProvider<ItemRedFlower>("Red flower"));
+            Add(new ItemBaseInfoProvider<ItemSunflower>("Sunflower"));
+            Add(new ItemBaseInfoProvider<ItemDandelion>("Dandelion"));
 
-            Add(new ItemBaseInfoProvider<ItemDigStick>("Digging stick", "To dig... a dirt?"));
-            Add(new ItemBaseInfoProvider<ItemStoneAxe>("Stone axe", "Stone sharpened by another"));
+            Add(new ItemBaseInfoProvider<ItemStoneOven>("Stone oven"));
+            Add(new ItemBaseInfoProvider<ItemGrassFloor>("Grass platform"));
+            Add(new ItemBaseInfoProvider<ItemGrassWall>("Grass wall"));
+            Add(new ItemBaseInfoProvider<ItemGrassRoof>("Grass roof"));
+
+            Add(new ItemBaseInfoProvider<ItemDigStick>("Digging stick"));
+            Add(new ItemBaseInfoProvider<ItemStoneAxe>("Stone axe"));
         }
 
         private void Add<T>(ItemBaseInfoProvider<T> infoProvider)

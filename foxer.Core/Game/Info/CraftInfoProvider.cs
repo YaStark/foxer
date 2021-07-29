@@ -18,18 +18,7 @@ namespace foxer.Core.Game.Info
             return item is ItemCraftBase;
         }
 
-        public string GetDescription(object item, Stage stage)
-        {
-            if(item is ItemCraftBase craft
-                && !craft.CanCraft(stage))
-            {
-                return "Not enough resources";
-            }
-
-            return string.Empty;
-        }
-
-        public string GetName(object item, Stage stage)
+        public string GetText(object item, Stage stage)
         {
             if (!(item is ItemCraftBase craft))
             {
@@ -44,7 +33,7 @@ namespace foxer.Core.Game.Info
         private string CreateResultDescription(Stage stage, Type type, int count)
         {
             string name = _itemInfoManager.TryGet(type, out var itemInfo)
-                ? itemInfo.GetName(null, stage) : "???";
+                ? itemInfo.GetText(null, stage) : "???";
             return $"{name} ({count})";
         }
     }
