@@ -26,7 +26,7 @@ namespace foxer.Core.Game.Entities
 
         public virtual bool IsColliderFor(Type entityType)
         {
-            return true;
+            return entityType != typeof(DroppedItemEntity);
         }
     }
 }

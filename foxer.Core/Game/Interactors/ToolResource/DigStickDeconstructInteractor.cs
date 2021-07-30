@@ -12,7 +12,7 @@ namespace foxer.Core.Game.Interactors
 
         protected override SimpleAnimation GetToolAnimation(PlayerEntity player)
         {
-            return player.ShakeHands;
+            return player.ToolWork;
         }
     }
 }

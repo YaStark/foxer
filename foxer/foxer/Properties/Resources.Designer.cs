@@ -893,6 +893,16 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] sprite_digstick_attack {
+            get {
+                object obj = ResourceManager.GetObject("sprite_digstick_attack", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] sprite_flowers {
             get {
                 object obj = ResourceManager.GetObject("sprite_flowers", resourceCulture);
@@ -966,6 +976,16 @@ namespace foxer.Properties {
         internal static byte[] sprite_grass_window {
             get {
                 object obj = ResourceManager.GetObject("sprite_grass_window", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_player_attack_spear {
+            get {
+                object obj = ResourceManager.GetObject("sprite_player_attack_spear", resourceCulture);
                 return ((byte[])(obj));
             }
         }

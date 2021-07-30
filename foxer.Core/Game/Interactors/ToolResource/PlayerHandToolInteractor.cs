@@ -11,12 +11,7 @@ namespace foxer.Core.Game.Interactors
         {
             return player.EmptyHandTool;
         }
-
-        protected override SimpleAnimation GetToolAnimation(PlayerEntity player)
-        {
-            return player.ShakeHands;
-        }
-
+        
         protected override void OnEndInteract(PlayerEntity player, EntityBase subj, InteractorArgs arg)
         {
             if(subj is GrassEntity grass)

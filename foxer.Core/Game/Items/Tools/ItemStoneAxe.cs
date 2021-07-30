@@ -6,6 +6,8 @@ namespace foxer.Core.Game.Items
     {
         public int SwipeMs => 800;
 
+        public WeaponKind WeaponKind => WeaponKind.Axe;
+
         public bool CanInteract(EntityBase entity)
         {
             return entity is TreeEntity tree

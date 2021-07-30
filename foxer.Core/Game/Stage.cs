@@ -146,6 +146,7 @@ namespace foxer.Core.Game
                 if(entity is IPlatform platform)
                 {
                     _platforms[entity.CellX, entity.CellY].Remove(platform);
+                    AfterRemovePlatform(entity.CellX, entity.CellY, platform.Level);
                 }
 
                 RoofKindManager.OnRemove(entity);
@@ -168,6 +169,22 @@ namespace foxer.Core.Game
 
             StressManager.Update(this);
             WalkBuilderFieldFactory.Update(this);
+        }
+
+        private void AfterRemovePlatform(int cellX, int cellY, float zLevel)
+        {
+            foreach(var entity in GetEntitesInCell(cellX, cellY).Where(e => e.Z >= zLevel))
+            {
+                var platform = GetPlatform(entity);
+                if (!CanBePlaced(entity, cellX, cellY, platform))
+                {
+                    entity.BeginDestroy();
+                }
+                else
+                {
+                    entity.MoveZ(platform.Level);
+                }
+            }
         }
 
         public EntityDescriptorBase GetDescriptor(Type entityType)
@@ -219,12 +236,12 @@ namespace foxer.Core.Game
         {
             for (int i = _platforms[x, y].IndexOf(platform) + 1; i < _platforms[x, y].Count; i++)
             {
-                if(!_platforms[x,y][i].IsColliderFor(entity.GetType()))
+                if(_platforms[x, y][i].IsColliderFor(entity.GetType())
+                    && entity != _platforms[x, y][i]
+                    && _platforms[x, y][i].Z < entity.GetHeight() + platform.Level)
                 {
-                    continue;
+                    return false;
                 }
-
-                return _platforms[x, y][i].Z - platform.Level > entity.GetHeight();
             }
 
             return true;

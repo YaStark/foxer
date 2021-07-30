@@ -12,11 +12,6 @@ namespace foxer.Core.Game.Interactors
                 && player.Hand is ItemStoneAxe;
         }
 
-        protected override SimpleAnimation GetToolAnimation(PlayerEntity player)
-        {
-            return player.Chop;
-        }
-
         protected override void OnToolSwipe(PlayerEntity player, EntityBase entity, InteractorArgs arg)
         {
             base.OnToolSwipe(player, entity, arg);

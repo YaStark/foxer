@@ -15,7 +15,10 @@ namespace foxer.Core.Game.Interactors
             return player.Hand as IToolItem;
         }
 
-        protected abstract SimpleAnimation GetToolAnimation(PlayerEntity player);
+        protected virtual SimpleAnimation GetToolAnimation(PlayerEntity player)
+        {
+            return player.ToolWork;
+        }
 
         protected virtual void OnToolSwipe(PlayerEntity player, EntityBase subj, InteractorArgs arg)
         {

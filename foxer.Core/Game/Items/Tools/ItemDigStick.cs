@@ -6,6 +6,8 @@ namespace foxer.Core.Game.Items
     {
         public int SwipeMs => 800;
 
+        public WeaponKind WeaponKind => WeaponKind.Spear;
+
         public bool CanInteract(EntityBase entity)
         {
             if(entity is IConstruction construction

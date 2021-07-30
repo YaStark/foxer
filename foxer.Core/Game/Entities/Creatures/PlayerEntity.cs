@@ -37,11 +37,11 @@ namespace foxer.Core.Game.Entities
 
         public MovingAnimation Walk { get; }
 
-        public SimpleAnimation Chop { get; }
-
         public SimpleAnimation Idle { get; }
 
         public SimpleAnimation ShakeHands { get; }
+
+        public SimpleAnimation ToolWork { get; }
 
         public int AggressionLevel { get; private set; }
 
@@ -61,7 +61,7 @@ namespace foxer.Core.Game.Entities
             : base(x, y, 0)
         {
             Walk = new MovingAnimation(this, _walkSpeedScalarCellPerMs, _walkSpeedScalarCellPerMs / 1.3f);
-            Chop = new SimpleAnimation(2400);
+            ToolWork = new SimpleAnimation(2400);
             ShakeHands = new SimpleAnimation(3000);
             Idle = new SimpleAnimation(2000);
         }

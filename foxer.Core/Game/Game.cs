@@ -68,7 +68,7 @@ namespace foxer.Core.Game
 
             Inventory = new ItemBase[InventorySize.Width * InventorySize.Height + MAX_FAST_PANEL_SIZE];
             Inventory[10] = ItemManager.Create<ItemStone>(null, 16);
-            Inventory[11] = ItemManager.Create<ItemStoneOven>(null);
+            Inventory[11] = ItemManager.Create<ItemDigStick>(null);
             Inventory[12] = ItemManager.Create<ItemGrassWall>(null, 16);
             Inventory[13] = ItemManager.Create<ItemGrassFloor>(null, 16);
             Inventory[14] = ItemManager.Create<ItemGrassRoof>(null, 16);

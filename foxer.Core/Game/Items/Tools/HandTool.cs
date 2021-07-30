@@ -6,6 +6,8 @@ namespace foxer.Core.Game.Entities
     {
         public int SwipeMs { get; } = 1000;
 
+        public WeaponKind WeaponKind => WeaponKind.Magic;
+
         public bool CanInteract(EntityBase entity)
         {
             switch(entity)
