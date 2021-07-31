@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Entities;
+using foxer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -64,6 +65,20 @@ namespace foxer.Core.Game
         protected IEnumerable<IWalkBuilderCell> GetUsedPoints()
         {
             return _cells;
+        }
+
+        protected IEnumerable<WalkBuilderCell> GetLightestPointsAtDistance(int minDistance, int maxDistance, int maxCount)
+        {
+            var cells = _cells
+                .Where(cell => MathUtils.L1(cell.Cell, InitialCell.Cell) >= minDistance)
+                .Where(cell => MathUtils.L1(cell.Cell, InitialCell.Cell) <= maxDistance);
+
+            if (cells.Count() < maxCount)
+            {
+                return cells;
+            }
+
+            return cells.OrderBy(cell => cell.Weight).Take(maxCount);
         }
 
         protected Point[] BuildPath(WalkBuilderCell finalCell)

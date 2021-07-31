@@ -6,6 +6,7 @@
         Spear,
         Sword,
         Club,
-        Magic
+        Magic,
+        Teeth
     }
 }

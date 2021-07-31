@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Animation;
+using foxer.Core.Game.Attack;
 using foxer.Core.Game.Cells;
 using foxer.Core.Game.Interactors;
 using foxer.Core.Game.Items;
@@ -10,7 +11,7 @@ using System.Linq;
 
 namespace foxer.Core.Game.Entities
 {
-    public class PlayerEntity : EntityBase, ISingletoneFactory<IWeaponItem>
+    public class PlayerEntity : EntityFighterBase
     {
         private class PlayerWalkWeightProvider : ICellWeightProvider
         {
@@ -28,11 +29,11 @@ namespace foxer.Core.Game.Entities
         private readonly float _walkSpeedScalarCellPerMs = 0.004f;
         private int _aggressionResetCounter;
 
-        public override IAttacker Attacker { get; }
-
         public IToolItem EmptyHandTool { get; } = new HandTool();
 
         public ItemBase Hand { get; set; }
+
+        public override IWeaponItem Weapon { get => Hand as IWeaponItem; }
 
         public MovingByPathAnimation Walk { get; }
 
@@ -49,8 +50,7 @@ namespace foxer.Core.Game.Entities
         public int AggressionLevel { get; private set; }
 
         public bool WalkMode { get; set; }
-
-        IWeaponItem ISingletoneFactory<IWeaponItem>.Item => Hand as IWeaponItem;
+        public int _timeToTickHp { get; private set; }
 
         static PlayerEntity()
         {
@@ -60,16 +60,16 @@ namespace foxer.Core.Game.Entities
         }
 
         public PlayerEntity(int x, int y)
-            : base(x, y, 0)
+            : base(x, y, 0, 50)
         {
             Walk = new MovingByPathAnimation(this, _walkSpeedScalarCellPerMs, _walkSpeedScalarCellPerMs / 1.3f);
             ToolWork = new PlayerGatherAnimation(this);
             MoveToTarget = new MoveToTargetAnimation(this, Walk);
+
             Attack = new SimpleAttackAnimation(this, Walk);
             ShakeHands = new SimpleAnimation(3000);
             Idle = new SimpleAnimation(2000);
 
-            Attacker = new SimpleAttacker(Attack, this);
         }
 
         public override bool UseHitbox()
@@ -85,6 +85,8 @@ namespace foxer.Core.Game.Entities
         protected override void OnUpdate(Stage stage, uint timeMs)
         {
             UpdateAggression(timeMs);
+            RegenerateHp(timeMs);
+
             if (ActiveAnimation == null)
             {
                 StartAnimation(Idle.Coroutine);
@@ -190,7 +192,7 @@ namespace foxer.Core.Game.Entities
             return false;
         }
 
-        public bool TryAttack(Stage stage, EntityBase target)
+        public bool TryAttack(Stage stage, EntityFighterBase target)
         {
             if (target != null)
             {
@@ -216,6 +218,20 @@ namespace foxer.Core.Game.Entities
             }
 
             return false;
+        }
+
+        private void RegenerateHp(uint delayMs)
+        {
+            if (Hitpoints < MaxHitpoints
+                && Hitpoints > 0)
+            {
+                _timeToTickHp += (int)delayMs;
+                if (_timeToTickHp > 1000)
+                {
+                    Hitpoints = Math.Min(Hitpoints + _timeToTickHp / 1000, MaxHitpoints);
+                    _timeToTickHp = 0;
+                }
+            }
         }
     }
 }

@@ -685,4 +685,13 @@
   <data name="sprite_player_attack_spear" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\player\sprite_player_attack_spear.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="hpbar_background" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\misc\hpbar_background.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="hpbar_lost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\misc\hpbar_lost.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="hpbar_restore" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\misc\hpbar_restore.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

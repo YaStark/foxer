@@ -31,7 +31,7 @@ namespace foxer.Core.Game.Animation
                 yield break;
             }
 
-            _moveToTarget.MinDistance = GetTool().ToolDistance;
+            _moveToTarget.MinDistance = GetTool().Distance;
             foreach (var item in _moveToTarget.Coroutine(args))
             {
                 if(args.CancellationToken.IsCancellationRequested)

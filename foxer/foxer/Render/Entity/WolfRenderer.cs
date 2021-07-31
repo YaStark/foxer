@@ -94,6 +94,11 @@ namespace foxer.Render
                 return _walking.GetImageByRotation(entity.Rotation, entity.Walk);
             }
 
+            if (entity.ActiveAnimation == entity.Run)
+            {
+                return _walking.GetImageByRotation(entity.Rotation, entity.Run);
+            }
+
             if (entity.ActiveAnimation == entity.Sit)
             {
                 return _sitting.GetImageByRotation(entity.Rotation, entity.Sit);

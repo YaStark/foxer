@@ -121,5 +121,21 @@ namespace foxer.Core.Utils
 
             return result;
         }
+
+        public static IEnumerable<Point> EnumerateAllPointsInRangeL1(int width, int height, Point start, int range)
+        {
+            int x0 = Math.Max(0, start.X - range);
+            int x1 = Math.Min(width - 1, start.X + range);
+            int y0 = Math.Max(0, start.Y - range);
+            int y1 = Math.Min(height - 1, start.Y + range);
+
+            for (int x = x0; x <= x1; x++)
+            {
+                for (int y = y0; y <= y1; y++)
+                {
+                    yield return new Point(x, y);
+                }
+            }
+        }
     }
 }

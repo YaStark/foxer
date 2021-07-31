@@ -543,6 +543,36 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] hpbar_background {
+            get {
+                object obj = ResourceManager.GetObject("hpbar_background", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] hpbar_lost {
+            get {
+                object obj = ResourceManager.GetObject("hpbar_lost", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] hpbar_restore {
+            get {
+                object obj = ResourceManager.GetObject("hpbar_restore", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] icon_blue_flower {
             get {
                 object obj = ResourceManager.GetObject("icon_blue_flower", resourceCulture);

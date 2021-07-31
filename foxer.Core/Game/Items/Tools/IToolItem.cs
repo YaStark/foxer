@@ -7,7 +7,7 @@ namespace foxer.Core.Game.Items
         WeaponKind WeaponKind { get; }
         int SwipeMs { get; }
         int HitMs { get; }
-        int ToolDistance { get; }
+        int Distance { get; }
 
         bool CanInteract(EntityBase entity);
         int GetSwipesCount(EntityBase entity);

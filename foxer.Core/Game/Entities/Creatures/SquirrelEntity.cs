@@ -7,7 +7,7 @@ using foxer.Core.Utils;
 
 namespace foxer.Core.Game.Entities
 {
-    public class SquirrelEntity : EntityBase, IEscapeStressCellsBehaviorUser, IAttackTarget
+    public class SquirrelEntity : EntityBase, IEscapeStressCellsBehaviorUser
     {
         private class WalkCellAccessibleProvider : ICellAccessibleProvider
         {

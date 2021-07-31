@@ -53,10 +53,10 @@ namespace foxer.Pages
                 Device.BeginInvokeOnMainThread(() => OnUpdate(delayMs));
                 sw.Stop();
                 var t1 = sw.ElapsedMilliseconds;
-                Debug.WriteLine($"PageGame.OnUpdate: " +
-                    $"delayMs {delayMs}, " +
-                    $" _vm.Update {t0}, " +
-                    $"Device.BeginInvokeOnMainThread {t1}");
+            //     Debug.WriteLine($"PageGame.OnUpdate: " +
+            //         $"delayMs {delayMs}, " +
+            //         $" _vm.Update {t0}, " +
+            //         $"Device.BeginInvokeOnMainThread {t1}");
             }
 
             _time = time;

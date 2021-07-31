@@ -32,7 +32,7 @@ namespace foxer.Core.Game
         {
             return BuildPath(Field[cell.X, cell.Y].FirstOrDefault(c => c.Platform == cell.Platform));
         }
-
+        
         protected override bool CheckDestination(WalkBuilderCell cell)
         {
             return false;
@@ -41,6 +41,11 @@ namespace foxer.Core.Game
         protected override bool CanUseCell(WalkBuilderCell cell)
         {
             return MathUtils.L1(cell.Cell, Host.Cell) < MaxDistance;
+        }
+
+        public IEnumerable<IWalkBuilderCell> GetLightestPoints(int min, int max, int count)
+        {
+            return GetLightestPointsAtDistance(min, max, count);
         }
     }
 }

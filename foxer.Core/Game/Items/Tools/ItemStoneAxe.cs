@@ -10,7 +10,7 @@ namespace foxer.Core.Game.Items
 
         public WeaponKind WeaponKind => WeaponKind.Axe;
 
-        public int ToolDistance { get; } = 1;
+        public int Distance { get; } = 1;
 
         public bool CanInteract(EntityBase entity)
         {

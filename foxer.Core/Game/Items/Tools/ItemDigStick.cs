@@ -2,7 +2,7 @@
 
 namespace foxer.Core.Game.Items
 {
-    public class ItemDigStick : ItemBase, IWeaponItem
+    public class ItemDigStick : ItemBase, IToolItem, IWeaponItem
     {
         public int SwipeMs { get; } = 800;
         
@@ -10,7 +10,7 @@ namespace foxer.Core.Game.Items
 
         public WeaponKind WeaponKind { get; } = WeaponKind.Spear;
 
-        public int ToolDistance { get; } = 1;
+        public int Distance { get; } = 1;
 
         public bool CanInteract(EntityBase entity)
         {
@@ -20,12 +20,12 @@ namespace foxer.Core.Game.Items
                 return true;
             }
 
-            if(entity.AttackTarget != null)
-            {
-                return true;
-            }
-
             return false;
+        }
+
+        public bool CanInteract(EntityFighterBase entity)
+        {
+            return true;
         }
 
         public int GetDamage(Stage stage, EntityBase target)

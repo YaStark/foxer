@@ -1,5 +1,4 @@
 ﻿using foxer.Core.Game.Entities;
-using foxer.Core.Game.Items;
 
 namespace foxer.Core.Game.Interactors
 {
@@ -12,13 +11,13 @@ namespace foxer.Core.Game.Interactors
 
         protected override bool CanInteract(PlayerEntity player, object obj, InteractorArgs arg)
         {
-            return obj is EntityBase entity
+            return obj is EntityFighterBase entity
                 && GetTool(player)?.CanInteract(entity) == true;
         }
 
         protected override bool Interact(PlayerEntity player, object obj, InteractorArgs arg)
         {
-            return obj is EntityBase entity
+            return obj is EntityFighterBase entity
                 && GetTool(player)?.CanInteract(entity) == true
                 && player.TryAttack(arg.Stage, entity);
         }
