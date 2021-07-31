@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace foxer.Core.Game.Entities
 {
-    public class PlayerEntity : EntityBase
+    public class PlayerEntity : EntityBase, ISingletoneFactory<IWeaponItem>
     {
         private class PlayerWalkWeightProvider : ICellWeightProvider
         {
@@ -26,44 +26,50 @@ namespace foxer.Core.Game.Entities
         private const int MAX_WALK_DISTANSE = 15;
         private static readonly List<IInteractor> _interactors = new List<IInteractor>();
         private readonly float _walkSpeedScalarCellPerMs = 0.004f;
-        private Point? _newWalkTarget;
-        private IPlatform _newWalkTargetPlatform;
-        private Point[] _path;
         private int _aggressionResetCounter;
+
+        public override IAttacker Attacker { get; }
 
         public IToolItem EmptyHandTool { get; } = new HandTool();
 
         public ItemBase Hand { get; set; }
 
-        public MovingAnimation Walk { get; }
+        public MovingByPathAnimation Walk { get; }
 
         public SimpleAnimation Idle { get; }
 
         public SimpleAnimation ShakeHands { get; }
 
-        public SimpleAnimation ToolWork { get; }
+        public PlayerGatherAnimation ToolWork { get; }
+
+        public MoveToTargetAnimation MoveToTarget { get; }
+
+        public SimpleAttackAnimation Attack { get; }
 
         public int AggressionLevel { get; private set; }
 
         public bool WalkMode { get; set; }
 
+        IWeaponItem ISingletoneFactory<IWeaponItem>.Item => Hand as IWeaponItem;
+
         static PlayerEntity()
         {
-            _interactors.Add(new PlayerTreeAxeInteractor());
-            _interactors.Add(new PlayerHandToolInteractor());
+            _interactors.Add(new PlayerAttackInteractor());
+            _interactors.Add(new PlayerResourceInteractor());
             _interactors.Add(new PlayerDroppedItemInteractor());
-
-            // todo keep it last
-            _interactors.Add(new DefaultToolInteractor());
         }
 
         public PlayerEntity(int x, int y)
             : base(x, y, 0)
         {
-            Walk = new MovingAnimation(this, _walkSpeedScalarCellPerMs, _walkSpeedScalarCellPerMs / 1.3f);
-            ToolWork = new SimpleAnimation(2400);
+            Walk = new MovingByPathAnimation(this, _walkSpeedScalarCellPerMs, _walkSpeedScalarCellPerMs / 1.3f);
+            ToolWork = new PlayerGatherAnimation(this);
+            MoveToTarget = new MoveToTargetAnimation(this, Walk);
+            Attack = new SimpleAttackAnimation(this, Walk);
             ShakeHands = new SimpleAnimation(3000);
             Idle = new SimpleAnimation(2000);
+
+            Attacker = new SimpleAttacker(Attack, this);
         }
 
         public override bool UseHitbox()
@@ -79,44 +85,10 @@ namespace foxer.Core.Game.Entities
         protected override void OnUpdate(Stage stage, uint timeMs)
         {
             UpdateAggression(timeMs);
-
-            if (_newWalkTarget == null)
+            if (ActiveAnimation == null)
             {
-                if(ActiveAnimation == null)
-                {
-                    StartAnimation(Idle.Coroutine);
-                }
-
-                return;
+                StartAnimation(Idle.Coroutine);
             }
-
-            var target = _newWalkTarget;
-            _newWalkTarget = null;
-            if (_newWalkTargetPlatform == null)
-            {
-                return;
-            }
-
-            if (stage.CanBePlaced(this, target.Value.X, target.Value.Y, _newWalkTargetPlatform))
-            {
-                using (var walker = new WalkBuilder(
-                    stage,
-                    this,
-                    new PlayerWalkWeightProvider(),
-                    null,
-                    new WalkCell(target.Value, _newWalkTargetPlatform)))
-                {
-                    var path = walker.GetPath();
-                    if (path != null && path.Length < MAX_WALK_DISTANSE)
-                    {
-                        _path = path;
-                        StartAnimation(WalkByPath);
-                        return;
-                    }
-                }
-            }
-
-            RotateTo(target.Value);
         }
 
         private void UpdateAggression(uint timeMs)
@@ -150,42 +122,8 @@ namespace foxer.Core.Game.Entities
             SetAggression(8);
         }
 
-        internal void RotateTo(Point cell)
+        private void LoadLevel(EntityCoroutineArgs arg)
         {
-            Rotation = GeomUtils.GetAngle(cell, Cell);
-        }
-
-        public void MoveThenDo(Point[] path, params Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>[] coroutines)
-        {
-            _path = path;
-            if (_path == null)
-            {
-                StartAnimation(coroutines);
-            }
-            else
-            {
-                StartAnimation(WalkByPath, coroutines);
-            }
-        }
-        
-        private IEnumerable<EntityAnimation> WalkByPath(EntityCoroutineArgs arg)
-        {
-            if (_path == null)
-            {
-                yield break;
-            }
-
-            SetMoveAggression();
-
-            foreach (var pt in _path)
-            {
-                Walk.Target = pt;
-                foreach(var item in Walk.Coroutine(arg))
-                {
-                    yield return item;
-                }
-            }
-
             if(arg.Stage.GetCell(CellX, CellY) is CellDoor door) 
             {
                 arg.Stage.LoadLevel(door);
@@ -194,8 +132,33 @@ namespace foxer.Core.Game.Entities
 
         public void SetWalkTarget(Stage stage, int x, int y, IPlatform platform)
         {
-            _newWalkTarget = new Point(x, y);
-            _newWalkTargetPlatform = platform;
+            if (!stage.CanBePlaced(this, x, y, platform))
+            {
+                return;
+            }
+
+            var pt = new Point(x, y);
+            using (var walker = new WalkBuilder(
+                stage,
+                this,
+                new PlayerWalkWeightProvider(),
+                null,
+                new WalkCell(pt, platform)))
+            {
+                var path = walker.GetPath();
+                if (path != null && path.Length < MAX_WALK_DISTANSE)
+                {
+                    Walk.Targets = path;
+                    StartAnimation(
+                        GameUtils.DelegateCoroutine(e => SetMoveAggression()),
+                        Walk.Coroutine,
+                        GameUtils.DelegateCoroutine(LoadLevel));
+                }
+                else
+                {
+                    RotateTo(pt);
+                }
+            }
         }
 
         public bool TryInteract(Stage stage, EntityBase entity)
@@ -210,6 +173,46 @@ namespace foxer.Core.Game.Entities
             if (interactor != null)
             {
                 return interactor.InteractWith(this, entity, arg);
+            }
+
+            return false;
+        }
+
+        public bool TryGather(Stage stage, EntityBase target)
+        {
+            if(target != null)
+            {
+                ToolWork.Target = target;
+                StartAnimation(ToolWork.Coroutine);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryAttack(Stage stage, EntityBase target)
+        {
+            if (target != null)
+            {
+                Attack.Target = target;
+                StartAnimation(Attack.Coroutine);
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool TryRunToTarget(
+            Stage stage, 
+            EntityBase target, 
+            int minDistance,
+            params Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>[] coroutines)
+        {
+            if (target != null)
+            {
+                MoveToTarget.Target = target;
+                StartAnimation(MoveToTarget.Coroutine, coroutines);
+                return true;
             }
 
             return false;

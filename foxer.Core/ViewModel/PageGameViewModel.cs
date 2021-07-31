@@ -4,7 +4,7 @@ using foxer.Core.Game.Craft;
 using foxer.Core.Game.Entities;
 using foxer.Core.Game.Info;
 using foxer.Core.Game.Items;
-using foxer.Core.Interfaces;
+using foxer.Core.ViewModel;
 using foxer.Core.Utils;
 using foxer.Core.ViewModel.Menu;
 using foxer.Core.ViewModel.Menu.Craft;

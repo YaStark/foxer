@@ -6,7 +6,11 @@ namespace foxer.Core.Game.Items
     {
         public int SwipeMs => 800;
 
+        public int HitMs => SwipeMs / 2;
+
         public WeaponKind WeaponKind => WeaponKind.Axe;
+
+        public int ToolDistance { get; } = 1;
 
         public bool CanInteract(EntityBase entity)
         {

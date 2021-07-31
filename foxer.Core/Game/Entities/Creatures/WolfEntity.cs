@@ -14,6 +14,8 @@ namespace foxer.Core.Game.Entities
         private const double PROB_SIT_AFTER_RND_WALK = 0.5;
         private static readonly Random _rnd = new Random();
 
+        public override IAttackTarget AttackTarget { get; } = new SimpleAttackTarget(50);
+
         public MovingByPathAnimation Walk { get; }
         public SimpleAnimation Sit { get; }
         public SimpleAnimation Stand { get; }
@@ -59,6 +61,39 @@ namespace foxer.Core.Game.Entities
                         SitDown,
                         AttackOrIdle);
                 }
+            }
+        }
+
+        protected override void OnAttacked(Stage stage, EntityBase aggressor)
+        {
+            base.OnAttacked(stage, aggressor);
+            if(ActiveAnimation != Walk)
+            {
+                RunFromPoint(stage, aggressor.Cell);
+            }
+        }
+
+        private void RunFromPoint(Stage stage, Point awarePoint)
+        {
+            using (var walkBuilder = new RandomWalkBuilder(stage, null, null, this, 5))
+            {
+                var target = walkBuilder
+                    .GetPoints()
+                    ?.OrderByDescending(cell => MathUtils.L1(cell.Cell, awarePoint))
+                    .FirstOrDefault();
+
+                if (target == null)
+                {
+                    StartAnimation(Idle.Coroutine);
+                    return;
+                }
+
+                Walk.Targets = walkBuilder.BuildWalkPath(target);
+            }
+
+            if (Walk.Targets != null)
+            {
+                StartAnimation(Walk.Coroutine, Idle.Coroutine);
             }
         }
 

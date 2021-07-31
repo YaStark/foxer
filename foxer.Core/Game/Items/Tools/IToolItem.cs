@@ -6,16 +6,10 @@ namespace foxer.Core.Game.Items
     {
         WeaponKind WeaponKind { get; }
         int SwipeMs { get; }
+        int HitMs { get; }
+        int ToolDistance { get; }
+
         bool CanInteract(EntityBase entity);
         int GetSwipesCount(EntityBase entity);
-    }
-
-    public enum WeaponKind
-    {
-        Axe,
-        Spear,
-        Sword,
-        Club,
-        Magic
     }
 }

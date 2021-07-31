@@ -2,11 +2,15 @@
 
 namespace foxer.Core.Game.Items
 {
-    public class ItemDigStick : ItemBase, IToolItem
+    public class ItemDigStick : ItemBase, IWeaponItem
     {
-        public int SwipeMs => 800;
+        public int SwipeMs { get; } = 800;
+        
+        public int HitMs => SwipeMs / 2;
 
-        public WeaponKind WeaponKind => WeaponKind.Spear;
+        public WeaponKind WeaponKind { get; } = WeaponKind.Spear;
+
+        public int ToolDistance { get; } = 1;
 
         public bool CanInteract(EntityBase entity)
         {
@@ -16,8 +20,17 @@ namespace foxer.Core.Game.Items
                 return true;
             }
 
-            // todo dig
+            if(entity.AttackTarget != null)
+            {
+                return true;
+            }
+
             return false;
+        }
+
+        public int GetDamage(Stage stage, EntityBase target)
+        {
+            return 3; // todo
         }
 
         public int GetSwipesCount(EntityBase entity)

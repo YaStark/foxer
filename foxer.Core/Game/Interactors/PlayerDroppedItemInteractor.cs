@@ -1,6 +1,5 @@
 ﻿using foxer.Core.Game.Entities;
 using foxer.Core.Utils;
-using System.Drawing;
 
 namespace foxer.Core.Game.Interactors
 {
@@ -19,25 +18,11 @@ namespace foxer.Core.Game.Interactors
                 return false;
             }
 
-            Point[] path = null;
-            if (MathUtils.L1(player.Cell, entity.Cell) > 1)
-            {
-                path = GetPathToItem(player, entity, arg.Stage);
-                if (path == null)
-                {
-                    return false;
-                }
-            }
-
-            player.MoveThenDo(
-                path,
-                GameUtils.DelegateCoroutine(x =>
-                {
-                    player.RotateTo(entity.Cell);
-                    entity.DoGather(player, i => arg.Stage.InventoryManager.Accomodate(i));
-                }));
-
-            return true;
+            return player.TryRunToTarget(
+                arg.Stage, 
+                entity,
+                1,
+                GameUtils.DelegateCoroutine(eca => entity.DoGather(player, i => eca.Stage.InventoryManager.Accomodate(i))));
         }
     }
 }

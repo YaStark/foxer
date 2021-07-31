@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace foxer.Core.Interfaces
+﻿namespace foxer.Core.ViewModel
 {
     public interface INavigator
     {

@@ -10,8 +10,17 @@ namespace foxer.Core.Game.Entities
 {
     public abstract class EntityBase
     {
+        private readonly List<EntityBase> _aggressors = new List<EntityBase>();
+
+        private EntityAnimation _destroyAnimation;
+
         private bool _destroying = false;
+
         private Coroutine<EntityAnimation, EntityCoroutineArgs> _coroutine = new Coroutine<EntityAnimation, EntityCoroutineArgs>();
+
+        public virtual IAttacker Attacker { get; }
+
+        public virtual IAttackTarget AttackTarget { get; }
 
         public int CellX => Cell.X;
 
@@ -34,8 +43,6 @@ namespace foxer.Core.Game.Entities
         public float HitPoints { get; set; }
 
         public EntityAnimation ActiveAnimation => _coroutine.Current;
-
-        private EntityAnimation _destroyAnimation;
 
         public EntityAnimation Destroy => _destroyAnimation == null 
             ? _destroyAnimation = GetDestroyAnimation() 
@@ -65,8 +72,23 @@ namespace foxer.Core.Game.Entities
             _coroutine.Update();
         }
 
+        public void RotateTo(Point cell)
+        {
+            Rotation = GeomUtils.GetAngle90(cell, Cell);
+        }
+
         protected virtual void OnUpdate(Stage stage, uint timeMs)
         {
+        }
+
+        protected IEnumerable<EntityBase> GetAggressors()
+        {
+            return _aggressors;
+        }
+
+        protected bool IsAttackTarget()
+        {
+            return _aggressors.Any();
         }
 
         public virtual bool CanBeCreated(Stage stage, int x, int y, IPlatform platform)
@@ -77,6 +99,31 @@ namespace foxer.Core.Game.Entities
         public virtual bool UseHitbox()
         {
             return true;
+        }
+
+        public void SetAttacked(Stage stage, EntityBase aggressor, bool attacked)
+        {
+            if(attacked)
+            {
+                if(!_aggressors.Contains(aggressor))
+                {
+                    _aggressors.Add(aggressor);
+                }
+
+                OnAttacked(stage, aggressor);
+            }
+            else if(!attacked && _aggressors.Contains(aggressor))
+            {
+                _aggressors.Remove(aggressor);
+            }
+        }
+
+        protected virtual void OnAttacked(Stage stage, EntityBase aggressor)
+        {
+            if(AttackTarget != null && AttackTarget.Hitpoints <= 0)
+            {
+                BeginDestroy();
+            }
         }
 
         public virtual float GetHeight()

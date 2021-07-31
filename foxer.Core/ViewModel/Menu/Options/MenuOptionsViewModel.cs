@@ -1,4 +1,4 @@
-﻿using foxer.Core.Interfaces;
+﻿using foxer.Core.ViewModel;
 using System.Windows.Input;
 
 namespace foxer.Core.ViewModel.Menu

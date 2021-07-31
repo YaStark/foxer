@@ -1,8 +1,5 @@
 ﻿using foxer.Core;
-using foxer.Core.Interfaces;
 using foxer.Core.ViewModel;
-using foxer.Pages;
-using System;
 using Xamarin.Forms;
 
 namespace foxer

@@ -7,7 +7,7 @@ using foxer.Core.Utils;
 
 namespace foxer.Core.Game.Entities
 {
-    public class SquirrelEntity : EntityBase, IEscapeStressCellsBehaviorUser
+    public class SquirrelEntity : EntityBase, IEscapeStressCellsBehaviorUser, IAttackTarget
     {
         private class WalkCellAccessibleProvider : ICellAccessibleProvider
         {
@@ -33,6 +33,10 @@ namespace foxer.Core.Game.Entities
 
         public WaitingAnimation Idle { get; }
 
+        public int MaxHitpoints { get; } = 20; // todo manager
+
+        public int Hitpoints { get; set; }
+
         public SquirrelEntity(int x, int y)
              : base(x, y, 0)
         {
@@ -40,6 +44,8 @@ namespace foxer.Core.Game.Entities
             Hide = new WaitingAnimation(500, 2500);
             Idle = new WaitingAnimation(500, 2500);
             _escapeStressCellsBehavior = new EscapeStressCellsBehavior(this);
+
+            Hitpoints = MaxHitpoints;
         }
 
         public override float GetHeight()
@@ -150,6 +156,7 @@ namespace foxer.Core.Game.Entities
             {
                 // feed
                 _satiety++;
+                Hitpoints = Math.Min(Hitpoints + 5, MaxHitpoints);
             }
 
             _hasFood = false;
@@ -214,7 +221,6 @@ namespace foxer.Core.Game.Entities
 
         private void RunFromPoint(Stage stage, Point awarePoint)
         {
-
             using (var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 5))
             {
                 var target = walkBuilder

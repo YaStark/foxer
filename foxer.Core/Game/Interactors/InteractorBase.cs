@@ -18,6 +18,7 @@ namespace foxer.Core.Game.Interactors
         }
 
         protected abstract bool CanInteract(TSubject subj, object obj, InteractorArgs arg);
+
         protected abstract bool Interact(TSubject subj, object obj, InteractorArgs arg);
 
         protected static Point[] GetPathToItem(EntityBase walker, EntityBase target, Stage stage)

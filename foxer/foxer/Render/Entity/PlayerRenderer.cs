@@ -1,4 +1,5 @@
-﻿using foxer.Core.Game.Animation;
+﻿using foxer.Core.Game;
+using foxer.Core.Game.Animation;
 using foxer.Core.Game.Entities;
 using foxer.Core.Game.Items;
 using foxer.Core.Utils;
@@ -35,9 +36,13 @@ namespace foxer.Render
             {
                 _shakeHands.RenderImageByRotation(canvas, bounds, entity.Rotation, entity.ShakeHands);
             }
-            else if(entity.ActiveAnimation == entity.ToolWork)
+            else if (entity.ActiveAnimation == entity.ToolWork)
             {
                 RenderAttackWithWeapon(entity, entity.ToolWork, canvas, bounds);
+            }
+            else if (entity.ActiveAnimation == entity.Attack)
+            {
+                RenderAttackWithWeapon(entity, entity.Attack, canvas, bounds);
             }
             else
             {
@@ -45,7 +50,7 @@ namespace foxer.Render
             }
         }
 
-        private void RenderAttackWithWeapon(PlayerEntity player, SimpleAnimation animation, INativeCanvas canvas, RectangleF bounds)
+        private void RenderAttackWithWeapon(PlayerEntity player, EntityAnimation animation, INativeCanvas canvas, RectangleF bounds)
         {
             var playerAnimation = GetPlayerSpriteByWeaponKind((player.Hand as IToolItem)?.WeaponKind);
             var weaponAnimation = GetWeaponSprite(player.Hand);
