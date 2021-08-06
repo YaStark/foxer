@@ -4,7 +4,6 @@ using foxer.Core.ViewModel.Menu;
 using foxer.Pages.Game.Menu;
 using foxer.Render;
 using System;
-using System.Diagnostics;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -40,23 +39,13 @@ namespace foxer.Pages
 
         private bool OnTimerTick()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             var time = DateTime.Now;
             var delayMs = (int)(time - _time).TotalMilliseconds;
             if(delayMs > 0)
             {
                 _vm.Update((uint)delayMs);
-                sw.Stop();
-                var t0 = sw.ElapsedMilliseconds;
-                sw.Restart();
+                _menuHost.Menu.Update(delayMs);
                 Device.BeginInvokeOnMainThread(() => OnUpdate(delayMs));
-                sw.Stop();
-                var t1 = sw.ElapsedMilliseconds;
-            //     Debug.WriteLine($"PageGame.OnUpdate: " +
-            //         $"delayMs {delayMs}, " +
-            //         $" _vm.Update {t0}, " +
-            //         $"Device.BeginInvokeOnMainThread {t1}");
             }
 
             _time = time;
@@ -65,7 +54,6 @@ namespace foxer.Pages
 
         private void OnUpdate(int delayMs)
         {
-            _menuHost.Menu.Update(delayMs);
             _view.RequestRedraw();
         }
     }

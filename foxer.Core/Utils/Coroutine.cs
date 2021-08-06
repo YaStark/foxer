@@ -1,9 +1,13 @@
-﻿using System;
+﻿using foxer.Core.Game.Animation;
+using foxer.Core.Game.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
 namespace foxer.Core.Utils
 {
+    public delegate IEnumerable<EntityAnimation> EntityCoroutineDelegate(EntityCoroutineArgs args);
+
     public class Coroutine<TItem, TArgs> : ICoroutine
         where TArgs : CoroutineArgs, new()
     {

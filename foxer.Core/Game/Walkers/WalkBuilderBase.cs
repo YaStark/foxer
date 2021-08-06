@@ -33,6 +33,7 @@ namespace foxer.Core.Game
 
             InitialCell = Field[Host.CellX, Host.CellY][0];
             InitialCell.Weight = 1;
+            InitialCell.Distance = 1;
             InitialCell.Platform = Stage.GetPlatform(Host);
 
             _cells.Add(InitialCell);
@@ -42,19 +43,19 @@ namespace foxer.Core.Game
         {
             var queue = new Queue<WalkBuilderCell>();
             queue.Enqueue(InitialCell);
-            
+
             while (queue.Any())
             {
                 var cell = queue.Dequeue();
-                if(CheckDestination(cell))
+                if (CheckDestination(cell))
                 {
                     break;
                 }
 
-                TryFillArray(cell, 0, cell.X - 1, cell.Y, queue, cell.Weight);
-                TryFillArray(cell, 1, cell.X, cell.Y - 1, queue, cell.Weight);
-                TryFillArray(cell, 2, cell.X + 1, cell.Y, queue, cell.Weight);
-                TryFillArray(cell, 3, cell.X, cell.Y + 1, queue, cell.Weight);
+                TryFillArray(cell, 0, cell.X - 1, cell.Y, queue);
+                TryFillArray(cell, 1, cell.X, cell.Y - 1, queue);
+                TryFillArray(cell, 2, cell.X + 1, cell.Y, queue);
+                TryFillArray(cell, 3, cell.X, cell.Y + 1, queue);
             }
         }
 
@@ -123,32 +124,42 @@ namespace foxer.Core.Game
             return nearestCells.OrderBy(c => c.Weight).First();
         }
 
-        private void TryFillArray(WalkBuilderCell origin, int i, int x, int y, Queue<WalkBuilderCell> queue, int suffixValue)
+        private void TryFillArray(WalkBuilderCell origin, int i, int x, int y, Queue<WalkBuilderCell> queue)
         {
-            if (!Stage.CheckArrayBounds(x, y))
-            {
-                return;
-            }
-
-            var point = new Point(x, y);
-            var platform = Stage.GetPlatformOnTransit(Host, origin.Cell, point, origin.Platform);
+            var platform = Stage.GetPlatformOnTransit(Host, origin.Cell.X, origin.Cell.Y, x, y, origin.Platform);
             if (platform == null)
             {
                 return;
             }
 
-            var value = suffixValue + GetCellWeight(x, y, platform);
-            if (origin.LTRB[i] != null && origin.LTRB[i].Weight <= value)
+            var value = origin.Weight + GetCellWeight(x, y, platform);
+            if (origin.LTRB[i] != null 
+                && origin.LTRB[i].Weight <= value)
             {
                 return;
             }
 
-            if (AccessibleProvider?.CanWalk(Stage, Host, x, y, platform) == false)
+            if (AccessibleProvider != null 
+                && !AccessibleProvider.CanWalk(Stage, Host, x, y, platform))
             {
                 return;
             }
 
-            WalkBuilderCell cell = Field[x, y].FirstOrDefault(c => c.Platform == platform);
+            WalkBuilderCell cell = null;
+            for (int ci = 0; ci < Field[x, y].Length; ci++)
+            {
+                if (Field[x, y][ci].Platform == null)
+                {
+                    break;
+                }
+
+                if(Field[x, y][ci].Platform == platform)
+                {
+                    cell = Field[x, y][ci];
+                    break;
+                } 
+            }
+
             if (cell != null)
             {
                 if (cell.Weight <= value)
@@ -160,6 +171,7 @@ namespace foxer.Core.Game
                 else
                 {
                     cell.Weight = value;
+                    cell.Distance = origin.Distance + 1;
                 }
             }
 
@@ -167,6 +179,7 @@ namespace foxer.Core.Game
             {
                 cell = Field[x, y][Field[x, y].Count(c => !c.IsEmpty())];
                 cell.Weight = value;
+                cell.Distance = origin.Distance + 1;
                 cell.Platform = platform;
                 _cells.Add(cell);
             }
@@ -195,6 +208,13 @@ namespace foxer.Core.Game
             {
                 cell.Clear();
             }
+
+            _cells.Clear();
+            OnDispose();
+        }
+
+        protected virtual void OnDispose()
+        {
         }
     }
 }

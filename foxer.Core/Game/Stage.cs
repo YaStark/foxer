@@ -207,29 +207,36 @@ namespace foxer.Core.Game
             return i >= 0 && i < Width && j >= 0 && j < Height;
         }
 
-        public IPlatform GetPlatformOnTransit(EntityBase walker, Point from, Point to, IPlatform platformFrom)
+        public IPlatform GetPlatformOnTransit(EntityBase walker, int fromX, int fromY, int toX, int toY, IPlatform platformFrom)
         {
-            if (!CheckArrayBounds(from.X, from.Y)
-                || IsWallBetweeen(from, to))
+            if (!CheckArrayBounds(fromX, fromY)
+                || !CheckArrayBounds(toX, toY)
+                || IsWallBetweeen(fromX, fromY, toX, toY))
             {
                 return null;
             }
-            
+
             // ensure can climb
             var maxClimbHeight = walker.GetMaxClimbHeight(this);
-            for (int i = 0; i < _platforms[to.X, to.Y].Count; i++)
+            for (int i = 0; i < _platforms[toX, toY].Count; i++)
             {
-                var platform = _platforms[to.X, to.Y][i];
+                var platform = _platforms[toX, toY][i];
                 if (platform.CanSupport(walker)
                     && platform.Active(this)
                     && Math.Abs(platform.Level - platformFrom.Level) <= maxClimbHeight
-                    && CanBePlaced(walker, to.X, to.Y, platform))
+                    && CanBePlaced(walker, toX, toY, platform))
                 {
                     return platform;
                 }
             }
-            
+
             return null;
+        }
+
+
+        public IPlatform GetPlatformOnTransit(EntityBase walker, Point from, Point to, IPlatform platformFrom)
+        {
+            return GetPlatformOnTransit(walker, from.X, from.Y, to.X, to.Y, platformFrom);
         }
 
         public bool CheckRoomZOnPlatform(EntityBase entity, int x, int y, IPlatform platform)
@@ -250,16 +257,19 @@ namespace foxer.Core.Game
         public bool CheckCanWalkToCell(EntityBase walker, Point to)
         {
             return null != GetPlatformOnTransit(
-                walker, 
-                walker.Cell, 
-                to,
+                walker,
+                walker.CellX,
+                walker.CellY,
+                to.X,
+                to.Y,
                 GetPlatform(walker));
         }
 
-        public bool IsWallBetweeen(Point a, Point b)
+        public bool IsWallBetweeen(int aX, int aY, int bX, int bY)
         {
-            return _walls.Any(w => w.Active(this) && (w.Cell == a) && !w.CanTransit(b))
-                || _walls.Any(w => w.Active(this) && (w.Cell == b) && !w.CanTransit(a));
+            // todo to field[,]
+            return _walls.Any(w => w.Active(this) && w.CellX == aX && w.CellY == aY && !w.CanTransit(bX, bY))
+                || _walls.Any(w => w.Active(this) && w.CellX == bX && w.CellY == bY && !w.CanTransit(aX, aY));
         }
 
         internal void LoadLevel(CellDoor door)
@@ -282,6 +292,22 @@ namespace foxer.Core.Game
         public IEnumerable<EntityBase> GetOverlappedEntites(EntityBase entity, int x, int y, float z)
         {
             return GetOverlappedEntites(x, y, z, entity.GetHeight()).Where(e => e != entity);
+        }
+
+        public bool CheckNotOverlap(EntityBase entity, int x, int y, float z)
+        {
+            var descr = GetDescriptor(entity.GetType());
+            var list = _entitesToCells[x, y];
+            foreach (var e in list)
+            {
+                if(e != entity
+                    && !GetDescriptor(e.GetType()).CheckCanOtherBePlacedHere(descr))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public IEnumerable<EntityBase> GetOverlappedEntites(int x, int y, float z, float height)

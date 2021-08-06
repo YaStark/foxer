@@ -11,15 +11,19 @@ namespace foxer.Core.Game
 
         public IWalkBuilderCell[] Targets { get; }
 
+        public int MaxDistance { get; }
+
         public WalkBuilderWithMultipleTargets(
             Stage stage,
             EntityBase host,
             ICellWeightProvider weightProvider,
             ICellAccessibleProvider accessibleProvider,
-            IWalkBuilderCell[] targets)
+            IWalkBuilderCell[] targets,
+            int maxDistance)
             : base(stage, host, weightProvider, accessibleProvider)
         {
             Targets = targets;
+            MaxDistance = maxDistance;
             _incompletedTargets.AddRange(targets);
             BuildField();
         }
@@ -59,7 +63,12 @@ namespace foxer.Core.Game
 
         protected override bool CanUseCell(WalkBuilderCell cell)
         {
-            return true;
+            return cell.Distance < MaxDistance;
+        }
+
+        protected override void OnDispose()
+        {
+            _incompletedTargets.Clear();
         }
     }
 }

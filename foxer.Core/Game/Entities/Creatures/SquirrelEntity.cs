@@ -62,11 +62,11 @@ namespace foxer.Core.Game.Entities
                 return;
             }
 
-            if(_escapeStressCellsBehavior.OnUpdate(this, stage, timeMs))
+            if (_escapeStressCellsBehavior.OnUpdate(this, stage, timeMs))
             {
                 return;
             }
-            
+
             if (ActiveAnimation == Idle
                 && CheckOtherSquirrelsInCell(stage))
             {
@@ -80,7 +80,7 @@ namespace foxer.Core.Game.Entities
                 RunFromPoint(stage, Cell);
             }
         }
-        
+
         public void RunAway()
         {
             _runAway = true;
@@ -103,8 +103,7 @@ namespace foxer.Core.Game.Entities
             var trees = stage.GetNearestEntitesByType<TreeEntity>(CellX, CellY, 10)
                 .Where(tree => tree.Age > TreeEntity.AGE_MEDIUM)
                 .ToArray();
-
-            if(trees.Any())
+            if (trees.Any())
             {
                 // у белки нет еды
                 return TryFindTree(stage, trees);
@@ -116,7 +115,7 @@ namespace foxer.Core.Game.Entities
         private bool TryFindLawn(Stage stage)
         {
             // идет закапывать желудь или есть его на полянку
-            using (var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 10))
+            using (var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 5))
             {
                 var lawnCells = walkBuilder.GetPoints()
                         .Where(pt => !stage.GetOverlappedEntites(this, pt.Cell.X, pt.Cell.Y, pt.Platform.Level).Any(e => e is TreeEntity))
@@ -126,9 +125,7 @@ namespace foxer.Core.Game.Entities
                     return false;
                 }
 
-                Run.Targets = walkBuilder.BuildWalkPath(lawnCells
-                    .OrderBy(cell => MathUtils.L1(cell.Cell, Cell) + _rnd.Next(-5, 6))
-                    .First());
+                Run.Targets = walkBuilder.BuildWalkPath(lawnCells.Last());
             }
 
             if (Run.Targets == null)
@@ -177,7 +174,7 @@ namespace foxer.Core.Game.Entities
             using (var builder = new WalkBuilderWithMultipleTargets(
                 stage, this, null,
                 _walkCellAccessibleProvider,
-                cells))
+                cells, 5))
             {
                 Run.Targets = builder.GetShortestPath(out int index);
                 if (Run.Targets == null || index < 0)
@@ -221,11 +218,13 @@ namespace foxer.Core.Game.Entities
 
         private void RunFromPoint(Stage stage, Point awarePoint)
         {
-            using (var walkBuilder = new RandomWalkBuilder(stage, null, _walkCellAccessibleProvider, this, 5))
+            using (var walkBuilder = new RandomWalkBuilder(
+                stage, 
+                new CellWeightAwareProvider(awarePoint), 
+                _walkCellAccessibleProvider, this, 5))
             {
                 var target = walkBuilder
-                    .GetPoints()
-                    ?.OrderByDescending(cell => MathUtils.L1(cell.Cell, awarePoint))
+                    .GetLightestPoints(2, 5, 1)
                     .FirstOrDefault();
 
                 if (target == null)
@@ -240,6 +239,10 @@ namespace foxer.Core.Game.Entities
             if (Run.Targets != null)
             {
                 StartAnimation(Run.Coroutine, Idle.Coroutine);
+            }
+            else
+            {
+                StartAnimation(Idle.Coroutine);
             }
         }
 

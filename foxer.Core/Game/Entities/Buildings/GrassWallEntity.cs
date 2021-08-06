@@ -37,27 +37,27 @@ namespace foxer.Core.Game.Entities
 
         public bool IsColliderFor(Type entityType) => false;
         
-        public bool CanTransit(Point nearestTo)
+        public override float GetZIndex()
+        {
+            return GameUtils.GetZIndexForWalls(Rotation);
+        }
+
+        public bool CanTransit(int x, int y)
         {
             if (WallKind == WallKind.Door)
             {
                 return true;
             }
-            
+
             int side = ((Rotation + 45) % 360) / 90;
             switch (side)
             {
                 default:
-                case 0: return nearestTo != new Point(CellX + 1, CellY);
-                case 1: return nearestTo != new Point(CellX, CellY - 1);
-                case 2: return nearestTo != new Point(CellX - 1, CellY);
-                case 3: return nearestTo != new Point(CellX, CellY + 1);
+                case 0: return x != CellX + 1 && y != CellY;
+                case 1: return x != CellX && y != CellY - 1;
+                case 2: return x != CellX - 1 && y != CellY;
+                case 3: return x != CellX && y != CellY + 1;
             }
-        }
-
-        public override float GetZIndex()
-        {
-            return GameUtils.GetZIndexForWalls(Rotation);
         }
     }
 }

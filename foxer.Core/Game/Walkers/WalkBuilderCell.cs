@@ -23,6 +23,8 @@ namespace foxer.Core.Game
 
         public int Weight { get; set; }
 
+        public int Distance { get; set; } = -1;
+
         public IPlatform Platform { get; set; }
 
         public WalkBuilderCell(Point pt, int weight)
@@ -39,6 +41,7 @@ namespace foxer.Core.Game
         public void Clear()
         {
             Weight = 0;
+            Distance = -1;
             Platform = null;
             for (int i = 0; i < LTRB.Length; i++)
             {

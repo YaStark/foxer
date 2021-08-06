@@ -208,7 +208,7 @@ namespace foxer.Core.Game.Entities
             Stage stage, 
             EntityBase target, 
             int minDistance,
-            params Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>[] coroutines)
+            params EntityCoroutineDelegate[] coroutines)
         {
             if (target != null)
             {

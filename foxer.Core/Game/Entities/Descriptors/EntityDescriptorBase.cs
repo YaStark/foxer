@@ -1,6 +1,7 @@
 ﻿using foxer.Core.Game.Cells;
 using foxer.Core.Game.Entities.Stress;
 using foxer.Core.Game.Items;
+using foxer.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -28,22 +29,20 @@ namespace foxer.Core.Game.Entities.Descriptors
             {
                 return false;
             }
-            
-            if(!stage.CheckRoomZOnPlatform(entity, x, y, platform))
+
+            if (!stage.CheckRoomZOnPlatform(entity, x, y, platform))
             {
                 return false;
             }
 
-            return OnCanBePlaced(
-                stage, 
-                cell,
-                stage.GetOverlappedEntites(entity, x, y, platform.Level), 
-                platform);
+            var isNotOverlap = stage.CheckNotOverlap(entity, x, y, platform.Level);
+            var result = isNotOverlap && OnCanBePlaced(stage, cell, platform);
+            return result;
         }
 
-        protected virtual bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
+        protected virtual bool OnCanBePlaced(Stage stage, CellBase cell, IPlatform platform)
         {
-            return !entites.Any(e => !stage.GetDescriptor(e.GetType()).CheckCanOtherBePlacedHere(this));
+            return true;
         }
 
         public virtual ItemBase GetLoot(Stage stage, EntityBase entity)
@@ -51,7 +50,7 @@ namespace foxer.Core.Game.Entities.Descriptors
             return null;
         }
 
-        protected virtual bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
+        public virtual bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
         {
             //    BC SC BI SI
             // BC  -  +  -  +

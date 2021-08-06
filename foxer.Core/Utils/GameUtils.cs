@@ -24,7 +24,7 @@ namespace foxer.Core.Utils
             };
         }
 
-        public static Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>> DelegateCoroutine(Action<EntityCoroutineArgs> action)
+        public static EntityCoroutineDelegate DelegateCoroutine(Action<EntityCoroutineArgs> action)
         {
             return (arg) =>
             {
@@ -54,7 +54,7 @@ namespace foxer.Core.Utils
             }
         }
 
-        public static Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>> EnsureCoroutine(Func<EntityCoroutineArgs, bool> action)
+        public static EntityCoroutineDelegate EnsureCoroutine(Func<EntityCoroutineArgs, bool> action)
         {
             return (arg) =>
             {
@@ -62,6 +62,22 @@ namespace foxer.Core.Utils
                     && !action.Invoke(arg))
                 {
                     arg.CancellationToken.Cancel();
+                }
+
+                return Enumerable.Empty<EntityAnimation>();
+            };
+        }
+
+        public static EntityCoroutineDelegate ConditionalCoroutine(
+            Func<EntityCoroutineArgs, bool> condition,
+            EntityCoroutineDelegate coroutine)
+        {
+            return (arg) =>
+            {
+                if (!arg.CancellationToken.IsCancellationRequested
+                    && condition.Invoke(arg))
+                {
+                    return coroutine(arg);
                 }
 
                 return Enumerable.Empty<EntityAnimation>();
@@ -77,7 +93,7 @@ namespace foxer.Core.Utils
             }
         }
 
-        public static Point[] GetPathToItem(Stage stage, EntityBase walker, EntityBase target)
+        public static Point[] GetPathToItem(Stage stage, EntityBase walker, EntityBase target, int maxDistance)
         {
             // todo set distance
             var targetPlatform = stage.GetPlatform(target);
@@ -92,7 +108,7 @@ namespace foxer.Core.Utils
                 return null;
             }
 
-            using (var builder = new WalkBuilderWithMultipleTargets(stage, walker, null, null, cells))
+            using (var builder = new WalkBuilderWithMultipleTargets(stage, walker, null, null, cells, maxDistance))
             {
                 return builder.GetShortestPath();
             }

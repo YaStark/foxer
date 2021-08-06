@@ -5,7 +5,7 @@ namespace foxer.Core.Game.Entities
 {
     public class GrassFloorEntityDescriptor : PlatformEntityDescriptorBase<GrassFloorEntity>
     {
-        protected override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
+        public override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
         {
             return descriptor != this;
         }

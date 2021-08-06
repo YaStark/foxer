@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace foxer.Core.Game.Entities
 {
-    public class WolfEntityDescriptor : EntityDescriptor<WolfEntity>
+    public class CowEntityDescriptor : EntityDescriptor<CowEntity>
     {
-        public WolfEntityDescriptor() 
+        public CowEntityDescriptor()
             : base(EntityKind.BigCreature)
         {
         }

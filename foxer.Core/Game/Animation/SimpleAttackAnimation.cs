@@ -33,7 +33,7 @@ namespace foxer.Core.Game.Animation
             _moveToTarget = new MoveToTargetAnimation(host, walk);
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             while(IsTargetAlive())
             {
@@ -47,22 +47,12 @@ namespace foxer.Core.Game.Animation
                 // начинаем идти до цели, можем не дойти - цель спряталась
                 foreach (var item in _moveToTarget.Coroutine(args))
                 {
-                    if (args.CancellationToken.IsCancellationRequested)
-                    {
-                        yield break;
-                    }
-
                     yield return item;
                 }
 
                 // начинаем бить, можем не убить - цель убежала
                 foreach (var item in UseWeaponCoroutine(args))
                 {
-                    if (args.CancellationToken.IsCancellationRequested)
-                    {
-                        yield break;
-                    }
-
                     yield return item;
                 }
             }
@@ -88,11 +78,6 @@ namespace foxer.Core.Game.Animation
                 uint time = 0;
                 foreach (var item in _attack.Coroutine(args))
                 {
-                    if (args.CancellationToken.IsCancellationRequested)
-                    {
-                        yield break;
-                    }
-
                     if (!hit)
                     {
                         time += args.DelayMs;

@@ -58,6 +58,7 @@ namespace foxer.Core.Game.Generator.StageGenerator
 
             GenerateWolfes(stage, args.Rnd, firstCell, 10);
             GenerateSquirrels(stage, args.Rnd, firstCell, 15);
+            GenerateCows(stage, args.Rnd, firstCell, 10);
         }
 
         private void TryGenerateGrass(Stage stage, Random rnd, int i, int j)
@@ -94,6 +95,19 @@ namespace foxer.Core.Game.Generator.StageGenerator
                 foreach (var cell in cells)
                 {
                     stage.TryCreateNow(new SquirrelEntity(cell.X, cell.Y));
+                }
+            }
+        }
+
+        private void GenerateCows(Stage stage, Random rnd, Point firstCell, int count)
+        {
+            var host = new CowEntity(firstCell.X, firstCell.Y);
+            using (var walker = new RandomWalkBuilder(stage, null, null, host, stage.Width * 2))
+            {
+                var cells = walker.GetPoints().OrderBy(x => rnd.NextDouble()).Take(count).ToArray();
+                foreach (var cell in cells)
+                {
+                    stage.TryCreateNow(new CowEntity(cell.X, cell.Y));
                 }
             }
         }

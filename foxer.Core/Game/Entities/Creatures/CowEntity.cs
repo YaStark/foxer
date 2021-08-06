@@ -1,26 +1,27 @@
 ﻿using foxer.Core.Game.Animation;
 using foxer.Core.Game.Attack;
 using foxer.Core.Utils;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 namespace foxer.Core.Game.Entities
 {
-    public class WolfEntity : EntityFighterAIBase, IWeaponItem
+    public class CowEntity : EntityFighterAIBase, IWeaponItem
     {
-        private const float SPEED_WALK = 0.001f;
+        public enum CowState
+        {
+            HeadDown,
+            HeadUp
+        }
+
+        private const float SPEED_WALK = 0.0009f;
         private const float SPEED_ANIMATION_WALK = SPEED_WALK * 2;
 
-        private const float SPEED_RUN = SPEED_WALK * 2;
+        private const float SPEED_RUN = SPEED_WALK * 10;
         private const float SPEED_ANIMATION_RUN = SPEED_RUN * 2;
-
-        private const double PROB_SIT_AFTER_RND_WALK = 0.5;
 
         private readonly IAttackerAI _attackerBehavior = new AttackerBehaviorNeutral
         {
-            TimeMsToForgive = 15000
+            TimeMsToForgive = 5000
         };
 
         private readonly MoveToTargetAnimation _runToHelp;
@@ -30,31 +31,30 @@ namespace foxer.Core.Game.Entities
         public MovingByPathAnimation Walk { get; }
         public MovingByPathAnimation Run { get; }
 
-        public SimpleAnimation Sit { get; }
-        public SimpleAnimation Stand { get; }
+        public SimpleAnimation HeadUp { get; }
+        public SimpleAnimation HeadDown { get; }
+
         public EntityAnimation Idle { get; }
         public SimpleAttackAnimation Attack { get; }
-        public EntityBodyState State { get; private set; } = EntityBodyState.Stand;
+        public CowState State { get; private set; } = CowState.HeadUp;
 
-        public WolfEntity(int x, int y)
-            : base(x, y, 0, 30)
+        public CowEntity(int x, int y)
+            : base(x, y, 0, 80)
         {
-            Sit = new SimpleAnimation(250);
-            Stand = new SimpleAnimation(200);
+            HeadUp = new SimpleAnimation(200);
+            HeadDown = new SimpleAnimation(200);
 
             Walk = new MovingByPathAnimation(this, SPEED_WALK, SPEED_ANIMATION_WALK);
             Walk.AlwaysRunBefore(
-                GameUtils.ConditionalCoroutine(e => State != EntityBodyState.Stand, Stand.Coroutine),
-                GameUtils.DelegateCoroutine(e => State = EntityBodyState.Stand));
-
-            Run = new MovingByPathAnimation(this, SPEED_RUN, SPEED_ANIMATION_RUN);
-            Run.AlwaysRunBefore(
-                GameUtils.ConditionalCoroutine(e => State != EntityBodyState.Stand, Stand.Coroutine),
-                GameUtils.DelegateCoroutine(e => State = EntityBodyState.Stand));
+                GameUtils.ConditionalCoroutine(e => State != CowState.HeadDown, HeadDown.Coroutine),
+                GameUtils.DelegateCoroutine(e => State = CowState.HeadDown));
 
             Idle = new WaitingAnimation(500, 5000);
             Idle.AlwaysRunBefore(
-                GameUtils.ConditionalCoroutine(CheckCanSit, Sit.Coroutine));
+                GameUtils.ConditionalCoroutine(e => State != CowState.HeadUp, HeadUp.Coroutine),
+                GameUtils.DelegateCoroutine(e => State = CowState.HeadUp));
+
+            Run = new MovingByPathAnimation(this, SPEED_RUN, SPEED_ANIMATION_RUN);
 
             Attack = new SimpleAttackAnimation(this, Run);
 
@@ -63,7 +63,7 @@ namespace foxer.Core.Game.Entities
 
         protected override void OnUpdate(Stage stage, uint timeMs)
         {
-            if(_attackerBehavior.OnUpdate(stage, this, timeMs))
+            if (_attackerBehavior.OnUpdate(stage, this, timeMs))
             {
                 return;
             }
@@ -97,32 +97,6 @@ namespace foxer.Core.Game.Entities
             _attackerBehavior.OnAttacked(aggressor);
         }
 
-        private IEnumerable<EntityAnimation> StandUp(EntityCoroutineArgs arg)
-        {
-            if (State == EntityBodyState.Sit)
-            {
-                foreach (var item in Stand.Coroutine(arg))
-                {
-                    yield return item;
-                }
-
-                State = EntityBodyState.Stand;
-            }
-        }
-        
-        private bool CheckCanSit(EntityCoroutineArgs arg)
-        {
-            if(State != EntityBodyState.Sit
-                 && arg.Stage.Rnd.NextDouble() < PROB_SIT_AFTER_RND_WALK
-                 && (Rotation < 45 || Rotation > 225))
-            {
-                State = EntityBodyState.Sit;
-                return true;
-            }
-
-            return false;
-        }
-        
         public override bool BeginFight(Stage stage, EntityFighterBase enemy)
         {
             Attack.Target = enemy;
@@ -137,31 +111,15 @@ namespace foxer.Core.Game.Entities
 
         public override bool BeginRunaway(Stage stage, IAwareEntitesProvider awareEntitesProvider)
         {
-            // убегаем к ближайшему другу, если он на расстоянии в 3 клетки и больше
-            // иначе просто бежим в сторону от атакующих
-
-            var neighbour = stage.GetEntitesByType(typeof(WolfEntity))
-                .Where(w => MathUtils.L1(Cell, w.Cell) > 3)
-                .Where(w => MathUtils.L1(Cell, w.Cell) < 10)
-                .OrderBy(w => MathUtils.L1(Cell, w.Cell))
-                .FirstOrDefault();
-
-            if(neighbour != null)
-            {
-                _runToHelp.Target = neighbour;
-                StartAnimation(_runToHelp.Coroutine);
-                return true;
-            }
-
-            using(var walker = new RandomWalkBuilder(
-                stage, 
+            using (var walker = new RandomWalkBuilder(
+                stage,
                 new CellWeightAwareProvider(awareEntitesProvider.GetAwareEntites().Select(e => e.Cell)),
                 null,
                 this,
                 10))
             {
                 var targets = walker.GetLightestPoints(7, 10, 10);
-                if(targets.Any())
+                if (targets.Any())
                 {
                     var target = targets.OrderBy(pt => MathUtils.L1(pt.Cell, Cell)).LastOrDefault();
                     Run.Targets = walker.BuildWalkPath(target);
@@ -183,17 +141,17 @@ namespace foxer.Core.Game.Entities
 
         public WeaponKind WeaponKind { get; } = WeaponKind.Teeth;
 
-        public int SwipeMs { get; } = 1200;
+        public int SwipeMs { get; } = 2000;
 
-        public int HitMs { get; } = 600;
+        public int HitMs { get; } = 1400;
 
         public int Distance { get; } = 1;
 
         public int GetDamage(Stage stage, EntityBase target)
         {
-            return stage.Rnd.Next(3, 6);
+            return stage.Rnd.Next(7, 10);
         }
-        
+
         public bool CanInteract(EntityFighterBase entity)
         {
             return true;

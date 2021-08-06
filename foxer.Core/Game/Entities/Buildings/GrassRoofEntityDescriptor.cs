@@ -12,13 +12,12 @@ namespace foxer.Core.Game.Entities
         {
         }
 
-        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
+        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IPlatform platform)
         {
-            return platform is IWall
-                && base.OnCanBePlaced(stage, cell, entites, platform);
+            return platform is IWall;
         }
 
-        protected override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
+        public override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
         {
             return false;
         }

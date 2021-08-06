@@ -23,6 +23,7 @@ namespace foxer.Pages
             _entityRenderers.Add(new BeeRenderer());
             _entityRenderers.Add(new BubblesRenderer());
             _entityRenderers.Add(new WolfRenderer());
+            _entityRenderers.Add(new CowRenderer());
             _entityRenderers.Add(new SquirrelRenderer());
             _entityRenderers.Add(new DroppedItemRenderer());
             _entityRenderers.Add(new StoneSmallRenderer());

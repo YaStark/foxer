@@ -1,5 +1,4 @@
 ﻿using foxer.Core.Game.Cells;
-using System.Collections.Generic;
 using System.Drawing;
 
 namespace foxer.Render
@@ -38,31 +37,40 @@ namespace foxer.Render
             canvas.DrawImage(_imageGrass[IsGrassCell(right) ? 0 : 1, 2], bounds);
             canvas.DrawImage(_imageGrass[IsGrassCell(bottom) ? 0 : 1, 3], bounds);
 
-            if (cell == null) return;
-            foreach(var image in EnumerateCellMiscImages(cell.CellFloorKind))
+            if (cell == null)
             {
-                canvas.DrawImage(image, bounds);
+                return;
             }
+
+            RenderCellMisc(cell.CellFloorKind, canvas, bounds);
         }
 
-        private static IEnumerable<byte[]> EnumerateCellMiscImages(int kind)
+        private static void RenderCellMisc(int kind, INativeCanvas canvas, RectangleF bounds)
         {
-            if ((kind & 1) * (kind & 2) != 0) yield return _imageGrassMisc[0];
-            if ((kind & 4) * (kind & 8) != 0) yield return _imageGrassMisc[1];
-            if ((kind & 16) * (kind & 32) != 0) yield return _imageGrassMisc[2];
-            if ((kind & 64) * (kind & 128) != 0) yield return _imageGrassMisc[3];
+            if ((kind & 1) * (kind & 2) != 0)
+            {
+                canvas.DrawImage(_imageGrassMisc[0], bounds);
+            }
+
+            if ((kind & 4) * (kind & 8) != 0)
+            {
+                canvas.DrawImage(_imageGrassMisc[1], bounds);
+            }
+
+            if ((kind & 16) * (kind & 32) != 0)
+            {
+                canvas.DrawImage(_imageGrassMisc[2], bounds);
+            }
+
+            if ((kind & 64) * (kind & 128) != 0)
+            {
+                canvas.DrawImage(_imageGrassMisc[3], bounds);
+            }
         }
 
         private static bool IsGrassCell(CellBase cell)
         {
-            switch(cell?.Kind)
-            {
-                case null:
-                    return false;
-
-                default:
-                    return true;
-            }
+            return cell != null;
         }
     }
 }

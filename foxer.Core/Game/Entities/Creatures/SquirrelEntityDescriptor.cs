@@ -18,13 +18,8 @@ namespace foxer.Core.Game.Entities
         {
         }
 
-        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IEnumerable<EntityBase> entites, IPlatform platform)
+        protected override bool OnCanBePlaced(Stage stage, CellBase cell, IPlatform platform)
         {
-            if (!base.OnCanBePlaced(stage, cell, entites, platform))
-            {
-                return false;
-            }
-
             if (platform == stage.DefaultPlatform)
             {
                 return cell.Kind == CellKind.Floor
@@ -34,7 +29,7 @@ namespace foxer.Core.Game.Entities
             return true;
         }
 
-        protected override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
+        public override bool CheckCanOtherBePlacedHere(EntityDescriptorBase descriptor)
         {
             return descriptor.EntityType == typeof(TreeEntity)
                 || base.CheckCanOtherBePlacedHere(descriptor);

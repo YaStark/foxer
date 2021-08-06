@@ -1,4 +1,5 @@
 ﻿using foxer.Core.Game.Animation;
+using foxer.Core.Game.Entities;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,10 +7,12 @@ using System.Linq;
 
 namespace foxer.Render.Helpers
 {
-    public class RotatingAnimationSpriteRendererHelper
+    public class RotatingAnimationSpriteRendererHelper : IRendererHelper
     {
         private readonly byte[] _sprite;
         private readonly Dictionary<int, RectangleF[]> _masks = new Dictionary<int, RectangleF[]>();
+
+        public bool Reverse { get; set; } = false;
 
         public RotatingAnimationSpriteRendererHelper(byte[] sprite, int width, int height)
         {
@@ -31,12 +34,14 @@ namespace foxer.Render.Helpers
         
         public void RenderImageByRotation(INativeCanvas canvas, RectangleF bounds, int angle, EntityAnimation animation)
         {
-            canvas.DrawImage(_sprite, GetByAnimation(animation, GetByRotation(_masks, angle)), bounds);
+            canvas.DrawImage(_sprite, GetByAnimation(animation, GetByRotation(_masks, angle), Reverse), bounds);
         }
 
-        private static T GetByAnimation<T>(EntityAnimation animation, T[] items)
+        private static T GetByAnimation<T>(EntityAnimation animation, T[] items, bool reverse)
         {
-            int index = Math.Max(0, Math.Min((int)(animation.Progress * items.Length), items.Length - 1));
+            double progress = animation?.Progress ?? 0;
+            int index = Math.Max(0, Math.Min((int)(progress * items.Length), items.Length - 1));
+            if(reverse) return items[items.Length - index - 1];
             return items[index];
         }
 
@@ -44,6 +49,14 @@ namespace foxer.Render.Helpers
         {
             var key = dict.Keys.OrderBy(x => Math.Abs(x - angle)).First();
             return dict[key];
+        }
+
+        public void Render(INativeCanvas canvas, RectangleF bounds, EntityBase entity)
+        {
+            canvas.DrawImage(
+                _sprite, 
+                GetByAnimation(entity.ActiveAnimation, GetByRotation(_masks, entity.Rotation), Reverse), 
+                bounds);
         }
     }
 }

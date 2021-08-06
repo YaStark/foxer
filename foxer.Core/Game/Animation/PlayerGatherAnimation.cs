@@ -22,8 +22,8 @@ namespace foxer.Core.Game.Animation
             _host = host;
             _moveToTarget = new MoveToTargetAnimation(host, host.Walk);
         }
-        
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             if (Target == null)
             {
@@ -34,17 +34,7 @@ namespace foxer.Core.Game.Animation
             _moveToTarget.MinDistance = GetTool().Distance;
             foreach (var item in _moveToTarget.Coroutine(args))
             {
-                if(args.CancellationToken.IsCancellationRequested)
-                {
-                    yield break;
-                }
-
                 yield return item;
-            }
-
-            if (args.CancellationToken.IsCancellationRequested)
-            {
-                yield break;
             }
 
             var tool = GetTool();
@@ -62,11 +52,6 @@ namespace foxer.Core.Game.Animation
                 uint time = 0;
                 foreach (var item in _toolAnimation.Coroutine(args))
                 {
-                    if (args.CancellationToken.IsCancellationRequested)
-                    {
-                        yield break;
-                    }
-
                     if (!hit)
                     {
                         time += args.DelayMs;

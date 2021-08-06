@@ -17,17 +17,12 @@ namespace foxer.Core.Game.Animation
             DeltaZ = deltaZ;
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             int duration = DurationMs;
             float initialZ = Host.Z;
             while (duration > 0)
             {
-                if (args.CancellationToken.IsCancellationRequested)
-                {
-                    break;
-                }
-
                 duration -= (int)args.DelayMs;
                 Progress = Math.Min(1, Math.Max(0, 1 - (double)duration / DurationMs));
                 Host.MoveZ(initialZ + DeltaZ * (1 - (float)Math.Cos(Progress * Math.PI * 2)));

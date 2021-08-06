@@ -41,13 +41,8 @@ namespace foxer.Render
 
         private static bool CanBridge(CellBase cell)
         {
-            switch(cell?.Kind)
-            {
-                case CellKind.Bound:
-                    return true;
-            }
-
-            return false;
+            return cell != null
+                && cell.Kind == CellKind.Bound;
         }
     }
 }

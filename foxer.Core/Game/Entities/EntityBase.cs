@@ -9,6 +9,8 @@ namespace foxer.Core.Game.Entities
 {
     public abstract class EntityBase
     {
+        protected static readonly StopwatchHelper Stopwatch = new StopwatchHelper("EntityBase");
+
         private EntityAnimation _destroyAnimation;
 
         private bool _destroying = false;
@@ -155,14 +157,14 @@ namespace foxer.Core.Game.Entities
             stage.CreateDroppedLootItem(this);
         }
         
-        protected void StartAnimation(Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>[] coroutines)
+        protected void StartAnimation(EntityCoroutineDelegate[] coroutines)
         {
-            _coroutine.Start(coroutines);
+            _coroutine.Start(coroutines.Select(c => new Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>(a => c(a))).ToArray());
         }
 
         protected void StartAnimation(
-            Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>> first,
-            params Func<EntityCoroutineArgs, IEnumerable<EntityAnimation>>[] coroutines)
+            EntityCoroutineDelegate first,
+            params EntityCoroutineDelegate[] coroutines)
         {
             StartAnimation(new[] { first }.Concat(coroutines).ToArray());
         }

@@ -19,7 +19,7 @@ namespace foxer.Core.Game.Animation
             AnimationSpeed = animationSpeed == 0 ? Speed : animationSpeed;
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             Progress = 0;
             var walkTarget = Target;
@@ -28,11 +28,6 @@ namespace foxer.Core.Game.Animation
             bool readyX = false, readyY = false;
             while (!readyX || !readyY)
             {
-                if (args.CancellationToken.IsCancellationRequested)
-                {
-                    yield break;
-                }
-
                 float x = Host.X;
                 float y = Host.Y;
                 var delta = Speed * args.DelayMs;

@@ -9,11 +9,19 @@ namespace foxer.Core.Utils
     {
         private readonly Stopwatch _stopwatchScope = new Stopwatch();
         private readonly Stopwatch _stopwatchPoint = new Stopwatch();
+        private long _memoryScope;
+        private long _memoryPoint;
+
         private readonly Dictionary<string, TimeSpan> _scopes = new Dictionary<string, TimeSpan>();
         private readonly Dictionary<string, List<long>> _points = new Dictionary<string, List<long>>();
 
+        private readonly Dictionary<string, long> _scopesGc = new Dictionary<string, long>();
+        private readonly Dictionary<string, List<long>> _pointsGc = new Dictionary<string, List<long>>();
+
         private string _lastScope;
         private string _lastPoint;
+
+        public int Tick { get; set; }
 
         public string MainScope { get; }
 
@@ -25,6 +33,7 @@ namespace foxer.Core.Utils
         public void Scope(string scopeName)
         {
             EndScope();
+            _memoryScope = GC.GetTotalMemory(false);
             _lastScope = scopeName;
             _stopwatchScope.Restart();
         }
@@ -33,6 +42,7 @@ namespace foxer.Core.Utils
         {
             EndPoint();
             _lastPoint = name;
+            _memoryPoint = GC.GetTotalMemory(false);
             _stopwatchPoint.Restart();
         }
 
@@ -41,6 +51,7 @@ namespace foxer.Core.Utils
             if (!string.IsNullOrEmpty(_lastScope))
             {
                 _stopwatchScope.Stop();
+                _scopesGc[_lastScope] = GC.GetTotalMemory(false) - _memoryScope;
                 _scopes[_lastScope] = _stopwatchScope.Elapsed;
                 _lastScope = null;
             }
@@ -50,6 +61,16 @@ namespace foxer.Core.Utils
         {
             if (!string.IsNullOrEmpty(_lastPoint))
             {
+                var value = GC.GetTotalMemory(false) - _memoryPoint;
+                if (_pointsGc.TryGetValue(_lastPoint, out var listGc))
+                {
+                    listGc.Add(value);
+                }
+                else
+                {
+                    _pointsGc[_lastPoint] = new List<long>(new[] { value });
+                }
+
                 _stopwatchPoint.Stop();
                 if (_points.TryGetValue(_lastPoint, out var list))
                 {
@@ -64,25 +85,41 @@ namespace foxer.Core.Utils
             }
         }
 
+        public void ShowEvery(int ticks)
+        {
+            Tick++;
+            if (Tick > ticks)
+            {
+                Show();
+                Clear();
+                Tick = 0;
+            }
+        }
+
         public void Show()
         {
             EndPoint();
             EndScope();
-            return;
+//            return;
             Debug.WriteLine($"##### Begin {MainScope} #####");
             Debug.WriteLine("### Scopes ###");
-            foreach (var kv in _scopes)
+            foreach (var scope in _scopes.Keys)
             {
-                Debug.WriteLine($"{kv.Key}: {Math.Round(kv.Value.TotalMilliseconds, 4)} ");
+                Debug.WriteLine($"{scope}: {Math.Round(_scopes[scope].TotalMilliseconds, 4)} (alloc {_scopesGc[scope]})");
             }
 
             Debug.WriteLine("### Points ###");
-            foreach(var kv in _points)
+            foreach(var pt in _points.Keys)
             {
-                Debug.WriteLine($"{kv.Key}: " +
-                    $"total {kv.Value.Sum()}; " +
-                    $"avg: {Math.Round(kv.Value.Average(), 4)}; " +
-                    $"count: {kv.Value.Count} ");
+                Debug.WriteLine($"Exec {pt}: " +
+                    $"total {_points[pt].Sum()}; " +
+                    $"avg: {Math.Round(_points[pt].Average(), 4)}; " +
+                    $"count: {_points[pt].Count} ");
+
+                Debug.WriteLine($"Alloc {pt}: " +
+                    $"total {_pointsGc[pt].Sum()}; " +
+                    $"avg: {Math.Round(_pointsGc[pt].Average(), 4)}; " +
+                    $"count: {_pointsGc[pt].Count} ");
             }
 
             Debug.WriteLine($"##### End {MainScope} #####");
@@ -91,7 +128,9 @@ namespace foxer.Core.Utils
         public void Clear()
         {
             _scopes.Clear();
+            _scopesGc.Clear();
             _points.Clear();
+            _pointsGc.Clear();
         }
     }
 }

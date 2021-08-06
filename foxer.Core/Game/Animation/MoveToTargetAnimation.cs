@@ -17,6 +17,8 @@ namespace foxer.Core.Game.Animation
 
         public int MinDistance { get; set; }
 
+        public int MaxDistance { get; set; } = 15;
+
         public MoveToTargetAnimation(EntityBase host, MovingByPathAnimation movingAnimation, int minDistance = 1)
         {
             Host = host;
@@ -24,25 +26,20 @@ namespace foxer.Core.Game.Animation
             MinDistance = minDistance;
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             int maxAttempts = 50;
             while (maxAttempts > 0)
             {
                 foreach (var item in MoveToTargetCoroutine(args))
                 {
-                    if (args.CancellationToken.IsCancellationRequested)
-                    {
-                        yield break;
-                    }
-
                     yield return item;
                 }
 
                 if (MathUtils.L1(Host.Cell, Target.Cell) > MinDistance)
                 {
                     // не дошли, перезапускаем построение пути
-                    _path = GameUtils.GetPathToItem(args.Stage, Host, Target);
+                    _path = GameUtils.GetPathToItem(args.Stage, Host, Target, MaxDistance);
                     if (_path == null)
                     {
                         args.CancellationToken.Cancel();
@@ -68,7 +65,7 @@ namespace foxer.Core.Game.Animation
             {
                 if (MathUtils.L1(Host.Cell, Target.Cell) > MinDistance)
                 {
-                    _path = GameUtils.GetPathToItem(args.Stage, Host, Target);
+                    _path = GameUtils.GetPathToItem(args.Stage, Host, Target, MaxDistance);
                     if (_path == null)
                     {
                         args.CancellationToken.Cancel();
@@ -83,11 +80,6 @@ namespace foxer.Core.Game.Animation
                 _path = null;
                 foreach (var item in MovingAnimation.Coroutine(args))
                 {
-                    if (args.CancellationToken.IsCancellationRequested)
-                    {
-                        yield break;
-                    }
-
                     yield return item;
 
                     if (Target.Cell != Target.PreviousFrameCell)

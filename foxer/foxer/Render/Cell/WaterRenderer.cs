@@ -37,28 +37,27 @@ namespace foxer.Render
             canvas.DrawImage(_imageWater[IsWaterCell(bottom) ? 0 : 1, 3], bounds);
 
             if (cell == null) return;
-            foreach (var image in EnumerateCellMiscImages(cell.Misc))
-            {
-                canvas.DrawImage(image, bounds);
-            }
+
+            RenderCellMisc(cell.Misc, canvas, bounds);
         }
 
-        private static IEnumerable<byte[]> EnumerateCellMiscImages(int kind)
+        private static void RenderCellMisc(int kind, INativeCanvas canvas, RectangleF bounds)
         {
-            if ((kind & 1) != 0) yield return _imageWaterMisc[0];
-            if ((kind & 2) != 0) yield return _imageWaterMisc[1];
+            if ((kind & 1) != 0)
+            {
+                canvas.DrawImage(_imageWaterMisc[0], bounds);
+            }
+
+            if ((kind & 2) != 0)
+            {
+                canvas.DrawImage(_imageWaterMisc[1], bounds);
+            }
         }
 
         private static bool IsWaterCell(CellBase cell)
         {
-            switch (cell?.Kind)
-            {
-                case CellKind.Water:
-                    return true;
-
-                default:
-                    return false;
-            }
+            return cell != null 
+                && cell.Kind == CellKind.Water;
         }
     }
 }

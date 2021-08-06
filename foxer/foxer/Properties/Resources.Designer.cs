@@ -923,6 +923,36 @@ namespace foxer.Properties {
         /// <summary>
         ///   Поиск локализованного ресурса типа System.Byte[].
         /// </summary>
+        internal static byte[] sprite_cow_headup {
+            get {
+                object obj = ResourceManager.GetObject("sprite_cow_headup", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_cow_idle {
+            get {
+                object obj = ResourceManager.GetObject("sprite_cow_idle", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
+        internal static byte[] sprite_cow_walk {
+            get {
+                object obj = ResourceManager.GetObject("sprite_cow_walk", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Byte[].
+        /// </summary>
         internal static byte[] sprite_digstick_attack {
             get {
                 object obj = ResourceManager.GetObject("sprite_digstick_attack", resourceCulture);

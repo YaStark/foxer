@@ -16,17 +16,12 @@ namespace foxer.Core.Game.Animation
             TimeMsMax = timeMsMax == 0 ? timeMsMin : timeMsMax;
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             var time = _rnd.Next(TimeMsMin, TimeMsMax);
             var t = time;
             while(t > 0)
             {
-                if(args.CancellationToken.IsCancellationRequested)
-                {
-                    yield break;
-                }
-
                 Progress = Math.Min(1, Math.Max(0, 1 - (double)t / time));
 
                 t -= (int)args.DelayMs;

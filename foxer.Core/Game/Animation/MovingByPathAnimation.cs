@@ -19,16 +19,11 @@ namespace foxer.Core.Game.Animation
             _parent = parent;
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             for (int i = 0; i < Targets.Length; i++)
             {
-                if(args.CancellationToken.IsCancellationRequested)
-                {
-                    yield break;
-                }
-
-                if(args.Stage.IsWallBetweeen(_movingAnimation.Host.Cell, Targets[i]))
+                if(!args.Stage.CheckCanWalkToCell(_movingAnimation.Host, Targets[i]))
                 {
                     args.CancellationToken.Cancel();
                     break;

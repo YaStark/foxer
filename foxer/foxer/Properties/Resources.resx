@@ -694,4 +694,13 @@
   <data name="hpbar_restore" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\misc\hpbar_restore.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="sprite_cow_headup" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cow\sprite_cow_headup.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_cow_idle" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cow\sprite_cow_idle.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="sprite_cow_walk" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cow\sprite_cow_walk.png;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>

@@ -55,6 +55,7 @@ namespace foxer.Core.Game
             AddDescriptor(new SquirrelEntityDescriptor());
             AddDescriptor(new PlayerEntityDescriptor());
             AddDescriptor(new WolfEntityDescriptor());
+            AddDescriptor(new CowEntityDescriptor());
 
             AddDescriptor(new BubblesEntityDescriptor());
             AddDescriptor(new FlowerEntityDescriptor());
@@ -168,24 +169,24 @@ namespace foxer.Core.Game
 
         public void Update(uint delayMs)
         {
-            var swh = new StopwatchHelper("PageGameViewModel.Update");
-            swh.Scope("transit");
+         //   var swh = new StopwatchHelper("PageGameViewModel.Update");
+         //   swh.Scope("transit");
             if (_loadLevelArgs != null)
             {
                 Transit();
                 _loadLevelArgs = null;
             }
 
-            swh.Scope("entities");
+          //  swh.Scope("entities");
             foreach (var entity in Stage.Entities)
             {
-                swh.Point($"{entity.GetType()}");
+          //      swh.Point($"{entity.GetType()}");
                 entity.Update(Stage, delayMs);
             }
 
-            swh.Scope("Stage.AfterUpdate");
+          //  swh.Scope("Stage.AfterUpdate");
             Stage.AfterUpdate();
-            swh.Show();
+          //  swh.Show();
         }
 
         private int GetRndDoor(int size, Random rnd)

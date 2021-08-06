@@ -20,16 +20,11 @@ namespace foxer.Core.Game.Animation
             _moving = new MovingAnimation(parent, speed, animationSpeed);
         }
 
-        public override IEnumerable<EntityAnimation> Coroutine(EntityCoroutineArgs args)
+        protected override IEnumerable<EntityAnimation> OnCoroutine(EntityCoroutineArgs args)
         {
             Progress = 0;
             while(true)
             {
-                if(args.CancellationToken.IsCancellationRequested)
-                {
-                    yield break;
-                }
-
                 bool interrupted = false;
                 _moving.Target = Target.Cell;
                 foreach (var item in _moving.Coroutine(args))

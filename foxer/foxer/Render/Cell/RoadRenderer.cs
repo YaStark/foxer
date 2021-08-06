@@ -36,14 +36,13 @@ namespace foxer.Render
 
         private static bool CanBridge(CellBase cell)
         {
-            switch (cell?.Kind)
+            if (cell == null)
             {
-                case CellKind.Road:
-                case CellKind.Door:
-                    return true;
+                return false;
             }
 
-            return false;
+            return cell.Kind == CellKind.Road
+                || cell.Kind == CellKind.Door;
         }
     }
 }

@@ -6,10 +6,12 @@ namespace foxer.Core.Game.Entities
     {
         int Rotation { get; }
 
-        Point Cell { get; }
+        int CellX { get; }
+
+        int CellY { get; }
 
         bool Active(Stage stage);
 
-        bool CanTransit(Point to);
+        bool CanTransit(int x, int y);
     }
 }

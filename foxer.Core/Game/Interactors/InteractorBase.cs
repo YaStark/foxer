@@ -20,26 +20,5 @@ namespace foxer.Core.Game.Interactors
         protected abstract bool CanInteract(TSubject subj, object obj, InteractorArgs arg);
 
         protected abstract bool Interact(TSubject subj, object obj, InteractorArgs arg);
-
-        protected static Point[] GetPathToItem(EntityBase walker, EntityBase target, Stage stage)
-        {
-            // todo set distance
-            var targetPlatform = stage.GetPlatform(target);
-            var cells = target.Cell.Nearest4()
-                // transit from target cell to nearest4 cells
-                .Select(pt => new WalkCell(pt, stage.GetPlatformOnTransit(walker, target.Cell, pt, targetPlatform)))
-                .Where(cell => cell.Platform != null)
-                .ToArray();
-
-            if (!cells.Any())
-            {
-                return null;
-            }
-
-            using (var builder = new WalkBuilderWithMultipleTargets(stage, walker, null, null, cells))
-            {
-                return builder.GetShortestPath();
-            }
-        }
     }
 }
